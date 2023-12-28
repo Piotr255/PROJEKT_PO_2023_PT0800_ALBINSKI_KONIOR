@@ -39,34 +39,19 @@ public class Animal implements WorldElement {
     }
 
     public void turn(int direction){
-
-
-    }
-
-    public void move(MoveDirection direction, MoveValidator validator){
-        switch (direction) {
-            case LEFT -> {
-                orientation = orientation.previous();
-
-            }
-            case RIGHT -> {
-                orientation = orientation.next();
-            }
-            case FORWARD -> {
-                Vector2d possiblePosition = position.add(orientation.toUnitVector());
-                if (validator.canMoveTo(possiblePosition)){
-                    position = possiblePosition;
-                }
-
-            }
-            case BACKWARD -> {
-                Vector2d possiblePosition = position.subtract(orientation.toUnitVector());
-                if (validator.canMoveTo(possiblePosition)){
-                    position = possiblePosition;
-                }
-
-            }
+        for(int i = 0; i<direction;i++){
+            orientation = orientation.next();
         }
+    }
+    public void move(MoveDirection direction, MoveValidator validator){
+        Vector2d possiblePosition = position.add(orientation.toUnitVector());
+        if (validator.canMoveTo(possiblePosition)){
+            position = possiblePosition;
+        }
+        else{
+            turn(4);
+        }
+
     }
     @Override
     public Vector2d getPosition() {
