@@ -8,10 +8,8 @@ public interface WorldMap extends MoveValidator {
 
     void move(Animal animal, MoveDirection direction);
 
-
+    boolean isOccupied(Vector2d position);
     WorldElement objectAt(Vector2d position);
-
-    HashSet<WorldElement> getElements();
-
     UUID getId();
+    Boundary getCurrentBounds();
 }
