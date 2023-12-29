@@ -1,11 +1,11 @@
 package model.exceptions;
 
-import presenter.SimulationPresenter;
+import presenter.ConfigurationsPresenter;
 
 public class InvalidMapDimensionsException{
 
-    public static void throwException(SimulationPresenter simulationPresenter){
-        ConfigurationsExceptionDisplayer.printException("Niepoprawne wymiary mapy", simulationPresenter);
+    public static void throwException(ConfigurationsPresenter configurationsPresenter){
+        ConfigurationsExceptionDisplayer.printException("Niepoprawne wymiary mapy", configurationsPresenter);
     }
 
 }

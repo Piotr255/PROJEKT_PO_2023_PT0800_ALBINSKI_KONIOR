@@ -7,6 +7,10 @@ public class Animal implements WorldElement {
     //public boolean placed;
     private MapDirection orientation;
     private Vector2d position;
+    private int energy;
+    private int currentGenomPosition = 0;
+    private int genomIterator = 1;
+
     private int[] genom;
 
 
@@ -38,6 +42,14 @@ public class Animal implements WorldElement {
         return this.position.equals(position);
     }
 
+    public int getCurrentGenom(){
+        return genom[currentGenomPosition];
+    }
+    public void setGenomPosition(){
+        currentGenomPosition+=genomIterator;
+        currentGenomPosition%=genom.length;
+    }
+
     public void turn(int direction){
         for(int i = 0; i<direction;i++){
             orientation = orientation.next();
@@ -60,6 +72,14 @@ public class Animal implements WorldElement {
 
     public MapDirection getOrientation() {
         return orientation;
+    }
+
+    public int getEnergy() {
+        return energy;
+    }
+
+    public void setEnergy(int energy) {
+        this.energy = energy;
     }
 }
 

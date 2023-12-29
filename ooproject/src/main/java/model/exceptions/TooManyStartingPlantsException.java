@@ -1,11 +1,11 @@
 package model.exceptions;
 
-import presenter.SimulationPresenter;
+import presenter.ConfigurationsPresenter;
 
 public class TooManyStartingPlantsException {
 
-    public static void throwException(SimulationPresenter simulationPresenter){
-        ConfigurationsExceptionDisplayer.printException("Zbyt mala mapa jak na tyle roslin na poczatek", simulationPresenter);
+    public static void throwException(ConfigurationsPresenter configurationsPresenter){
+        ConfigurationsExceptionDisplayer.printException("Zbyt mala mapa jak na tyle roslin na poczatek", configurationsPresenter);
     }
 
 }

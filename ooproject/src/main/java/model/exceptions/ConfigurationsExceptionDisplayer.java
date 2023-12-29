@@ -1,10 +1,10 @@
 package model.exceptions;
 
-import presenter.SimulationPresenter;
+import presenter.ConfigurationsPresenter;
 
 public class ConfigurationsExceptionDisplayer {
-    static void printException(String message, SimulationPresenter simulationPresenter){
-        simulationPresenter.printException(message);
+    static void printException(String message, ConfigurationsPresenter configurationsPresenter){
+        configurationsPresenter.printException(message);
     }
 
 }

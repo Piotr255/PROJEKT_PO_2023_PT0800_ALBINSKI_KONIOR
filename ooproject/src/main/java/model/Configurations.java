@@ -1,7 +1,9 @@
 package model;
 
+import main.SimulationWindow;
 import model.util.AnimalBehaviorVariant;
 import model.util.PlantsGrowthVariant;
+import presenter.SimulationPresenter;
 
 public class Configurations {
     public Configurations(int mapHeight, int mapWidth, int startingPlantsCount, int energyFromSinglePlant,
@@ -39,5 +41,9 @@ public class Configurations {
     private final PlantsGrowthVariant plantsGrowthVariant;
     private final AnimalBehaviorVariant animalBehaviorVariant;
 
-
+    public Simulation configureSimulation(SimulationPresenter simulationPresenter){
+        AbstractWorldMap abstractWorldMap = new AbstractWorldMap();
+        abstractWorldMap.addObserver(simulationPresenter);
+        return new Simulation(startingAnimalCount, startingPlantsCount, abstractWorldMap, simulationPresenter);
+    }
 }

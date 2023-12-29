@@ -2,12 +2,21 @@ package model;
 
 import java.util.*;
 
-abstract public class AbstractWorldMap implements WorldMap {
+public class AbstractWorldMap implements WorldMap {
     protected List<MapChangeListener> subscribers = new ArrayList<>();
     protected  Map<Vector2d, List<Animal>> animals = new HashMap<>();
 
     protected Map<Vector2d,Plant> plants = new HashMap<>();
-    private final UUID id = UUID.randomUUID();
+
+
+    private final List<MapChangeListener> observers = new ArrayList<>();
+
+    public void addObserver(MapChangeListener observer){
+        observers.add(observer);
+    }
+    public void removeObserver(MapChangeListener observer){
+        observers.remove(observer);
+    }
 
     @Override
     public void place(Animal animal) {
@@ -28,15 +37,21 @@ abstract public class AbstractWorldMap implements WorldMap {
         return !animals.get(position).isEmpty();
     }
 
+    @Override
+    public boolean canMoveTo(Vector2d position){
+        return false;
+    }
 
-
-    /*@Override
-    public List<WorldElement> objectAt(Vector2d position) {
-        return animals.get(position);
-    }*/
 
     @Override
-    public abstract Boundary getCurrentBounds();
+    public List<Animal> animalsAt(Vector2d position) {
+        return animals.get(position);
+    }
+
+    @Override
+    public Boundary getCurrentBounds(){
+        return null;
+    }
 
     public void subscribe(MapChangeListener observer){
         subscribers.add(observer);
@@ -44,17 +59,17 @@ abstract public class AbstractWorldMap implements WorldMap {
     public void unsubscribe(MapChangeListener observer){
         subscribers.remove(observer);
     }
-    private void mapChanged(String message){
+    public void mapChanged(String message){
+        System.out.println(observers);
         for(MapChangeListener observer : subscribers){
             observer.mapChanged(this,message);
         }
     }
-
-
     @Override
-    public UUID getId() {
-        return id;
+    public void removeAnimal(Animal animal){
+        animals.get(animal.getPosition()).remove(animal);
     }
+
 }
 
 
