@@ -4,7 +4,7 @@ import java.util.*;
 
 abstract public class AbstractWorldMap implements WorldMap {
     protected List<MapChangeListener> subscribers = new ArrayList<>();
-    protected  Map<Vector2d, List<Animal>> animals = new HashMap<>();
+    protected   Map<Vector2d, List<Animal>> animals = new HashMap<>();
 
     protected Map<Vector2d,Plant> plants = new HashMap<>();
     private final UUID id = UUID.randomUUID();
@@ -29,7 +29,6 @@ abstract public class AbstractWorldMap implements WorldMap {
     }
 
 
-
     /*@Override
     public List<WorldElement> objectAt(Vector2d position) {
         return animals.get(position);
@@ -49,7 +48,10 @@ abstract public class AbstractWorldMap implements WorldMap {
             observer.mapChanged(this,message);
         }
     }
-
+    @Override
+    public void removeAnimal(Animal animal){
+        animals.get(animal.getPosition()).remove(animal);
+    }
 
     @Override
     public UUID getId() {
