@@ -3,7 +3,7 @@ package model;
 import java.util.*;
 
 abstract public class AbstractWorldMap implements WorldMap {
-    protected List<MapChangeListener> subscribers = new ArrayList<>();
+    /*protected List<MapChangeListener> subscribers = new ArrayList<>();
     protected  Map<Vector2d, List<Animal>> animals = new HashMap<>();
     //private final UUID id = UUID.randomUUID();
 
@@ -69,7 +69,7 @@ abstract public class AbstractWorldMap implements WorldMap {
     @Override
     public UUID getId() {
         return id;
-    }
+    }*/
 }
 
 

@@ -1,0 +1,15 @@
+.stackpane-center{
+    -fx-alignment: center;
+}
+.little-padding{
+    -fx-padding: 10px;
+}
+.centered-box{
+    -fx-alignment: center;
+}
+#startSimulationButton{
+    -fx-translate-y: 30px;
+}
+#exceptionsVBox Label{
+    -fx-text-fill: red;
+}

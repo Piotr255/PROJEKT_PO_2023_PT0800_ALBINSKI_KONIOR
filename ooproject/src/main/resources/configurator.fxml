@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            minHeight="550.0" minWidth="850.0"
+            fx:controller="presenter.SimulationPresenter"
+            stylesheets="style.css">
+    <center>
+        <StackPane styleClass="stackpane-center" fx:id="configurationsRoot">
+            <VBox alignment="CENTER">
+                <HBox styleClass="centered-box">
+                    <Label styleClass="little-padding">Wysokość mapy(od 5 do 15): </Label>
+                    <TextField fx:id="mapHeightTextField"></TextField>
+                    <Label styleClass="little-padding">Szerokość mapy(od 5 do 15): </Label>
+                    <TextField fx:id="mapWidthTextField"></TextField>
+                </HBox>
+                <HBox styleClass="centered-box">
+                    <Label styleClass="little-padding">Startowa liczba roślin: </Label>
+                    <TextField fx:id="startingPlantsCountTextField"></TextField>
+                </HBox>
+                <HBox styleClass="centered-box">
+                    <Label styleClass="little-padding">Energia z rośliny: </Label>
+                    <TextField fx:id="energyFromSinglePlantTextField"></TextField>
+                </HBox>
+                <HBox styleClass="centered-box">
+                    <Label styleClass="little-padding">Liczba roślin wyrastająca każdego dnia: </Label>
+                    <TextField fx:id="everydayGrowingPlantsCountTextField"></TextField>
+                </HBox>
+                <HBox styleClass="centered-box">
+                    <Label styleClass="little-padding">Wariant wzrostu roślin:</Label>
+                    <ComboBox fx:id="plantsGrowthVariantComboxBox">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Zalesione równiki"/>
+                                <String fx:value="Pełzająca dżungla"/>
+                            </FXCollections>
+                        </items>
+                    </ComboBox>
+                </HBox>
+                <HBox styleClass="centered-box">
+                    <Label styleClass="little-padding">Startowa liczba zwierzaków: </Label>
+                    <TextField fx:id="startingAnimalCountTextField"></TextField>
+                    <Label styleClass="little-padding">Startowa energia zwierzaków: </Label>
+                    <TextField fx:id="startingEnergyCountTextField"></TextField>
+                </HBox>
+                <HBox styleClass="centered-box">
+                    <Label styleClass="little-padding">Energia potrzebna do rozmnażania: </Label>
+                    <TextField fx:id="requiredReproductionEnergyCountTextField"></TextField>
+                    <Label styleClass="little-padding">Energia zużywana przy rozmnażaniu: </Label>
+                    <TextField fx:id="reproductionEnergyCostTextField"></TextField>
+                </HBox>
+                <HBox styleClass="centered-box">
+                    <Label styleClass="little-padding">Minimalna liczba mutacji: </Label>
+                    <TextField fx:id="minimumMutationCountTextField"></TextField>
+                    <Label styleClass="little-padding">Maksymalna liczba mutacji: </Label>
+                    <TextField fx:id="maximumMutationCountTextField"></TextField>
+                </HBox>
+                <HBox styleClass="centered-box">
+                    <Label styleClass="little-padding">Długość genomu zwierzaków: </Label>
+                    <TextField fx:id="genomLengthTextField"></TextField>
+                </HBox>
+                <HBox styleClass="centered-box">
+                    <Label styleClass="little-padding">Wariant zachowania zwierzaków:</Label>
+                    <ComboBox fx:id="genomReadVariantComboxBox">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Pełna predestynacja"/>
+                                <String fx:value="Tam i z powrotem"/>
+                            </FXCollections>
+                        </items>
+                    </ComboBox>
+                </HBox>
+                <VBox styleClass="centered-box" fx:id="exceptionsVBox">
+
+                </VBox>
+                <HBox styleClass="centered-box">
+                    <Button fx:id="startSimulationButton" onAction="#onSimulationStartClicked">Start</Button>
+                </HBox>
+            </VBox>
+        </StackPane>
+    </center>
+</BorderPane>
