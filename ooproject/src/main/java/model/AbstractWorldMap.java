@@ -3,7 +3,7 @@ package model;
 import java.util.*;
 
 abstract public class AbstractWorldMap implements WorldMap {
-    /*protected List<MapChangeListener> subscribers = new ArrayList<>();
+    protected List<MapChangeListener> subscribers = new ArrayList<>();
     protected  Map<Vector2d, List<Animal>> animals = new HashMap<>();
 
     protected Map<Vector2d,Plant> plants = new HashMap<>();
@@ -29,12 +29,12 @@ abstract public class AbstractWorldMap implements WorldMap {
     }
 
 
-/*
-    @Override
-    public WorldElement objectAt(Vector2d position) {
-        return animals.get(position);  //do zrobienia
-    }
-*/
+
+    /*@Override
+    public List<WorldElement> objectAt(Vector2d position) {
+        return animals.get(position);
+    }*/
+
     @Override
     public abstract Boundary getCurrentBounds();
 
@@ -54,7 +54,7 @@ abstract public class AbstractWorldMap implements WorldMap {
     @Override
     public UUID getId() {
         return id;
-    }*/
+    }
 }
 
 
