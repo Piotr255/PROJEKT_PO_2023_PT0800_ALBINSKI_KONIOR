@@ -10,6 +10,9 @@ public interface WorldMap extends MoveValidator {
 
     boolean isOccupied(Vector2d position);
     WorldElement objectAt(Vector2d position);
+
+    void removeAnimal(Animal animal);
+
     UUID getId();
     Boundary getCurrentBounds();
 }

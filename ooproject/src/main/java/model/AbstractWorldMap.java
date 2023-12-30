@@ -4,7 +4,7 @@ import java.util.*;
 
 abstract public class AbstractWorldMap implements WorldMap {
     protected List<MapChangeListener> subscribers = new ArrayList<>();
-    protected  Map<Vector2d, List<Animal>> animals = new HashMap<>();
+    protected   Map<Vector2d, List<Animal>> animals = new HashMap<>();
 
     protected Map<Vector2d,Plant> plants = new HashMap<>();
     private final UUID id = UUID.randomUUID();
@@ -23,11 +23,28 @@ abstract public class AbstractWorldMap implements WorldMap {
             mapChanged("Zwierze poruszylo sie na " + animal.getPosition());
         }
     }
+
+    public void addPlant(Vector2d position, int energy){
+        Plant plant = new Plant(position, energy);
+        plants.put(position, plant);
+    }
+
+    public void eatPlant(Animal animal){
+        animal.setEnergy(animal.getEnergy() + plants.get(animal.getPosition()).getEnergy());
+        plants.remove(animal.getPosition());
+
+    }
+
+    public Animal getStrongest(Vector2d position){
+        List<Animal> localAnimals = animals.get(position);
+
+
+    }
+
     @Override
     public boolean isOccupied(Vector2d position) {
         return !animals.get(position).isEmpty();
     }
-
 
 
     /*@Override
@@ -49,7 +66,10 @@ abstract public class AbstractWorldMap implements WorldMap {
             observer.mapChanged(this,message);
         }
     }
-
+    @Override
+    public void removeAnimal(Animal animal){
+        animals.get(animal.getPosition()).remove(animal);
+    }
 
     @Override
     public UUID getId() {
