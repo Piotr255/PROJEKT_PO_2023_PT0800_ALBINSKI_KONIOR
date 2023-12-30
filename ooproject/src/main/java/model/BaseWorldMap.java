@@ -44,11 +44,11 @@ public class BaseWorldMap implements WorldMap {
 
     }
 
-    public Animal getStrongest(Vector2d position){
+ /*   public Animal getStrongest(Vector2d position){
         List<Animal> localAnimals = animals.get(position);
 
 
-    }
+    }*/
 
     @Override
     public boolean isOccupied(Vector2d position) {
