@@ -81,5 +81,8 @@ public class Animal implements WorldElement {
     public void setEnergy(int energy) {
         this.energy = energy;
     }
+  
+  
+  
 }
 

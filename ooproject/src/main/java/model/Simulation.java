@@ -1,10 +1,14 @@
 package model;
 
+
 import main.SimulationWindow;
 import model.exceptions.SimulationWindowCreationException;
 import presenter.SimulationPresenter;
-
 import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 public class Simulation implements Runnable {
     private WorldMap simulationMap;
@@ -20,7 +24,12 @@ public class Simulation implements Runnable {
         this.simulationMap = simulationMap;
         this.configurations = configurations;
         simulationPresenter.setSimulation(this);
-    }
+      
+  /*  public Simulation(List<Animal> animals, WorldMap simulationMap){
+        this.animals = animals;
+        this.simulationMap = simulationMap;
+
+    }*/
 
     private void deleteDead() {
         Iterator<Animal> iterator = animals.iterator();
@@ -48,6 +57,7 @@ public class Simulation implements Runnable {
     public void pauseSimulation(){
 
     }
+
     public void run(){
 
     }
@@ -64,3 +74,5 @@ public class Simulation implements Runnable {
         return id;
     }
 }
+
+
