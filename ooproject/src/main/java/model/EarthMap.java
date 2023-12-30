@@ -12,10 +12,10 @@ public class EarthMap extends AbstractWorldMap{
         return position.precedes(boundary.rightTop()) && position.follows(boundary.leftBottom());
     }
 
-    @Override
+    /*@Override
     public WorldElement objectAt(Vector2d position) {
         return null;
-    }
+    }*/
 
     @Override
     public Boundary getCurrentBounds() {

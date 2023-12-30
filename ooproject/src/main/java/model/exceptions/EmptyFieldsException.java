@@ -2,9 +2,10 @@ package model.exceptions;
 
 import presenter.ConfigurationsPresenter;
 
-public class OtherConfigurationsException {
+public class EmptyFieldsException {
 
     public static void throwException(ConfigurationsPresenter configurationsPresenter){
-        ConfigurationsExceptionDisplayer.printException("Niepoprawne dane wejsciowe", configurationsPresenter);
+        ConfigurationsExceptionDisplayer.printException("Uzupelnij pola", configurationsPresenter);
     }
+
 }

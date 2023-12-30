@@ -7,8 +7,6 @@ public class Animal implements WorldElement {
     //public boolean placed;
     private MapDirection orientation;
     private Vector2d position;
-
-
     private int energy;
     private int currentGenomPosition = 0;
     private int genomIterator = 1;
@@ -83,6 +81,8 @@ public class Animal implements WorldElement {
     public void setEnergy(int energy) {
         this.energy = energy;
     }
-
+  
+  
+  
 }
 
