@@ -8,6 +8,14 @@ public class AbstractWorldMap implements WorldMap {
 
     protected Map<Vector2d,Plant> plants = new HashMap<>();
 
+    public int getMapHeight() {
+        return mapHeight;
+    }
+
+    public int getMapWidth() {
+        return mapWidth;
+    }
+
     protected int mapHeight;
 
     protected int mapWidth;
