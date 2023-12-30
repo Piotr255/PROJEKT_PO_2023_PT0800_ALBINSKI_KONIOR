@@ -27,6 +27,58 @@ public class Configurations {
         this.animalBehaviorVariant = animalBehaviorVariant;
     }
 
+    public int getStartingPlantsCount() {
+        return startingPlantsCount;
+    }
+
+    public int getEnergyFromSinglePlant() {
+        return energyFromSinglePlant;
+    }
+
+    public int getEverydayGrowingPlantsCount() {
+        return everydayGrowingPlantsCount;
+    }
+
+    public int getStartingAnimalCount() {
+        return startingAnimalCount;
+    }
+
+    public int getStartingEnergyCount() {
+        return startingEnergyCount;
+    }
+
+    public int getRequiredReproductionEnergyCount() {
+        return requiredReproductionEnergyCount;
+    }
+
+    public int getMinimumMutationCount() {
+        return minimumMutationCount;
+    }
+
+    public int getMaximumMutationCount() {
+        return maximumMutationCount;
+    }
+
+    public int getGenomeLength() {
+        return genomeLength;
+    }
+
+    public PlantsGrowthVariant getPlantsGrowthVariant() {
+        return plantsGrowthVariant;
+    }
+
+    public AnimalBehaviorVariant getAnimalBehaviorVariant() {
+        return animalBehaviorVariant;
+    }
+
+    public int getMapHeight() {
+        return mapHeight;
+    }
+
+    public int getMapWidth() {
+        return mapWidth;
+    }
+
     private final int mapHeight;
     private final int mapWidth;
     private final int startingPlantsCount;
@@ -42,8 +94,8 @@ public class Configurations {
     private final AnimalBehaviorVariant animalBehaviorVariant;
 
     public Simulation configureSimulation(SimulationPresenter simulationPresenter){
-        AbstractWorldMap abstractWorldMap = new AbstractWorldMap();
-        abstractWorldMap.addObserver(simulationPresenter);
-        return new Simulation(startingAnimalCount, startingPlantsCount, abstractWorldMap, simulationPresenter);
+        AbstractWorldMap abstractWorldMap = new AbstractWorldMap(mapHeight, mapWidth);
+        return new Simulation(this,
+                abstractWorldMap, simulationPresenter);
     }
 }

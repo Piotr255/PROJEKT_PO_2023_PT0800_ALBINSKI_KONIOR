@@ -18,12 +18,14 @@ public class SimulationWindow {
 
     public void start(Configurations configurations) throws IOException {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("simulation.fxml"));
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getClassLoader().getResource("simulation.fxml"));
+        SimulationPresenter simulationPresenter = new SimulationPresenter();
+        loader.setController(simulationPresenter);
         BorderPane viewRoot = loader.load();
-        SimulationPresenter simulationPresenter = loader.getController();
         Simulation simulation = configurations.configureSimulation(simulationPresenter);
         configureStage(viewRoot);
-
+        //simulation.run();
 
     }
 

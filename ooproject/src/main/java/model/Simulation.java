@@ -10,12 +10,15 @@ public class Simulation implements Runnable {
     private WorldMap simulationMap;
     private List<Animal> animals;
     private final UUID id = UUID.randomUUID();
+    private final Configurations configurations; //W tym są wszystkie konfiguracje symulacji
 
     private final SimulationPresenter simulationPresenter;
-    public Simulation(int animalsCount, int plantsCount, AbstractWorldMap simulationMap, SimulationPresenter simulationPresenter){
+    public Simulation(Configurations configurations,
+                      AbstractWorldMap simulationMap, SimulationPresenter simulationPresenter){
         //this.animals = animals;
         this.simulationPresenter = simulationPresenter;
         this.simulationMap = simulationMap;
+        this.configurations = configurations;
         simulationPresenter.setSimulation(this);
     }
 
@@ -42,20 +45,18 @@ public class Simulation implements Runnable {
     private void plantsConsumption(){
 
     }
-
-    //test
     public void pauseSimulation(){
 
     }
     public void run(){
-        this.simulationMap.mapChanged("cos");
+
     }
 
     List<Animal> getAnimals() {
         return Collections.unmodifiableList(animals);
     }
 
-    WorldMap getSimulationMap() { //do testów
+    public WorldMap getSimulationMap() { //do testów
         return simulationMap;
     }
 

@@ -4,15 +4,13 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.GridPane?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            minHeight="550.0" minWidth="850.0"
-            fx:controller="presenter.SimulationPresenter">
-    <center>
-        <VBox alignment="CENTER">
-            <Button fx:id="testButton" onAction="#onTestButtonClicked">Test</Button>
-            <Label fx:id="testLabel">Na razie nic</Label>
-        </VBox>
+            minHeight="550.0" minWidth="850.0">
+    <right>
+        <GridPane alignment="BASELINE_RIGHT">
 
-    </center>
+        </GridPane>
+    </right>
 </BorderPane>

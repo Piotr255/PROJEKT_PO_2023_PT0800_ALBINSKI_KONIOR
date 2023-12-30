@@ -4,10 +4,18 @@ import java.util.*;
 
 public class AbstractWorldMap implements WorldMap {
     protected List<MapChangeListener> subscribers = new ArrayList<>();
-    protected  Map<Vector2d, List<Animal>> animals = new HashMap<>();
+    protected Map<Vector2d, List<Animal>> animals = new HashMap<>();
 
     protected Map<Vector2d,Plant> plants = new HashMap<>();
 
+    protected int mapHeight;
+
+    protected int mapWidth;
+
+    public AbstractWorldMap(int mapHeight, int mapWidth){
+        this.mapHeight = mapHeight;
+        this.mapWidth = mapWidth;
+    }
 
     private final List<MapChangeListener> observers = new ArrayList<>();
 

@@ -103,14 +103,10 @@ public class ConfigurationsPresenter {
             try{
                 simulationWindow.start(configurations);
             }catch(IOException e){
-                e.printStackTrace();
+                throw new SimulationWindowCreationException();
             }
 
         }
-    }
-
-    private void configureSimulationWindow(){
-
     }
 
     private boolean validateProgramInput(int mapHeight, int mapWidth, int startingPlantsCount, int everydayGrowingPlantsCount) {

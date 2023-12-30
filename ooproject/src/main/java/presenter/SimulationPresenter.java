@@ -10,15 +10,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import main.SimulationApp;
 import main.SimulationWindow;
-import model.Configurations;
-import model.MapChangeListener;
-import model.Simulation;
-import model.WorldMap;
+import model.*;
 import model.exceptions.SimulationWindowCreationException;
 
 import java.io.IOException;
 
-public class SimulationPresenter implements MapChangeListener {
+public class SimulationPresenter {
     @FXML
     private Button testButton;
     @FXML
@@ -30,21 +27,10 @@ public class SimulationPresenter implements MapChangeListener {
             this.simulation = simulation;
         }
     }
-    public void drawID(String id){
-        Platform.runLater(() -> {
-            testLabel.setText(id);
-        });
+    public void drawMap(AbstractWorldMap abstractWorldMap){
 
     }
-
-    public void mapChanged(WorldMap worldMap, String message){
-        drawID("cos");
-    }
-
-    public void onTestButtonClicked(){
-
-    }
-    public void notifyStart(){
+    public void mapChanged(){
 
     }
 }
