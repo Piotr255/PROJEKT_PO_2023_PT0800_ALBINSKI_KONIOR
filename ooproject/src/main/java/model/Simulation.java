@@ -1,11 +1,8 @@
 package model;
 
 
-import main.SimulationWindow;
-import model.exceptions.SimulationWindowCreationException;
 import presenter.SimulationPresenter;
 import java.util.*;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -18,12 +15,13 @@ public class Simulation implements Runnable {
 
     private final SimulationPresenter simulationPresenter;
     public Simulation(Configurations configurations,
-                      AbstractWorldMap simulationMap, SimulationPresenter simulationPresenter){
+                      BaseWorldMap simulationMap, SimulationPresenter simulationPresenter) {
         //this.animals = animals;
         this.simulationPresenter = simulationPresenter;
         this.simulationMap = simulationMap;
         this.configurations = configurations;
         simulationPresenter.setSimulation(this);
+    }
       
   /*  public Simulation(List<Animal> animals, WorldMap simulationMap){
         this.animals = animals;

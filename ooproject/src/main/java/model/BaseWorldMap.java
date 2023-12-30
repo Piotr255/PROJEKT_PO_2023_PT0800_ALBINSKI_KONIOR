@@ -2,29 +2,12 @@ package model;
 
 import java.util.*;
 
-public class AbstractWorldMap implements WorldMap {
+public class BaseWorldMap implements WorldMap {
     protected List<MapChangeListener> subscribers = new ArrayList<>();
     protected Map<Vector2d, List<Animal>> animals = new HashMap<>();
 
 
     protected Map<Vector2d,Plant> plants = new HashMap<>();
-
-    public int getMapHeight() {
-        return mapHeight;
-    }
-
-    public int getMapWidth() {
-        return mapWidth;
-    }
-
-    protected int mapHeight;
-
-    protected int mapWidth;
-
-    public AbstractWorldMap(int mapHeight, int mapWidth){
-        this.mapHeight = mapHeight;
-        this.mapWidth = mapWidth;
-    }
 
     private final List<MapChangeListener> observers = new ArrayList<>();
 
@@ -83,7 +66,7 @@ public class AbstractWorldMap implements WorldMap {
     
     }
     @Override
-    public List<WorldElement> objectAt(Vector2d position) {
+    public WorldElement objectAt(Vector2d position) {
         return animals.get(position);
     }
 
