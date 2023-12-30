@@ -13,11 +13,6 @@ public class EarthMap extends BaseWorldMap {
     }
 
     @Override
-    public WorldElement objectAt(Vector2d position) {
-        return null;
-    }
-
-    @Override
     public Boundary getCurrentBounds() {
         return boundary;
     }

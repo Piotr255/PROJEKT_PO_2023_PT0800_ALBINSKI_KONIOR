@@ -63,10 +63,6 @@ public class BaseWorldMap implements WorldMap {
 
     @Override
     public List<Animal> animalsAt(Vector2d position) {
-    
-    }
-    @Override
-    public WorldElement objectAt(Vector2d position) {
         return animals.get(position);
     }
 

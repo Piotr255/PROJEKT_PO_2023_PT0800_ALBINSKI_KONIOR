@@ -18,8 +18,9 @@ public class SimulationPresenter {
         }
     }
     public void drawMap(BaseWorldMap baseWorldMap){
-        int rows = baseWorldMap.getMapWidth();
-        int cols = baseWorldMap.getMapHeight();
+        Boundary boundary = baseWorldMap.getCurrentBounds();
+        int rows = boundary.rightTop().getY() - boundary.leftBottom().getY() + 1;
+        int cols = boundary.rightTop().getX() - boundary.leftBottom().getX() + 1;
         for (int i=1; i<rows+2; i++){
             for (int j=1; j<cols+2; j++){
                 Label label = new Label("*");
