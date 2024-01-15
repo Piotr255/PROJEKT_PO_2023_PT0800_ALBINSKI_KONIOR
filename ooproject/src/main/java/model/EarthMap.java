@@ -39,6 +39,21 @@ public class EarthMap extends BaseWorldMap {
         return 2;
     }
 
+    public Animal strongestAnimal(Vector2d position){
+        List<Animal> currentAnimals = animalsAt(position);
+        Animal strongest = currentAnimals.get(0);
+        for (Animal animal : currentAnimals){
+            if (strongest.getEnergy()<animal.getEnergy()){
+                strongest = animal;
+            }
+            else if (strongest.getEnergy() == animal.getEnergy()){
+                if(strongest.g)
+            }
+        }
+    }
+
+    public void eatPlant(Vector2d position)
+
 
 
 

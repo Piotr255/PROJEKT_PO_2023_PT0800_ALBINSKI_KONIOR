@@ -99,15 +99,26 @@ public class Animal implements WorldElement, Comparable<Animal> {
             orientation = orientation.next();
         }
     }
-    public void move(MoveDirection direction, MoveValidator validator){
+    public void move(MoveDirection direction, BaseWorldMap validator){
         Vector2d possiblePosition = position.add(orientation.toUnitVector());
         if (validator.canMoveTo(possiblePosition) == 0){
             position = possiblePosition;
         }
-        else if (validator.canMoveTo(possiblePosition) == 1)){
+        else if (validator.canMoveTo(possiblePosition) == 1){
             turn(4);
         }
         else {
+            Boundary boundary = validator.getCurrentBounds();
+            if (possiblePosition.getX()<boundary.leftBottom().getX()){
+                possiblePosition = new Vector2d(boundary.rightTop().getX(),possiblePosition.getY());
+                position = possiblePosition;
+            }
+            else{
+                possiblePosition = new Vector2d(boundary.leftBottom().getX(),possiblePosition.getY());
+                position = possiblePosition;
+
+            }
+
 
 
         }
@@ -128,8 +139,10 @@ public class Animal implements WorldElement, Comparable<Animal> {
     public void setEnergy(int energy) {
         this.energy = energy;
     }
-  
-  
-  
+
+
+    public int[] getGenom() {
+        return genom;
+    }
 }
 
