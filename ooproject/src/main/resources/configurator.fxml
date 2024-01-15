@@ -21,6 +21,20 @@
         <StackPane styleClass="stackpane-center" fx:id="configurationsRoot">
             <VBox alignment="CENTER">
                 <HBox styleClass="centered-box">
+                    <Label styleClass="little-padding">Możesz wybrać poprzednie konfiguracje:</Label>
+                    <ComboBox fx:id="chooseConfigurationComboBox">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+
+                            </FXCollections>
+                        </items>
+                    </ComboBox>
+                </HBox>
+                <HBox styleClass="centered-box">
+                    <Label styleClass="little-padding">Nazwij tę konfigurację: </Label>
+                    <TextField fx:id="configurationNameTextField">Przykladowa nazwa</TextField>
+                </HBox>
+                <HBox styleClass="centered-box">
                     <Label styleClass="little-padding">Wysokość mapy(od 5 do 15): </Label>
                     <TextField fx:id="mapHeightTextField">8</TextField>
                     <Label styleClass="little-padding">Szerokość mapy(od 5 do 15): </Label>
@@ -68,7 +82,7 @@
                 </HBox>
                 <HBox styleClass="centered-box">
                     <Label styleClass="little-padding">Długość genomu zwierzaków: </Label>
-                    <TextField fx:id="genomLengthTextField">9</TextField>
+                    <TextField fx:id="genomeLengthTextField">9</TextField>
                 </HBox>
                 <HBox styleClass="centered-box">
                     <Label styleClass="little-padding">Wariant zachowania zwierzaków:</Label>
@@ -85,6 +99,7 @@
                 </VBox>
                 <HBox styleClass="centered-box">
                     <Button fx:id="startSimulationButton" onAction="#onSimulationStartClicked">Start</Button>
+                    <Button fx:id="saveConfigurationButton" onAction="#onConfigurationSaveClicked">Zapisz</Button>
                 </HBox>
             </VBox>
         </StackPane>

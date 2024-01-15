@@ -5,11 +5,45 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            minHeight="550.0" minWidth="850.0">
+            minHeight="550.0" minWidth="850.0"
+            stylesheets="style.css">
+    <left>
+        <VBox alignment="CENTER">
+            <HBox>
+                <Label>Liczba wszystkich zwierzakow: </Label>
+                <Label fx:id="animalCountLabel"> 0</Label>
+            </HBox>
+            <HBox>
+                <Label>Liczba wszystkich roslin: </Label>
+                <Label fx:id="plantCountLabel"> 0</Label>
+            </HBox>
+            <HBox>
+                <Label>Liczba wolnych pol: </Label>
+                <Label fx:id="emptyFieldCountLabel"> 0</Label>
+            </HBox>
+            <HBox>
+                <Label>Najpopularniejsze genotypy: </Label>
+                <Label fx:id="mostPopularGenotypesLabel"> 0</Label>
+            </HBox>
+            <HBox>
+                <Label>Sredni poziom energii zyjacych zwierzakow: </Label>
+                <Label fx:id="averageEnergyLabel"> 0</Label>
+            </HBox>
+            <HBox>
+                <Label>Srednia dlugosc zycia dla martwych zwierzakow: </Label>
+                <Label fx:id="lifeExpectancyLabel"> 0</Label>
+            </HBox>
+            <HBox>
+                <Label>Srednia liczba dzieci: </Label>
+                <Label fx:id="averageChildCountLabel"> 0</Label>
+            </HBox>
+        </VBox>
+    </left>
     <right>
-        <GridPane fx:id="mapGrid" alignment="BASELINE_RIGHT">
+        <GridPane fx:id="mapGrid" alignment="CENTER_RIGHT" styleClass="map-grid-style-class">
 
         </GridPane>
     </right>

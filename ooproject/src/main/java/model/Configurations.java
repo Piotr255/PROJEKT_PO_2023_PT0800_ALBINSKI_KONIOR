@@ -5,9 +5,12 @@ import model.util.PlantsGrowthVariant;
 import presenter.SimulationPresenter;
 
 public class Configurations {
+
+
     public Configurations(int mapHeight, int mapWidth, int startingPlantsCount, int energyFromSinglePlant,
                           int everydayGrowingPlantsCount, int startingAnimalCount, int startingEnergyCount,
-                          int requiredReproductionEnergyCount, int minimumMutationCount,
+                          int requiredReproductionEnergyCount, int reproductionEnergyCost,
+                          int minimumMutationCount,
                           int maximumMutationCount, int genomeLength,
                           PlantsGrowthVariant plantsGrowthVariant,
                           AnimalBehaviorVariant animalBehaviorVariant) {
@@ -19,10 +22,82 @@ public class Configurations {
         this.startingAnimalCount = startingAnimalCount;
         this.startingEnergyCount = startingEnergyCount;
         this.requiredReproductionEnergyCount = requiredReproductionEnergyCount;
+        this.reproductionEnergyCost = reproductionEnergyCost;
         this.minimumMutationCount = minimumMutationCount;
         this.maximumMutationCount = maximumMutationCount;
         this.genomeLength = genomeLength;
         this.plantsGrowthVariant = plantsGrowthVariant;
+        this.animalBehaviorVariant = animalBehaviorVariant;
+    }
+    public Configurations(){
+
+    }
+
+    private String configurationName;
+    private int mapHeight;
+    private int mapWidth;
+    private int startingPlantsCount;
+    private int energyFromSinglePlant;
+    private int everydayGrowingPlantsCount;
+    private int startingAnimalCount;
+    private int startingEnergyCount;
+    private int requiredReproductionEnergyCount;
+    private int reproductionEnergyCost;
+    private int minimumMutationCount;
+    private int maximumMutationCount;
+    private int genomeLength;
+    private PlantsGrowthVariant plantsGrowthVariant;
+    private AnimalBehaviorVariant animalBehaviorVariant;
+
+    public void setMapHeight(int mapHeight) {
+        this.mapHeight = mapHeight;
+    }
+
+    public void setMapWidth(int mapWidth) {
+        this.mapWidth = mapWidth;
+    }
+
+    public void setStartingPlantsCount(int startingPlantsCount) {
+        this.startingPlantsCount = startingPlantsCount;
+    }
+
+    public void setEnergyFromSinglePlant(int energyFromSinglePlant) {
+        this.energyFromSinglePlant = energyFromSinglePlant;
+    }
+
+    public void setEverydayGrowingPlantsCount(int everydayGrowingPlantsCount) {
+        this.everydayGrowingPlantsCount = everydayGrowingPlantsCount;
+    }
+
+    public void setStartingAnimalCount(int startingAnimalCount) {
+        this.startingAnimalCount = startingAnimalCount;
+    }
+
+    public void setStartingEnergyCount(int startingEnergyCount) {
+        this.startingEnergyCount = startingEnergyCount;
+    }
+
+    public void setRequiredReproductionEnergyCount(int requiredReproductionEnergyCount) {
+        this.requiredReproductionEnergyCount = requiredReproductionEnergyCount;
+    }
+
+    public void setMinimumMutationCount(int minimumMutationCount) {
+        this.minimumMutationCount = minimumMutationCount;
+    }
+
+    public void setMaximumMutationCount(int maximumMutationCount) {
+        this.maximumMutationCount = maximumMutationCount;
+    }
+
+    public void setGenomeLength(int genomeLength) {
+        this.genomeLength = genomeLength;
+    }
+
+    public void setPlantsGrowthVariant(PlantsGrowthVariant plantsGrowthVariant) {
+        this.plantsGrowthVariant = plantsGrowthVariant;
+    }
+
+    public void setAnimalBehaviorVariant(AnimalBehaviorVariant animalBehaviorVariant) {
         this.animalBehaviorVariant = animalBehaviorVariant;
     }
 
@@ -78,22 +153,30 @@ public class Configurations {
         return mapWidth;
     }
 
-    private final int mapHeight;
-    private final int mapWidth;
-    private final int startingPlantsCount;
-    private final int energyFromSinglePlant;
-    private final int everydayGrowingPlantsCount;
-    private final int startingAnimalCount;
-    private final int startingEnergyCount;
-    private final int requiredReproductionEnergyCount;
-    private final int minimumMutationCount;
-    private final int maximumMutationCount;
-    private final int genomeLength;
-    private final PlantsGrowthVariant plantsGrowthVariant;
-    private final AnimalBehaviorVariant animalBehaviorVariant;
+    public String getConfigurationName() {
+        return configurationName;
+    }
+
+    public void setConfigurationName(String configurationName) {
+        this.configurationName = configurationName;
+    }
+
+    public int getReproductionEnergyCost() {
+        return reproductionEnergyCost;
+    }
+
+    public void setReproductionEnergyCost(int reproductionEnergyCost) {
+        this.reproductionEnergyCost = reproductionEnergyCost;
+    }
 
     public Simulation configureSimulation(SimulationPresenter simulationPresenter){
-        BaseWorldMap baseWorldMap = new EarthMap(mapWidth, mapHeight);
+        BaseWorldMap baseWorldMap;
+        if (plantsGrowthVariant==PlantsGrowthVariant.FORESTED_EQUATORS){
+            baseWorldMap = new EarthMap(mapWidth, mapHeight);
+        }
+        else{
+            baseWorldMap = new EarthMap(mapWidth, mapHeight); // do zmiany
+        }
         return new Simulation(this,
                 baseWorldMap, simulationPresenter);
     }

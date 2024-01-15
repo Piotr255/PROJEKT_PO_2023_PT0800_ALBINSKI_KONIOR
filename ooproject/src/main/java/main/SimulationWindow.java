@@ -5,9 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import model.Configurations;
-import model.Simulation;
-import model.WorldMap;
+import model.*;
 import model.exceptions.SimulationWindowCreationException;
 import presenter.ConfigurationsPresenter;
 import presenter.SimulationPresenter;
@@ -25,7 +23,8 @@ public class SimulationWindow {
         BorderPane viewRoot = loader.load();
         Simulation simulation = configurations.configureSimulation(simulationPresenter);
         configureStage(viewRoot);
-        //simulation.run();
+        BaseWorldMap baseWorldMap = new EarthMap(5,5);
+        simulation.run();
 
     }
 

@@ -4,12 +4,18 @@ import java.util.*;
 
 public class BaseWorldMap implements WorldMap {
     protected Map<Vector2d, List<Animal>> animals = new HashMap<>();
-
+  
     protected Map<Vector2d,Plant> plants = new HashMap<>();
 
     protected List<MapChangeListener> observers = new ArrayList<>();
 
 
+    public List<List<Animal>> getAnimals(){
+        return ((List<List<Animal>>) animals.values());
+    }
+    public List<Plant> getPlants(){
+        return ((List<Plant>) plants.values());
+    }
     @Override
     public void place(Animal animal) {
         animals.get(animal.getPosition()).add(animal);
@@ -23,6 +29,10 @@ public class BaseWorldMap implements WorldMap {
             animals.get(animal.getPosition()).add(animal);
             mapChanged("Zwierze poruszylo sie na " + animal.getPosition());
         }
+    }
+  
+    public boolean isPlantAt(Vector2d position){
+        return plants.get(position)!=null;
     }
 
 
