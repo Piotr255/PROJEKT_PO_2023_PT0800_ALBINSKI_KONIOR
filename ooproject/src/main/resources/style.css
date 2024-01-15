@@ -8,8 +8,27 @@
     -fx-alignment: center;
 }
 #startSimulationButton{
-    -fx-translate-y: 30px;
+    -fx-translate-y: 15px;
+}
+#saveConfigurationButton{
+    -fx-translate-y: 15px;
 }
 #exceptionsVBox Label{
     -fx-text-fill: red;
 }
+.map-grid-style-class Label{
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+    -fx-max-width: 30px;
+    -fx-max-height: 30px;
+}
+.map-grid-style-class{
+    -fx-translate-x: -100px;
+}
+#mapGrid{
+    fx-padding: 25px;
+}
+/*
+#stats-VBox{
+    fx-padding: 25px;
+}*/

@@ -57,7 +57,7 @@ public class Simulation implements Runnable {
     }
 
     public void run(){
-
+        simulationPresenter.drawMap(((BaseWorldMap) simulationMap));
     }
 
     List<Animal> getAnimals() {

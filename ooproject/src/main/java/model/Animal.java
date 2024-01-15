@@ -1,9 +1,11 @@
 package model;
 
+import model.exceptions.TooLittleEnergyToReproduceException;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Animal implements WorldElement {
+public class Animal implements WorldElement, Comparable<Animal> {
     //public boolean placed;
     private MapDirection orientation;
     private Vector2d position;
@@ -13,8 +15,38 @@ public class Animal implements WorldElement {
 
     private int[] genom;
 
+    private int ageInSimulationTurns = 0;
 
+    private int childrenCount = 0;
 
+    @Override
+    public int compareTo(Animal other){
+        if (this.energy!=other.energy){
+            return Integer.compare(this.energy, other.energy);
+        }
+        else if (this.ageInSimulationTurns != other.ageInSimulationTurns){
+            return Integer.compare(this.ageInSimulationTurns,other.ageInSimulationTurns);
+        }
+        return Integer.compare(this.childrenCount, other.childrenCount);
+    }
+
+    public void reproduce(int reproductionEnergyCost, int requiredReproductionEnergyCost){
+        if (energy<requiredReproductionEnergyCost){
+            throw new TooLittleEnergyToReproduceException();
+        }
+        else{
+            energy-=reproductionEnergyCost;
+            childrenCount+=1;
+        }
+    }
+
+    public int getAgeInSimulationTurns() {
+        return ageInSimulationTurns;
+    }
+
+    public int getChildrenCount() {
+        return childrenCount;
+    }
 /*
     public Animal(){
         orientation = MapDirection.NORTH;
