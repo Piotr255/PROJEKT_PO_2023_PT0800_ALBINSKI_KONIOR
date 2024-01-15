@@ -1,5 +1,7 @@
 package model;
 
+import model.util.GenerateGenom;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -8,11 +10,13 @@ import java.util.List;
 public class EarthMap extends BaseWorldMap {
     private final Boundary boundary;
     private boolean[][] preferedFields;
+    private int startingEnergyCount;
+    private int requiredReproductionEnergyCount;
+    private int reproductionEnergyCost;
 
-
-    public EarthMap(int width, int height){
+    public EarthMap(int width, int height, int startingEnergyCount){
         boundary = new Boundary(new Vector2d(0,0),new Vector2d(width-1,height-1));
-
+        this.startingEnergyCount = startingEnergyCount;
     }
 
 
@@ -82,8 +86,7 @@ public class EarthMap extends BaseWorldMap {
         return null;
     }*/
 
-    public void reproduce(List<Animal> animalsOnTheField, int requiredReproductionEnergyCount,
-                          int reproductionEnergyCost){
+    public void reproduce(List<Animal> animalsOnTheField){
         Collections.sort(animalsOnTheField);
         Iterator<Animal> iterator = animalsOnTheField.iterator();
         while(iterator.hasNext()){
@@ -91,9 +94,13 @@ public class EarthMap extends BaseWorldMap {
             Animal currentAnimal2 = iterator.next();
             if (currentAnimal1.getEnergy()>requiredReproductionEnergyCount
             && currentAnimal2.getEnergy()>requiredReproductionEnergyCount){
-
-                place(new Animal(currentAnimal1.getPosition(),
-                        new Animal(currentAnimal1.getPosition(), )));
+                Animal childAnimal = new Animal(currentAnimal1.getPosition(),
+                        GenerateGenom.generateReproductionGenome(currentAnimal1.getEnergy(),
+                                currentAnimal2.getEnergy(), currentAnimal1.getGenom(),
+                                currentAnimal2.getGenom()),2*reproductionEnergyCost);
+                place(childAnimal);
+                currentAnimal1.reproduce(reproductionEnergyCost, requiredReproductionEnergyCount);
+                currentAnimal2.reproduce(reproductionEnergyCost, requiredReproductionEnergyCount);
             }
         }
     }

@@ -170,14 +170,8 @@ public class Configurations {
     }
 
     public Simulation configureSimulation(SimulationPresenter simulationPresenter){
-        BaseWorldMap baseWorldMap;
-        if (plantsGrowthVariant==PlantsGrowthVariant.FORESTED_EQUATORS){
-            baseWorldMap = new EarthMap(mapWidth, mapHeight);
-        }
-        else{
-            baseWorldMap = new EarthMap(mapWidth, mapHeight); // do zmiany
-        }
+        EarthMap earthMap = new EarthMap(mapWidth, mapHeight, startingEnergyCount);
         return new Simulation(this,
-                baseWorldMap, simulationPresenter);
+                earthMap, simulationPresenter);
     }
 }

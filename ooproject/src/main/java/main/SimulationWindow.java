@@ -23,8 +23,7 @@ public class SimulationWindow {
         BorderPane viewRoot = loader.load();
         Simulation simulation = configurations.configureSimulation(simulationPresenter);
         configureStage(viewRoot);
-        BaseWorldMap baseWorldMap = new EarthMap(5,5);
-        simulation.run();
+
 
     }
 
