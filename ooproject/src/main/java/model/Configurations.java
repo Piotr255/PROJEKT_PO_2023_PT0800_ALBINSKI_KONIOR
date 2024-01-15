@@ -170,7 +170,8 @@ public class Configurations {
     }
 
     public Simulation configureSimulation(SimulationPresenter simulationPresenter){
-        EarthMap earthMap = new EarthMap(mapWidth, mapHeight, startingEnergyCount);
+        EarthMap earthMap = new EarthMap(mapWidth, mapHeight, startingEnergyCount, requiredReproductionEnergyCount,
+                reproductionEnergyCost, minimumMutationCount, maximumMutationCount);
         return new Simulation(this,
                 earthMap, simulationPresenter);
     }

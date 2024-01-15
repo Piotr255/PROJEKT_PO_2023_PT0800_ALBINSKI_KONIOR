@@ -10,8 +10,11 @@ public class EarthMap extends BaseWorldMap {
     private int startingEnergyCount;
     private int requiredReproductionEnergyCount;
     private int reproductionEnergyCost;
+    private int minimumMutationCount;
+    private int maximumMutationCount;
 
-    public EarthMap(int width, int height, int startingEnergyCount){
+    public EarthMap(int width, int height, int startingEnergyCount, int requiredReproductionEnergyCount,
+                    int reproductionEnergyCost, int minimumMutationCount, int maximumMutationCount){
         boundary = new Boundary(new Vector2d(0,0),new Vector2d(width-1,height-1));
         this.startingEnergyCount = startingEnergyCount;
     }
@@ -120,7 +123,7 @@ public class EarthMap extends BaseWorldMap {
                 Animal childAnimal = new Animal(currentAnimal1.getPosition(),
                         GenerateGenom.generateReproductionGenome(currentAnimal1.getEnergy(),
                                 currentAnimal2.getEnergy(), currentAnimal1.getGenom(),
-                                currentAnimal2.getGenom()),2*reproductionEnergyCost);
+                                currentAnimal2.getGenom(), minimumMutationCount, maximumMutationCount),2*reproductionEnergyCost);
                 place(childAnimal);
                 currentAnimal1.reproduce(reproductionEnergyCost, requiredReproductionEnergyCount);
                 currentAnimal2.reproduce(reproductionEnergyCost, requiredReproductionEnergyCount);
