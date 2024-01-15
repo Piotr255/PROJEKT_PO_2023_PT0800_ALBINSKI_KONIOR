@@ -10,8 +10,18 @@ import java.util.List;
 public class Simulation implements Runnable {
     private WorldMap simulationMap;
     private List<Animal> animals;
+    private List <Plant> plants;
     private final UUID id = UUID.randomUUID();
     private final Configurations configurations; //W tym są wszystkie konfiguracje symulacji
+
+    private int sumOfAgesDeadAnimals;
+
+    private int deadAnimalCount;
+
+    private int daysSinceStart;
+
+
+
 
     private final SimulationPresenter simulationPresenter;
     public Simulation(Configurations configurations,
@@ -29,6 +39,30 @@ public class Simulation implements Runnable {
 
     }*/
 
+    public int[] getMostPopularGenom() {
+
+    }
+
+    public double averageEnergyLevel() {
+
+    }
+    public double averageAgeOfLive(){
+
+    }
+
+    public double averageChildrenCount(){
+
+    }
+
+    public int animalsCount(){
+
+    }
+
+
+    public int plantsCount(){
+
+    }
+
     private void deleteDead() {
         Iterator<Animal> iterator = animals.iterator();
 
@@ -43,9 +77,13 @@ public class Simulation implements Runnable {
 
     private void turnMove(){
         for(Animal animal: animals){
-            animal.turn(animal.getCurrentGenom());
+            simulationMap.turn(animal, animal.getCurrentGenom());
+            simulationMap.move(animal,MoveDirection.FORWARD);
             animal.setGenomPosition();
-            animal.move(MoveDirection.FORWARD, simulationMap);
+          /*
+            animal.turn();
+            animal.setGenomPosition();
+            animal.move(MoveDirection.FORWARD, simulationMap);*/
         }
     }
 

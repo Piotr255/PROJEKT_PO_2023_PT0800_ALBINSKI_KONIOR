@@ -61,7 +61,7 @@ public class SimulationPresenter {
                 }
                 else if (!baseWorldMap.animalsAt(position).isEmpty()){
                     label.setText(baseWorldMap.animalsAt(position)
-                            .get(1).getOrientation().toString());
+                            .get(0).getOrientation().toString());  //get z najw. priorytetem
                 }
                 else if (baseWorldMap.isPlantAt(position)){
                     label.setText("*");
@@ -79,14 +79,10 @@ public class SimulationPresenter {
         drawStats(baseWorldMap, emptyFieldCount);
     }
     public void drawStats(BaseWorldMap baseWorldMap, int emptyFieldCount){ //Wywoływane w drawMap()
-        List<List<Animal>> animals = baseWorldMap.getAnimals();
-        int animalCount = 0;
-        for (int i=0; i<animals.size(); i++){
-            animalCount += animals.get(i).size();
-        }
-        animalCountLabel.setText(String.valueOf(animalCount));
-        List<Plant> plants = baseWorldMap.getPlants();
-        plantCountLabel.setText(String.valueOf(plants.size()));
+        int animalsCount = simulation.animalsCount();
+        int plantsCount = simulation.plantsCount();
+        animalCountLabel.setText(String.valueOf(animalsCount));
+        plantCountLabel.setText(String.valueOf(plantsCount));
         emptyFieldCountLabel.setText(String.valueOf(emptyFieldCount));
     }
 

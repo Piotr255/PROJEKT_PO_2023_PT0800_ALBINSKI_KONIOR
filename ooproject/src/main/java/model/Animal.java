@@ -10,6 +10,10 @@ public class Animal implements WorldElement, Comparable<Animal> {
     private MapDirection orientation;
     private Vector2d position;
     private int energy;
+
+    private int days;
+
+    private Boolean deathDay = null;
     private int currentGenomPosition = 0;
     private int genomIterator = 1;
 
@@ -18,6 +22,13 @@ public class Animal implements WorldElement, Comparable<Animal> {
     private int ageInSimulationTurns = 0;
 
     private int childrenCount = 0;
+
+    private List<Animal> children = new ArrayList<>();
+
+
+    private int countAllDescendants(){
+
+    }
 
     @Override
     public int compareTo(Animal other){
@@ -89,13 +100,16 @@ public class Animal implements WorldElement, Comparable<Animal> {
     }
     public void move(MoveDirection direction, MoveValidator validator){
         Vector2d possiblePosition = position.add(orientation.toUnitVector());
-        if (validator.canMoveTo(possiblePosition)){
+        if (validator.canMoveTo(possiblePosition) == 0){
             position = possiblePosition;
         }
-        else{
+        else if (validator.canMoveTo(possiblePosition) == 1)){
             turn(4);
         }
+        else {
 
+
+        }
     }
     @Override
     public Vector2d getPosition() {

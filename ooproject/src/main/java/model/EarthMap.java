@@ -7,11 +7,16 @@ import java.util.List;
 
 public class EarthMap extends BaseWorldMap {
     private final Boundary boundary;
+    private boolean[][] preferedFields;
+
 
     public EarthMap(int width, int height){
         boundary = new Boundary(new Vector2d(0,0),new Vector2d(width-1,height-1));
 
     }
+
+
+
 
     public void startGrass { // do edycji do nowych zmiennych
         this.grassNumber = grassNumber;
@@ -21,11 +26,21 @@ public class EarthMap extends BaseWorldMap {
             grasses.put(grassPosition, new Grass(grassPosition));
         }
     }
-    @Override
-    public boolean canMoveTo(Vector2d position) {
 
-        return position.precedes(boundary.rightTop()) && position.follows(boundary.leftBottom());
+
+    @Override
+    public int canMoveTo(Vector2d position) {
+        if (position.precedes(boundary.rightTop()) && position.follows(boundary.leftBottom())){
+            return 0;
+        }
+        if (position.getY()>boundary.rightTop().getY() || position.getY()<boundary.leftBottom().getY()){
+            return 1;
+        }
+        return 2;
     }
+
+
+
 
     public void simulationNextTurn(){
 
