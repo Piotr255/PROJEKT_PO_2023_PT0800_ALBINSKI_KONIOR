@@ -13,7 +13,7 @@ public class RandomPositionGenerator implements Iterable<Vector2d>{
     private Vector2d[] Vector2dTab;
 
     private int size;
-    public RandomPositionGenerator(int maxWidth, int maxHeight, int grassCount, long seed) {
+    public RandomPositionGenerator(boolean [][] preferedFields, int grassCount, long seed) {
         this.grassCount = grassCount;
         size = maxWidth*maxHeight;
         Vector2dTab = new Vector2d[size];
