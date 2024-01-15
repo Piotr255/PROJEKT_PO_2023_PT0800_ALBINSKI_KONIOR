@@ -45,7 +45,7 @@ public class EarthMap extends BaseWorldMap {
     public void simulationNextTurn(){
 
     }
-
+    /*
     public List<Animal> getDominantAnimals(List<Animal> animalsOnTheField){
         List<Animal> result = new ArrayList<>();
         Collections.sort(animalsOnTheField);
@@ -65,11 +65,22 @@ public class EarthMap extends BaseWorldMap {
 
         }
         return null;
-    }
+    }*/
 
-    public void reproduce(List<Animal> animalsOnTheField){
+    public void reproduce(List<Animal> animalsOnTheField, int requiredReproductionEnergyCount,
+                          int reproductionEnergyCost){
         Collections.sort(animalsOnTheField);
+        Iterator<Animal> iterator = animalsOnTheField.iterator();
+        while(iterator.hasNext()){
+            Animal currentAnimal1 = iterator.next();
+            Animal currentAnimal2 = iterator.next();
+            if (currentAnimal1.getEnergy()>requiredReproductionEnergyCount
+            && currentAnimal2.getEnergy()>requiredReproductionEnergyCount){
 
+                place(new Animal(currentAnimal1.getPosition(),
+                        new Animal(currentAnimal1.getPosition(), )));
+            }
+        }
     }
 
     @Override

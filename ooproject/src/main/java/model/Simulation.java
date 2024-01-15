@@ -32,7 +32,6 @@ public class Simulation implements Runnable {
         this.configurations = configurations;
         simulationPresenter.setSimulation(this);
     }
-      
   /*  public Simulation(List<Animal> animals, WorldMap simulationMap){
         this.animals = animals;
         this.simulationMap = simulationMap;

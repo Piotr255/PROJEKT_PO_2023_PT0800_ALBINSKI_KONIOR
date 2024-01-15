@@ -70,10 +70,11 @@ public class Animal implements WorldElement, Comparable<Animal> {
         this.position = position;
     }*/
 
-    public Animal(Vector2d position, int[] genom) {
+    public Animal(Vector2d position, int[] genom, int energy) {
         this.orientation = MapDirection.NORTH;
         this.position = position;
         this.genom = genom;
+        this.energy = energy;
     }
 
     @Override
