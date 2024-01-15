@@ -3,7 +3,9 @@ package model;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 public class RandomPositionGenerator implements Iterable<Vector2d>{
@@ -13,9 +15,21 @@ public class RandomPositionGenerator implements Iterable<Vector2d>{
     private Vector2d[] Vector2dTab;
 
     private int size;
-    public RandomPositionGenerator(boolean [][] preferedFields, int grassCount, long seed) {
+    public RandomPositionGenerator(boolean [][] preferedFields, int grassCount, boolean preferedMode, long seed) {
         this.grassCount = grassCount;
-        size = maxWidth*maxHeight;
+        List<Vector2d> goodvectors = new ArrayList<>();
+        int rows = preferedFields.length;
+        int columns = preferedFields[0].length;
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++){
+                if (preferedMode == preferedFields[i][j]){
+                    goodvectors.add(new Vector2d(i,j));
+                }
+            }
+    }
+
+        size = goodvectors.size();
         Vector2dTab = new Vector2d[size];
         this.seed = seed;
         rand = new Random(seed);

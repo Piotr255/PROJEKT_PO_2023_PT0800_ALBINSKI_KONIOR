@@ -25,7 +25,7 @@ public class EarthMap extends BaseWorldMap {
     public void startGrass (int grassNumber){ // do edycji do nowych zmiennych
         RandomPositionGenerator randomPositionGenerator = new RandomPositionGenerator(preferedFields, grassNumber, 12345L);
         for (Vector2d grassPosition : randomPositionGenerator) {
-            grasses.put(grassPosition, new Grass(grassPosition));
+            grasses.put(grassPosition, new Grass(grassPosition)); // jak w symulacji w liście te trawy umieścić?
         }
     }
 
