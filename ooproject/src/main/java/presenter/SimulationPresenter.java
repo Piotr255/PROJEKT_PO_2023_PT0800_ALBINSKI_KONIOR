@@ -90,7 +90,7 @@ public class SimulationPresenter {
         }
         drawStats(earthMap, emptyFieldCount);
     }
-    public void drawStats(BaseWorldMap baseWorldMap, int emptyFieldCount){ //Wywoływane w drawMap()
+    public void drawStats(EarthMap earthMap, int emptyFieldCount){ //Wywoływane w drawMap()
         int animalsCount = simulation.animalsCount();
         int plantsCount = simulation.plantsCount();
         animalCountLabel.setText(String.valueOf(animalsCount));

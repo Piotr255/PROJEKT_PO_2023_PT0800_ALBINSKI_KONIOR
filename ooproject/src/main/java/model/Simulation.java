@@ -13,7 +13,7 @@ public class Simulation implements Runnable {
     private List <Plant> plants;
     private final UUID id = UUID.randomUUID();
     private final Configurations configurations; //W tym są wszystkie konfiguracje symulacji
-
+    private boolean simulationPaused = false;
     private int sumOfAgesDeadAnimals;
 
     private int deadAnimalCount;
@@ -99,11 +99,17 @@ public class Simulation implements Runnable {
     }
 
     public void pauseSimulation(){
+        simulationPaused = true;
+    }
 
+    public void unpauseSimulation(){
+        simulationPaused = false;
     }
 
     public void run(){
-        simulationPresenter.drawMap((EarthMap) simulationMap);
+        if (!simulationPaused){
+            simulationPresenter.drawMap((EarthMap) simulationMap);
+        }
     }
 
     List<Animal> getAnimals() {
