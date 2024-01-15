@@ -3,18 +3,12 @@ package model;
 import java.util.*;
 
 public class BaseWorldMap implements WorldMap {
-    protected List<MapChangeListener> subscribers = new ArrayList<>();
     protected Map<Vector2d, List<Animal>> animals = new HashMap<>();
+  
     protected Map<Vector2d,Plant> plants = new HashMap<>();
 
-    private final List<MapChangeListener> observers = new ArrayList<>();
+    protected List<MapChangeListener> observers = new ArrayList<>();
 
-    public void addObserver(MapChangeListener observer){
-        observers.add(observer);
-    }
-    public void removeObserver(MapChangeListener observer){
-        observers.remove(observer);
-    }
 
     public List<List<Animal>> getAnimals(){
         return ((List<List<Animal>>) animals.values());
@@ -36,10 +30,11 @@ public class BaseWorldMap implements WorldMap {
             mapChanged("Zwierze poruszylo sie na " + animal.getPosition());
         }
     }
-
+  
     public boolean isPlantAt(Vector2d position){
         return plants.get(position)!=null;
     }
+
 
     public void addPlant(Vector2d position, int energy){
         Plant plant = new Plant(position, energy);
@@ -79,15 +74,16 @@ public class BaseWorldMap implements WorldMap {
         return null;
     }
 
-    public void subscribe(MapChangeListener observer){
-        subscribers.add(observer);
+    public void addObserver(MapChangeListener observer){
+        observers.add(observer);
     }
-    public void unsubscribe(MapChangeListener observer){
-        subscribers.remove(observer);
+    public void removeObserver(MapChangeListener observer){
+        observers.remove(observer);
     }
+
     public void mapChanged(String message){
         System.out.println(observers);
-        for(MapChangeListener observer : subscribers){
+        for(MapChangeListener observer : observers){
             observer.mapChanged(this,message);
         }
     }
