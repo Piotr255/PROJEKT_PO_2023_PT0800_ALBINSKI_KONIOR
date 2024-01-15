@@ -10,7 +10,7 @@ public class Animal implements WorldElement, Comparable<Animal> {
     private MapDirection orientation;
     private Vector2d position;
     private int energy;
-
+    private int energyBoost;
     private int days;
 
     private Boolean deathDay = null;
@@ -26,8 +26,12 @@ public class Animal implements WorldElement, Comparable<Animal> {
     private List<Animal> children = new ArrayList<>();
 
 
-    private int countAllDescendants(){
+    public int countAllDescendants(){
 
+    }
+
+    public void eating(){
+        energy+=energyBoost;
     }
 
     @Override
@@ -143,6 +147,10 @@ public class Animal implements WorldElement, Comparable<Animal> {
 
     public int[] getGenom() {
         return genom;
+    }
+
+    public int getDays() {
+        return days;
     }
 }
 

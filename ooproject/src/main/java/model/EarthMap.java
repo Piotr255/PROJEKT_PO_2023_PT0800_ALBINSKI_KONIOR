@@ -2,10 +2,7 @@ package model;
 
 import model.util.GenerateGenom;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class EarthMap extends BaseWorldMap {
     private final Boundary boundary;
@@ -22,10 +19,8 @@ public class EarthMap extends BaseWorldMap {
 
 
 
-    public void startGrass { // do edycji do nowych zmiennych
-        this.grassNumber = grassNumber;
-        double ceil = Math.floor(Math.sqrt(grassNumber * 10) + 1);
-        RandomPositionGenerator randomPositionGenerator = new RandomPositionGenerator((int) ceil, (int) ceil, grassNumber, 12345L);
+    public void startGrass (int grassNumber){ // do edycji do nowych zmiennych
+        RandomPositionGenerator randomPositionGenerator = new RandomPositionGenerator(preferedFields, grassNumber, 12345L);
         for (Vector2d grassPosition : randomPositionGenerator) {
             grasses.put(grassPosition, new Grass(grassPosition));
         }
@@ -45,18 +40,46 @@ public class EarthMap extends BaseWorldMap {
 
     public Animal strongestAnimal(Vector2d position){
         List<Animal> currentAnimals = animalsAt(position);
+        List<Animal> drawAnimals = new LinkedList<>();
         Animal strongest = currentAnimals.get(0);
-        for (Animal animal : currentAnimals){
-            if (strongest.getEnergy()<animal.getEnergy()){
-                strongest = animal;
+        for (int i = 1; i<currentAnimals.size(); i++){
+            if (strongest.getEnergy()<currentAnimals.get(i).getEnergy()){
+                strongest = currentAnimals.get(i);
             }
-            else if (strongest.getEnergy() == animal.getEnergy()){
-                if(strongest.g)
+            else if (strongest.getEnergy() == currentAnimals.get(i).getEnergy()){
+                if(strongest.getDays() < currentAnimals.get(i).getDays()){
+                    strongest = currentAnimals.get(i);
+                }
+                else if (strongest.getDays() == currentAnimals.get(i).getDays()){
+                    if (strongest.getChildrenCount() < currentAnimals.get(i).getChildrenCount()){
+                        strongest = currentAnimals.get(i);
+                    }
+                    else if (strongest.getChildrenCount() == currentAnimals.get(i).getChildrenCount()){
+                        if (drawAnimals.isEmpty()){
+                            drawAnimals.add(strongest);
+                        }
+                        drawAnimals.add(currentAnimals.get(i));
+                    }
+
+                }
             }
         }
+        if (drawAnimals.isEmpty()){
+            return strongest;
+        }
+        else {
+            Random random = new Random();
+            int randomIndex = random.nextInt(drawAnimals.size());
+            return drawAnimals.get(randomIndex);
+        }
+
+
     }
 
-    public void eatPlant(Vector2d position)
+    public void eatPlant(Vector2d position){
+        Animal animal = strongestAnimal(position);
+        animal.eating();
+    }
 
 
 

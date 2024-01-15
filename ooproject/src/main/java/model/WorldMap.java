@@ -22,4 +22,6 @@ public interface WorldMap extends MoveValidator {
     void mapChanged(String message);
 
     void turn(Animal animal, int direction);
+
+    void eatPlant(Vector2d position);
 }

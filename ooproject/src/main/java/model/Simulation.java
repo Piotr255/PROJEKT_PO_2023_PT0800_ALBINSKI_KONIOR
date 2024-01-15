@@ -87,14 +87,17 @@ public class Simulation implements Runnable {
         }
     }
 
-    private void plantsConsumption(){
-        for(Plant plant: plants){
-            if (!simulationMap.animalsAt(plant.getPosition()).isEmpty()){
+    private void plantsConsumption() {
+        Iterator<Plant> iterator = plants.iterator();
+        while (iterator.hasNext()) {
+            Plant plant = iterator.next();
+            if (!simulationMap.animalsAt(plant.getPosition()).isEmpty()) {
                 simulationMap.eatPlant(plant.getPosition());
+                iterator.remove();
             }
-            
         }
     }
+
     public void pauseSimulation(){
 
     }

@@ -1,6 +1,8 @@
 // do poprawienia na nowy model
 package model;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Iterator;
 import java.util.Random;
 
