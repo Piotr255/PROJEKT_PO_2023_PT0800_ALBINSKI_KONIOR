@@ -16,6 +16,8 @@ public class EarthMap implements WorldMap {
     protected Map<Vector2d, List<Animal>> animals = new HashMap<>();
     protected Map<Vector2d,Plant> plants = new HashMap<>();
     private List<MapChangeListener> observers = new ArrayList<>();
+    protected Map<String, Integer > genomMap = new HashMap<>();
+
 
     public List<List<Animal>> getAnimals(){
         return ((List<List<Animal>>) animals.values());
@@ -97,7 +99,32 @@ public class EarthMap implements WorldMap {
 
     }
 
+    public void updateGenomMap(String genom, boolean add){
+        if(add){
+            if(genomMap.containsKey(genom)){
+                int currentValue = genomMap.get(genom);
+                genomMap.put(genom, currentValue + 1);
+            }
+            else{
+                genomMap.put(genom, 1);
+            }
+        }
+        else{
+            int currentValue = genomMap.get(genom);
+            if (currentValue - 1 > 0){
+                genomMap.put(genom, currentValue - 1);
+            }
+            else{
+                genomMap.remove(genom)
+            }
 
+        }
+
+    }
+
+    public getStrongestGenom {
+        for
+    }
 
 
     public List<Plant> startGrass (int grassNumber, boolean prefered){ // do edycji do nowych zmiennych
@@ -112,7 +139,11 @@ public class EarthMap implements WorldMap {
     }
 
     public List<Animal> generateAnimals(int animalNumber, long seed){
-        temporaryAnimals
+        AnimalGenerator animalGenerator = new AnimalGenerator();
+        List<Animal> temporaryAnimals = animalGenerator.generateAnimals();
+        for (Animal animal : temporaryAnimals){
+            place(animal);
+        }
     }
 
 

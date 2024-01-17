@@ -43,6 +43,7 @@ public class Simulation implements Runnable {
 
     }
 
+
     public double averageEnergyLevel() {
 
     }
@@ -55,12 +56,12 @@ public class Simulation implements Runnable {
     }
 
     public int animalsCount(){
-
+        return animals.size();
     }
 
 
     public int plantsCount(){
-
+        return plants.size();
     }
 
     private void deleteDead() {
