@@ -17,6 +17,8 @@ public class Animal implements WorldElement, Comparable<Animal> {
     private int currentGenomPosition = 0;
     private int genomIterator = 1;
 
+    private AnimalBehaviorVariant animalBehaviorVariant;
+
     private int[] genom;
 
     private int ageInSimulationTurns = 0;
@@ -93,9 +95,19 @@ public class Animal implements WorldElement, Comparable<Animal> {
     public int getCurrentGenom(){
         return genom[currentGenomPosition];
     }
-    public void setGenomPosition(){
-        currentGenomPosition+=genomIterator;
-        currentGenomPosition%=genom.length;
+    public void setGenomPosition(AnimalBehaviorVariant animalBehaviorVariant){
+        currentGenomPosition += genomIterator;
+        if (animalBehaviorVariant == AnimalBehaviorVariant.FULL_PREDESTINATION) {
+            currentGenomPosition %= genom.length;
+        }
+        else{
+            if (currentGenomPosition == genom.length - 1){
+                genomIterator = -1;
+            }
+            else if (currentGenomPosition == 0){
+                genomIterator = 1;
+            }
+        }
     }
 
     public void turn(int direction){

@@ -79,7 +79,7 @@ public class Simulation implements Runnable {
         for(Animal animal: animals){
             simulationMap.turn(animal, animal.getCurrentGenom());
             simulationMap.move(animal,MoveDirection.FORWARD);
-            animal.setGenomPosition();
+            animal.setGenomPosition(configurations.getAnimalBehaviorVariant());
           /*
             animal.turn();
             animal.setGenomPosition();

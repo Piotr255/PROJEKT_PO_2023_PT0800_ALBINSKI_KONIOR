@@ -43,4 +43,9 @@ public class GenerateGenom {
         return reproductionGenome;
     }
 
+    public static int[] generateStartGenom(){
+
+    }
+
+
 }
