@@ -21,6 +21,11 @@ public class BaseWorldMap implements WorldMap {
         animals.get(animal.getPosition()).add(animal);
         mapChanged("Zwierze zostalo postawione na" + animal.getPosition());
     }
+
+    public void turn(Animal animal, int direction){
+        animal.turn(direction);
+    }
+
     @Override
     public void move(Animal animal, MoveDirection direction) {
         if (animals.get(animal.getPosition()).contains(animal)){
@@ -58,10 +63,7 @@ public class BaseWorldMap implements WorldMap {
         return !animals.get(position).isEmpty();
     }
 
-    @Override
-    public boolean canMoveTo(Vector2d position){
-        return false;
-    }
+
 
 
     @Override

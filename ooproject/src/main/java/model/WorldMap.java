@@ -20,4 +20,8 @@ public interface WorldMap extends MoveValidator {
     void removeObserver(MapChangeListener observer);
 
     void mapChanged(String message);
+
+    void turn(Animal animal, int direction);
+
+    void eatPlant(Vector2d position);
 }

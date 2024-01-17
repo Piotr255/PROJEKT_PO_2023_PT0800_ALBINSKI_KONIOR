@@ -4,7 +4,9 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Circle;
 import model.*;
+import javafx.scene.paint.Color;
 
 import java.util.List;
 import java.util.Map;
@@ -36,13 +38,15 @@ public class SimulationPresenter {
             this.simulation = simulation;
         }
     }
-    public void drawMap(BaseWorldMap baseWorldMap){
+    public void drawMap(EarthMap earthMap){
         int emptyFieldCount = 0; //Do wyświetlania statystyk
-        Boundary boundary = baseWorldMap.getCurrentBounds();
+        Boundary boundary = earthMap.getCurrentBounds();
         int rows = boundary.rightTop().getY() - boundary.leftBottom().getY() + 1;
         int cols = boundary.rightTop().getX() - boundary.leftBottom().getX() + 1;
+        Circle circle = new Circle(5);
         for (int i=-1; i<rows+1; i++){
             for (int j=-1; j<cols+1; j++){
+                boolean animalPresent=false;
                 Label label = new Label();
                 int xCoord = j;
                 int yCoord = rows-i;
@@ -59,34 +63,38 @@ public class SimulationPresenter {
                 else if (j==-1){
                     label.setText(String.valueOf(yCoord));
                 }
-                else if (!baseWorldMap.animalsAt(position).isEmpty()){
-                    label.setText(baseWorldMap.animalsAt(position)
-                            .get(1).getOrientation().toString());
+                else if (!earthMap.animalsAt(position).isEmpty()){
+                    circle = new Circle(5);
+                    Color color = Color.hsb(120, )
+                    animalPresent=true;
+                    //get z najw. priorytetem
                 }
-                else if (baseWorldMap.isPlantAt(position)){
+                else if (earthMap.isPlantAt(position)){
                     label.setText("*");
                 }
                 else{
                     emptyFieldCount+=1;
                 }
-
+                final boolean fiAnimalPresent = animalPresent;
+                final Circle fiCircle = circle;
                 Platform.runLater(() -> {
-                    mapGrid.add(label,fj,fi);
+                    if (!fiAnimalPresent){
+                        mapGrid.add(label,fj,fi);
+                    }
+                    else{
+                        mapGrid.add(fiCircle,fj,fi);
+                    }
                 });
 
             }
         }
-        drawStats(baseWorldMap, emptyFieldCount);
+        drawStats(earthMap, emptyFieldCount);
     }
-    public void drawStats(BaseWorldMap baseWorldMap, int emptyFieldCount){ //Wywoływane w drawMap()
-        List<List<Animal>> animals = baseWorldMap.getAnimals();
-        int animalCount = 0;
-        for (int i=0; i<animals.size(); i++){
-            animalCount += animals.get(i).size();
-        }
-        animalCountLabel.setText(String.valueOf(animalCount));
-        List<Plant> plants = baseWorldMap.getPlants();
-        plantCountLabel.setText(String.valueOf(plants.size()));
+    public void drawStats(EarthMap earthMap, int emptyFieldCount){ //Wywoływane w drawMap()
+        int animalsCount = simulation.animalsCount();
+        int plantsCount = simulation.plantsCount();
+        animalCountLabel.setText(String.valueOf(animalsCount));
+        plantCountLabel.setText(String.valueOf(plantsCount));
         emptyFieldCountLabel.setText(String.valueOf(emptyFieldCount));
     }
 
