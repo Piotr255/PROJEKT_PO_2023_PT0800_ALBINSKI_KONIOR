@@ -4,7 +4,7 @@ import model.util.GenerateGenom;
 
 import java.util.*;
 
-public class EarthMap extends BaseWorldMap {
+public class EarthMap implements WorldMap {
     private final Boundary boundary;
     private boolean[][] preferedFields;
     private int startingEnergyCount;
@@ -108,6 +108,7 @@ public class EarthMap extends BaseWorldMap {
             plants.put(grassPosition, plant);
             temporaryPlantList.add(plant);
         }
+        return temporaryPlantList;
     }
 
     public List<Animal> generateAnimals(int animalNumber, long seed){
@@ -212,6 +213,9 @@ public class EarthMap extends BaseWorldMap {
                 place(childAnimal);
                 currentAnimal1.reproduce(reproductionEnergyCost, requiredReproductionEnergyCount);
                 currentAnimal2.reproduce(reproductionEnergyCost, requiredReproductionEnergyCount);
+                currentAnimal1.addChild(childAnimal);
+                currentAnimal2.addChild(childAnimal);
+
             }
         }
     }

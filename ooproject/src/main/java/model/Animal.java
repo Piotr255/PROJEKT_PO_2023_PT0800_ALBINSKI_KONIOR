@@ -1,6 +1,7 @@
 package model;
 
 import model.exceptions.TooLittleEnergyToReproduceException;
+import model.util.AnimalBehaviorVariant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,9 @@ public class Animal implements WorldElement, Comparable<Animal> {
 
     private List<Animal> children = new ArrayList<>();
 
+    public void addChild(Animal animal){
+        children.add(animal);
+    }
 
     public int countAllDescendants(){
 
@@ -115,7 +119,7 @@ public class Animal implements WorldElement, Comparable<Animal> {
             orientation = orientation.next();
         }
     }
-    public void move(MoveDirection direction, BaseWorldMap validator){
+    public void move(MoveDirection direction, EarthMap validator){
         Vector2d possiblePosition = position.add(orientation.toUnitVector());
         if (validator.canMoveTo(possiblePosition) == 0){
             position = possiblePosition;
