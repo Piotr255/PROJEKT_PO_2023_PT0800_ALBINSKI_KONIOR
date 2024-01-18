@@ -12,7 +12,7 @@ public class RandomPositionGenerator implements Iterable<Vector2d>{
     private Vector2d[] Vector2dTab;
 
     private int size;
-    public RandomPositionGenerator(boolean [][] preferedFields, int grassCount, boolean preferedMode, long seed) {
+    public RandomPositionGenerator(boolean [][] preferedFields, int grassCount, boolean preferedMode) {
         this.grassCount = grassCount;
         List<Vector2d> goodvectors = new ArrayList<>();
         int rows = preferedFields.length;
@@ -28,8 +28,7 @@ public class RandomPositionGenerator implements Iterable<Vector2d>{
 
         size = goodvectors.size();
         Vector2dTab = new Vector2d[size];
-        this.seed = seed;
-        rand = new Random(seed);
+        rand = new Random();
         for (int i = 0; i < size; i++) {
             Vector2dTab[i] = goodvectors.get(i);
         }

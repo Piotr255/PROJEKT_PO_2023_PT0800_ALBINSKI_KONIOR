@@ -28,7 +28,7 @@ public class EarthMap implements WorldMap {
         for(int i = 0; i<rows ; i++){
             for(int j = 0; j<cols; j++){
                 if (i>0.375*rows && i<0.625*rows){
-                    preferedFields[i][j] = true;
+                    preferedFields[j][i] = true;
                 }
             }
         }
@@ -151,9 +151,11 @@ public class EarthMap implements WorldMap {
 
 
     public List<Plant> startGrass (int grassNumber, boolean prefered){ // do edycji do nowych zmiennych
-        RandomPositionGenerator randomPositionGenerator = new RandomPositionGenerator(preferedFields, grassNumber, prefered,12345L);
+        RandomPositionGenerator randomPositionGenerator = new RandomPositionGenerator(preferedFields, grassNumber, prefered);
         List<Plant> temporaryPlantList = new LinkedList<>();
         for (Vector2d grassPosition : randomPositionGenerator) {
+            System.out.println("pozycja wylosowana");
+            System.out.println(grassPosition);
             Plant plant = new Plant(grassPosition,configurations.getEnergyFromSinglePlant());
             if (addPlant(plant.getPosition(),configurations.getEnergyFromSinglePlant()) != null) {
                 temporaryPlantList.add(plant);

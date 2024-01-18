@@ -43,6 +43,6 @@ public class AnimalGenerator {
         x = random.nextInt(rows);
         y = random.nextInt(columns);
         vector2d = new Vector2d(x,y);
-        return new Animal(vector2d, GenerateGenom.generateStartGenom(genomLength, 12332), startEnergy);
+        return new Animal(vector2d, GenerateGenom.generateStartGenom(genomLength), startEnergy);
     }
 }

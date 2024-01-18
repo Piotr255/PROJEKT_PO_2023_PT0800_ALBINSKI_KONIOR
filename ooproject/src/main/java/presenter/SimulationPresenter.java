@@ -61,7 +61,11 @@ public class SimulationPresenter {
             }
         });
 
+        /*cell.setStyle("-fx-border-color: black; -fx-alignment: center;");
+        mapGrid.add(cell, j, i);*/
+
         Circle circle = new Circle(5);
+        circle.setStyle("-fx-alignment: center");
         int xMin = boundary.leftBottom().getX();
         int xMax = boundary.rightTop().getX();
         int yMax = boundary.rightTop().getY();
@@ -75,7 +79,7 @@ public class SimulationPresenter {
                 final int fj = j;
                 Vector2d position = new Vector2d(xMin + j - 1, yMax - i + 1);
                 if (i==0 && j==0){
-                    label.setText("y/x");
+                    label.setText("y/x ");
                 }
                 else if (j == 0) {
                     label.setText(String.valueOf(yMax - i + 1));

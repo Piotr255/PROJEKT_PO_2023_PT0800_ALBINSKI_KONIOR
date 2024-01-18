@@ -33,7 +33,7 @@ public class Simulation implements Runnable {
         this.configurations = configurations;
         animalStart();
         // simulationMap.generateAnimals(configurations.getStartingAnimalCount(), 11111);
-        grassDivisionStart();
+        grassDivisionStart(configurations.getStartingPlantsCount());
         simulationPresenter.setSimulation(this);
         for(Animal animal : animals){
             System.out.println(animal.getPosition());
@@ -49,10 +49,9 @@ public class Simulation implements Runnable {
 
 
 
-    private void grassDivisionStart(){
+    private void grassDivisionStart(int start){
         List<Plant> temporaryList1;
         List<Plant> temporaryList2;
-        int start = configurations.getStartingPlantsCount();
         onPreferedFieldsCountStart = (int) (start * 0.8);
         onNotPreferedFieldsCountStart = start - onPreferedFieldsCountStart;
         temporaryList1 = simulationMap.startGrass(onPreferedFieldsCountStart,true);
@@ -156,7 +155,9 @@ public class Simulation implements Runnable {
             deleteDead();
             turnMove();
             plantsConsumption();
+            grassDivisionStart(configurations.getEverydayGrowingPlantsCount());
             simulationPresenter.drawMap((EarthMap) simulationMap);
+
         }
     }
 
