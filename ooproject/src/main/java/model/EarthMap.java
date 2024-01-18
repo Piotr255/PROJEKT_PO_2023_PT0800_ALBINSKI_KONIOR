@@ -120,7 +120,6 @@ public class EarthMap implements WorldMap {
     }
 
     public void mapChanged(String message){
-        System.out.println(observers);
         for(MapChangeListener observer : observers){
             observer.mapChanged(this,message);
         }

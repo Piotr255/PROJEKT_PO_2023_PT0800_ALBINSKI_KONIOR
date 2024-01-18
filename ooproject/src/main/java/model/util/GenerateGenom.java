@@ -16,6 +16,7 @@ public class GenerateGenom {
         int[] reproductionGenome = new int[genomeLength];
         int leftEnergy;
         int rightEnergy;
+
         if (leftPartOfGenomeFromGenome1){
             leftPartGenome = genome1;
             rightPartGenome = genome2;
