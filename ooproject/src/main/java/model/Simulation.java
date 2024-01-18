@@ -22,7 +22,7 @@ public class Simulation implements Runnable {
     private int onPreferedFieldsCountStart;
     private int onNotPreferedFieldsCountStart;
 
-
+    Timer timer = new Timer();
 
     private final SimulationPresenter simulationPresenter;
     public Simulation(Configurations configurations,
@@ -35,13 +35,10 @@ public class Simulation implements Runnable {
         // simulationMap.generateAnimals(configurations.getStartingAnimalCount(), 11111);
         grassDivisionStart();
         simulationPresenter.setSimulation(this);
-        run();
         for(Animal animal : animals){
             System.out.println(animal.getPosition());
         }
-        for(Plant plant: plants){
-            System.out.println(plant.getPosition());
-        }
+
 
     }
   /*  public Simulation(List<Animal> animals, WorldMap simulationMap){
@@ -151,7 +148,10 @@ public class Simulation implements Runnable {
     }
 
     public void run(){
-        if (!simulationPaused){
+        if (!simulationPaused) {
+            deleteDead();
+            turnMove();
+            plantsConsumption();
             simulationPresenter.drawMap((EarthMap) simulationMap);
         }
     }

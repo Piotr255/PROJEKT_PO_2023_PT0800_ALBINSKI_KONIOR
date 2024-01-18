@@ -31,10 +31,8 @@ public class RandomPositionGenerator implements Iterable<Vector2d>{
         this.seed = seed;
         rand = new Random(seed);
         for (int i = 0; i < size; i++) {
-                Vector2dTab[i] = goodvectors.get(i);
+            Vector2dTab[i] = goodvectors.get(i);
         }
-        System.out.println(Arrays.toString(Vector2dTab));
-
 
     }
 

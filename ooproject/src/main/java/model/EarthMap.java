@@ -108,11 +108,6 @@ public class EarthMap implements WorldMap {
         return null;
     }
 
-    public void eatPlant(Animal animal){
-        animal.setEnergy(animal.getEnergy() + plants.get(animal.getPosition()).getEnergy());
-        plants.remove(animal.getPosition());
-
-    }
 
 
 
@@ -230,6 +225,7 @@ public class EarthMap implements WorldMap {
     public void eatPlant(Vector2d position){
         Animal animal = strongestAnimal(position);
         animal.eating();
+        plants.remove(animal.getPosition());
     }
 
 

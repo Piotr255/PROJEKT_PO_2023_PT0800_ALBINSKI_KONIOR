@@ -3,7 +3,9 @@ package presenter;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.shape.Circle;
 import model.*;
 import javafx.scene.paint.Color;
@@ -38,6 +40,11 @@ public class SimulationPresenter {
             this.simulation = simulation;
         }
     }
+
+
+
+
+
     public void drawMap(EarthMap earthMap){
         int emptyFieldCount = 0; //Do wyświetlania statystyk
         Boundary boundary = earthMap.getCurrentBounds();
@@ -48,13 +55,11 @@ public class SimulationPresenter {
             for (int j=-1; j<cols+1; j++){
                 boolean animalPresent=false;
                 Label label = new Label();
-                int xCoord = j;
-                int yCoord = rows-i;
 
-                final int fi = xCoord;
-                final int fj = yCoord;
-                Vector2d position = new Vector2d(fi,fj);
-                if (i==-1 && j==-1){
+                final int fi = i;
+                final int fj = j;
+                Vector2d position = new Vector2d(xMin + j - 1, yMax - i + 1);
+                if (i==0 && j==0){
                     label.setText("y/x");
                 }
                 else if (i==-1) {
