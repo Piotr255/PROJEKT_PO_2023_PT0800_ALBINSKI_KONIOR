@@ -41,7 +41,7 @@
                 <Label fx:id="averageChildCountLabel"> 0</Label>
             </HBox>
             <HBox>
-                <Button fx:id="pauseSimulation">Pauza</Button>
+                <Button fx:id="pauseSimulationButton">Pauza</Button>
             </HBox>
         </VBox>
     </left>

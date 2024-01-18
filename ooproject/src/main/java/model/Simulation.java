@@ -48,7 +48,9 @@ public class Simulation implements Runnable {
 
     }*/
 
-
+    public boolean getSimulationPaused() {
+        return simulationPaused;
+    }
 
     private void grassDivisionStart(int start){
         List<Plant> temporaryList1;
@@ -159,6 +161,7 @@ public class Simulation implements Runnable {
                 positionsAfterReproduction.add(animal.getPosition());
                 simulationMap.reproduce(simulationMap.animalsAt(animal.getPosition()));
             }
+            System.out.println("dziala 1");
         }
     }
 
@@ -179,9 +182,9 @@ public class Simulation implements Runnable {
             deleteDead();
             turnMove();
             plantsConsumption();
-            //globalReproduction();
+            globalReproduction();
             grassDivisionStart(configurations.getEverydayGrowingPlantsCount());
-            simulationPresenter.drawMap((EarthMap) simulationMap);
+            simulationPresenter.drawMap(simulationMap, false);
 
         }
     }
@@ -190,7 +193,7 @@ public class Simulation implements Runnable {
         return Collections.unmodifiableList(animals);
     }
 
-    public WorldMap getSimulationMap() { //do testów
+    public EarthMap getSimulationMap() { //do testów
         return simulationMap;
     }
 

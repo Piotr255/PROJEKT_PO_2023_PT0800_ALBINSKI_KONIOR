@@ -15,6 +15,10 @@ public class EarthMap implements WorldMap {
     private List<MapChangeListener> observers = new ArrayList<>();
     protected Map<String, Integer > genomMap = new HashMap<>();
 
+    public Map<Vector2d, List<Animal>> getAnimals(){
+        return Collections.unmodifiableMap(animals);
+    }
+
 
     public EarthMap(Configurations configurations){
         this.configurations = configurations;
@@ -84,7 +88,7 @@ public class EarthMap implements WorldMap {
     }
     public List<Plant> getPlants(){
         return ((List<Plant>) plants.values());
-    }
+    }*/
 
     public void place(Animal animal) {
         if (animals.get(animal.getPosition())==null) {
@@ -304,7 +308,7 @@ public class EarthMap implements WorldMap {
     }*/
 
     public void reproduce(List<Animal> animalsOnTheField){
-        animalsOnTheField.sort(Collections.reverseOrder()); //Collections.sort(animalsOnTheField, Collections.reverseOrder());
+        Collections.sort(animalsOnTheField, Collections.reverseOrder());
         Iterator<Animal> iterator = animalsOnTheField.iterator();
         while(iterator.hasNext()){
             Animal currentAnimal1 = iterator.next();

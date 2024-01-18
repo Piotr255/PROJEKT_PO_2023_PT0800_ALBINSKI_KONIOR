@@ -13,6 +13,8 @@ import javafx.scene.shape.Circle;
 import model.*;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Button;
+
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -37,7 +39,7 @@ public class SimulationPresenter {
     @FXML
     private Label averageChildCountLabel;
     @FXML
-    private Button pauseSimulation;
+    private Button pauseSimulationButton;
 
     private Simulation simulation = null;
 
@@ -47,11 +49,55 @@ public class SimulationPresenter {
         }
     }
 
+    @FXML
+    private void initialize(){
+        initializePauseButton(true);
+    }
+
+    private void initializePauseButton(boolean shouldPause){
+        if (shouldPause){
+            Platform.runLater(() -> {
+                pauseSimulationButton.setOnAction((event) -> {
+                    pauseSimulation(true);
+                });
+            });
+            pauseSimulationButton.setText("Pauza");
+        }
+        else{
+            Platform.runLater(() -> {
+                pauseSimulationButton.setOnAction((event) -> {
+                    pauseSimulation(false);
+                });
+            });
+            pauseSimulationButton.setText("Wznow");
+        }
+
+    }
+
+    private void pauseSimulation(boolean pause){
+        if (pause){
+            simulation.pauseSimulation();
+            initializePauseButton(false);
+        }
+        else{
+            simulation.unpauseSimulation();
+            initializePauseButton(true);
+        }
+
+    }
+
+    private void addClickListenersAfterPause(){
+        Map<Vector2d, List<Animal>> animals = simulation.getSimulationMap().getAnimals();
+        Iterator<Vector2d> iterator = animals.keySet().iterator();
+        while (iterator.hasNext()){
+            Vector2d occupiedPosition = iterator.next();
+            mapGrid
+        }
+    }
 
 
 
-
-    public void drawMap(EarthMap earthMap){
+    public void drawMap(EarthMap earthMap, boolean isPaused){
         clearGrid();
 
         int emptyFieldCount = 0; //Do wyświetlania statystyk
@@ -114,6 +160,11 @@ public class SimulationPresenter {
                     }
                     else{
                         mapGrid.add(fiCircle,fj,fi);
+                        if (isPaused && simulation.getSimulationPaused()){
+                            fiCircle.setOnMouseClicked((event) -> {
+
+                            });
+                        }
                     }
                 });
 
@@ -138,10 +189,6 @@ public class SimulationPresenter {
             mapGrid.getColumnConstraints().clear();
             mapGrid.getRowConstraints().clear();
          });
-
-    }
-
-    public void onPauseSimulationClicked(){
 
     }
 
