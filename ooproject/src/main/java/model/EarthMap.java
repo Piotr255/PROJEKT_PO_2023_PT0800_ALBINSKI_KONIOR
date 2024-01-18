@@ -42,6 +42,9 @@ public class EarthMap implements WorldMap {
     }
 
     public void place(Animal animal) {
+        if (animals.get(animal.getPosition())==null) {
+            animals.put(animal.getPosition(), new ArrayList<Animal>());
+        }
         animals.get(animal.getPosition()).add(animal);
         mapChanged("Zwierze zostalo postawione na" + animal.getPosition());
     }

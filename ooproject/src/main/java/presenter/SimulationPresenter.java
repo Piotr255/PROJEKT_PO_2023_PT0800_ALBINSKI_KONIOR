@@ -51,8 +51,8 @@ public class SimulationPresenter {
                 int xCoord = j;
                 int yCoord = rows-i;
 
-                final int fi = i+1;
-                final int fj = j+1;
+                final int fi = xCoord;
+                final int fj = yCoord;
                 Vector2d position = new Vector2d(fi,fj);
                 if (i==-1 && j==-1){
                     label.setText("y/x");
@@ -63,7 +63,7 @@ public class SimulationPresenter {
                 else if (j==-1){
                     label.setText(String.valueOf(yCoord));
                 }
-                else if (!earthMap.animalsAt(position).isEmpty()){
+                else if (earthMap.animalsAt(position) != null && !earthMap.animalsAt(position).isEmpty()){
                     circle = new Circle(5);
                     Color color = Color.hsb(120, 0.5, 0.75);
                     animalPresent=true;
@@ -71,6 +71,7 @@ public class SimulationPresenter {
                 }
                 else if (earthMap.isPlantAt(position)){
                     label.setText("*");
+                    System.out.println("Trawa dodana");
                 }
                 else{
                     emptyFieldCount+=1;
