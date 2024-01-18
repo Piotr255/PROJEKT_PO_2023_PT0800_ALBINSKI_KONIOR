@@ -142,6 +142,16 @@ public class Simulation implements Runnable {
         }
     }
 
+    private void globalReproduction(){
+        Set<Vector2d> positionsAfterReproduction = new HashSet<>();
+        for (Animal animal : animals){
+            if (!positionsAfterReproduction.contains(animal.getPosition())){
+                positionsAfterReproduction.add(animal.getPosition());
+                simulationMap.reproduce(simulationMap.animalsAt(animal.getPosition()));
+            }
+        }
+    }
+
     public void pauseSimulation(){
         simulationPaused = true;
     }
@@ -159,6 +169,7 @@ public class Simulation implements Runnable {
             deleteDead();
             turnMove();
             plantsConsumption();
+            //globalReproduction();
             grassDivisionStart(configurations.getEverydayGrowingPlantsCount());
             simulationPresenter.drawMap((EarthMap) simulationMap);
 

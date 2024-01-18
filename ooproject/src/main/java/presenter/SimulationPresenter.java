@@ -67,7 +67,6 @@ public class SimulationPresenter {
         mapGrid.add(cell, j, i);*/
 
         Circle circle = new Circle(5);
-        circle.setStyle("-fx-alignment: center");
         int xMin = boundary.leftBottom().getX();
         int xMax = boundary.rightTop().getX();
         int yMax = boundary.rightTop().getY();
@@ -76,7 +75,6 @@ public class SimulationPresenter {
             for (int j=0; j<=cols; j++){
                 boolean animalPresent=false;
                 Label label = new Label();
-                label.setStyle("-fx-border-color: black; -fx-alignment: center;");
                 final int fi = i;
                 final int fj = j;
                 Vector2d position = new Vector2d(xMin + j - 1, yMax - i + 1);
@@ -90,8 +88,13 @@ public class SimulationPresenter {
                     label.setText(String.valueOf(xMin + j - 1));
                 }
                 else if (earthMap.animalsAt(position) != null && !earthMap.animalsAt(position).isEmpty()){
+                    Animal strongestAnimal = earthMap.strongestAnimal(position);
+                    int strongestAnimalEnergy = strongestAnimal.getEnergy();
                     circle = new Circle(5);
                     Color color = Color.hsb(120, 0.5, 0.75);
+                    if (strongestAnimalEnergy>earthMap.getConfigurations().getRequiredReproductionEnergyCount()){
+                        color = Color.hsb(30, 1, 1);
+                    }
                     circle.setFill(color);
 
                     animalPresent=true;

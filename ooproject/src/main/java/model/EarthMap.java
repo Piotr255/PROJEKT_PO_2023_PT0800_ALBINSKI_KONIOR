@@ -8,7 +8,7 @@ public class EarthMap implements WorldMap {
     private final Boundary boundary;
     private boolean[][] preferedFields;
 
-    Configurations configurations;
+    private final Configurations configurations;
     protected Map<Vector2d, List<Animal>> animals = new HashMap<>();
     protected Map<Vector2d,Plant> plants = new HashMap<>();
     private List<MapChangeListener> observers = new ArrayList<>();
@@ -260,24 +260,26 @@ public class EarthMap implements WorldMap {
     }*/
 
     public void reproduce(List<Animal> animalsOnTheField){
-        Collections.sort(animalsOnTheField);
+        animalsOnTheField.sort(Collections.reverseOrder()); //Collections.sort(animalsOnTheField, Collections.reverseOrder());
         Iterator<Animal> iterator = animalsOnTheField.iterator();
         while(iterator.hasNext()){
             Animal currentAnimal1 = iterator.next();
-            Animal currentAnimal2 = iterator.next();
-            if (currentAnimal1.getEnergy()>configurations.getRequiredReproductionEnergyCount()
-            && currentAnimal2.getEnergy()>configurations.getRequiredReproductionEnergyCount()){
-                Animal childAnimal = new Animal(currentAnimal1.getPosition(),
-                        GenerateGenom.generateReproductionGenome(currentAnimal1.getEnergy(),
-                                currentAnimal2.getEnergy(), currentAnimal1.getGenom(),
-                                currentAnimal2.getGenom(), configurations.getMinimumMutationCount(), configurations.getMaximumMutationCount()),
-                        2*configurations.getReproductionEnergyCost());
-                place(childAnimal);
-                currentAnimal1.reproduce(configurations.getReproductionEnergyCost(), configurations.getRequiredReproductionEnergyCount());
-                currentAnimal2.reproduce(configurations.getReproductionEnergyCost(), configurations.getRequiredReproductionEnergyCount());
-                currentAnimal1.addChild(childAnimal);
-                currentAnimal2.addChild(childAnimal);
+            if (iterator.hasNext()) {
+                Animal currentAnimal2 = iterator.next();
+                if (currentAnimal1.getEnergy() > configurations.getRequiredReproductionEnergyCount()
+                        && currentAnimal2.getEnergy() > configurations.getRequiredReproductionEnergyCount()) {
+                    Animal childAnimal = new Animal(currentAnimal1.getPosition(),
+                            GenerateGenom.generateReproductionGenome(currentAnimal1.getEnergy(),
+                                    currentAnimal2.getEnergy(), currentAnimal1.getGenom(),
+                                    currentAnimal2.getGenom(), configurations.getMinimumMutationCount(), configurations.getMaximumMutationCount()),
+                            2 * configurations.getReproductionEnergyCost());
+                    place(childAnimal);
+                    currentAnimal1.reproduce(configurations.getReproductionEnergyCost(), configurations.getRequiredReproductionEnergyCount());
+                    currentAnimal2.reproduce(configurations.getReproductionEnergyCost(), configurations.getRequiredReproductionEnergyCount());
+                    currentAnimal1.addChild(childAnimal);
+                    currentAnimal2.addChild(childAnimal);
 
+                }
             }
         }
     }
