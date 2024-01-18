@@ -193,11 +193,10 @@ public class Simulation implements Runnable {
             deleteDead();
             turnMove();
             plantsConsumption();
-            //globalReproduction();
+            globalReproduction();
             grassDivisionStart(configurations.getEverydayGrowingPlantsCount());
             simulationPresenter.drawMap(simulationMap, false);
             useEnergyPerDay();
-
         }
     }
 
