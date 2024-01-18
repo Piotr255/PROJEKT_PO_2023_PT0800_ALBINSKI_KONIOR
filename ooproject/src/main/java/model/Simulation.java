@@ -132,7 +132,7 @@ public class Simulation implements Runnable {
         Iterator<Plant> iterator = plants.iterator();
         while (iterator.hasNext()) {
             Plant plant = iterator.next();
-            if (!simulationMap.animalsAt(plant.getPosition()).isEmpty()) {
+            if (simulationMap.animalsAt(plant.getPosition()) != null && !simulationMap.animalsAt(plant.getPosition()).isEmpty()) {
                 simulationMap.eatPlant(plant.getPosition());
                 iterator.remove();
             }
@@ -145,6 +145,10 @@ public class Simulation implements Runnable {
 
     public void unpauseSimulation(){
         simulationPaused = false;
+    }
+
+    public void setTimer(){
+
     }
 
     public void run(){

@@ -46,13 +46,28 @@ public class SimulationPresenter {
 
 
     public void drawMap(EarthMap earthMap){
+        clearGrid();
+
         int emptyFieldCount = 0; //Do wyświetlania statystyk
         Boundary boundary = earthMap.getCurrentBounds();
         int rows = boundary.rightTop().getY() - boundary.leftBottom().getY() + 1;
         int cols = boundary.rightTop().getX() - boundary.leftBottom().getX() + 1;
+        Platform.runLater(() -> {
+            for (int i = 0; i <= cols; i++) {
+                mapGrid.getColumnConstraints().add(new ColumnConstraints(15));
+            }
+            for (int i = 0; i <= rows; i++) {
+                mapGrid.getRowConstraints().add(new RowConstraints(15));
+            }
+        });
+
         Circle circle = new Circle(5);
-        for (int i=-1; i<rows+1; i++){
-            for (int j=-1; j<cols+1; j++){
+        int xMin = boundary.leftBottom().getX();
+        int xMax = boundary.rightTop().getX();
+        int yMax = boundary.rightTop().getY();
+        int yMin = boundary.leftBottom().getY();
+        for (int i=0; i<=rows; i++){
+            for (int j=0; j<=cols; j++){
                 boolean animalPresent=false;
                 Label label = new Label();
 
@@ -62,15 +77,17 @@ public class SimulationPresenter {
                 if (i==0 && j==0){
                     label.setText("y/x");
                 }
-                else if (i==-1) {
-                    label.setText(String.valueOf(xCoord));
+                else if (j == 0) {
+                    label.setText(String.valueOf(yMax - i + 1));
                 }
-                else if (j==-1){
-                    label.setText(String.valueOf(yCoord));
+                else if (i==0){
+                    label.setText(String.valueOf(xMin + j - 1));
                 }
                 else if (earthMap.animalsAt(position) != null && !earthMap.animalsAt(position).isEmpty()){
                     circle = new Circle(5);
                     Color color = Color.hsb(120, 0.5, 0.75);
+                    circle.setFill(color);
+
                     animalPresent=true;
                     //get z najw. priorytetem
                 }
@@ -99,10 +116,25 @@ public class SimulationPresenter {
     public void drawStats(EarthMap earthMap, int emptyFieldCount){ //Wywoływane w drawMap()
         int animalsCount = simulation.animalsCount();
         int plantsCount = simulation.plantsCount();
-        animalCountLabel.setText(String.valueOf(animalsCount));
-        plantCountLabel.setText(String.valueOf(plantsCount));
-        emptyFieldCountLabel.setText(String.valueOf(emptyFieldCount));
+        Platform.runLater(() -> {
+            animalCountLabel.setText(String.valueOf(animalsCount));
+            plantCountLabel.setText(String.valueOf(plantsCount));
+            emptyFieldCountLabel.setText(String.valueOf(emptyFieldCount));
+        });
+
     }
+
+    private void clearGrid(){
+         Platform.runLater(() -> {
+            mapGrid.getChildren().clear();
+            mapGrid.getColumnConstraints().clear();
+            mapGrid.getRowConstraints().clear();
+         });
+
+    }
+
+
+
 
     public void mapChanged(){
 
