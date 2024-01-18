@@ -1,6 +1,7 @@
 package model;
 
 
+import model.util.PlantsGrowthVariant;
 import presenter.SimulationPresenter;
 import java.util.*;
 import java.util.Collections;
@@ -56,15 +57,20 @@ public class Simulation implements Runnable {
         onNotPreferedFieldsCountStart = start - onPreferedFieldsCountStart;
         temporaryList1 = simulationMap.startGrass(onPreferedFieldsCountStart,true);
         temporaryList2 = simulationMap.startGrass(onNotPreferedFieldsCountStart,false);
-        System.out.println("Lista nowych roslin 1");
-        System.out.println(temporaryList1);
-        System.out.println("Lista nowych roslin 2");
-        System.out.println(temporaryList2);
         plants.addAll(temporaryList1);
         plants.addAll(temporaryList2);
 
 
     }
+
+    private void setPreferedFieldForJungle(){
+        for (Plant plant: plants){
+            simulationMap.addPreferedFieldInJungle(plant);
+        }
+
+
+    }
+
 
     private void animalStart(){
         List<Animal> temporaryListAnimals;
@@ -137,6 +143,10 @@ public class Simulation implements Runnable {
             Plant plant = iterator.next();
             if (simulationMap.animalsAt(plant.getPosition()) != null && !simulationMap.animalsAt(plant.getPosition()).isEmpty()) {
                 simulationMap.eatPlant(plant.getPosition());
+                if (configurations.getPlantsGrowthVariant() == PlantsGrowthVariant.CREEPING_JUNGLE){
+                    simulationMap.deletePreferedFieldInJungle(plant);
+                }
+                }
                 iterator.remove();
             }
         }

@@ -1,12 +1,13 @@
 package model;
 
 import model.util.GenerateGenom;
+import model.util.PlantsGrowthVariant;
 
 import java.util.*;
 
 public class EarthMap implements WorldMap {
     private final Boundary boundary;
-    private boolean[][] preferedFields;
+    private int[][] preferedFields;
 
     private final Configurations configurations;
     protected Map<Vector2d, List<Animal>> animals = new HashMap<>();
@@ -18,8 +19,11 @@ public class EarthMap implements WorldMap {
     public EarthMap(Configurations configurations){
         this.configurations = configurations;
         boundary = new Boundary(new Vector2d(0,0),new Vector2d(configurations.getMapWidth()-1,configurations.getMapHeight()-1));
-        this.preferedFields = new boolean[boundary.rightTop().getY() + 1][boundary.rightTop().getX() + 1];
-        setPreferedFields();
+        this.preferedFields = new int[boundary.rightTop().getY() + 1][boundary.rightTop().getX() + 1];
+        if (configurations.getPlantsGrowthVariant() != PlantsGrowthVariant.CREEPING_JUNGLE) {
+            setPreferedFields();
+            }
+        }
     }
 
     public void setPreferedFields(){
@@ -28,14 +32,54 @@ public class EarthMap implements WorldMap {
         for(int i = 0; i<rows ; i++){
             for(int j = 0; j<cols; j++){
                 if (i>0.375*rows && i<0.625*rows){
-                    preferedFields[j][i] = true;
+                    preferedFields[j][i] = 1;
                 }
             }
         }
 
     }
 
-    public List<List<Animal>> getAnimals(){
+    public void addPreferedFieldInJungle(Plant plant){
+        Vector2d position = plant.getPosition();
+        Vector2d position1 = position.add(MapDirection.NORTH.toUnitVector());
+        Vector2d position2 = position.add(MapDirection.EAST.toUnitVector());
+        Vector2d position3 = position.add(MapDirection.SOUTH.toUnitVector());
+        Vector2d position4 = position.add(MapDirection.WEST.toUnitVector());
+        if(position1.precedes(boundary.rightTop()) && position1.follows(boundary.leftBottom())){
+            preferedFields[position1.getX()][position1.getY()]++;
+        }
+        if(position2.precedes(boundary.rightTop()) && position2.follows(boundary.leftBottom())){
+            preferedFields[position2.getX()][position2.getY()]++;
+        }
+        if(position3.precedes(boundary.rightTop()) && position3.follows(boundary.leftBottom())){
+            preferedFields[position3.getX()][position3.getY()]++;
+        }
+        if(position4.precedes(boundary.rightTop()) && position4.follows(boundary.leftBottom())){
+            preferedFields[position4.getX()][position4.getY()]++;
+        }
+    }
+    public void deletePreferedFieldInJungle(Plant plant){
+        Vector2d position = plant.getPosition();
+        Vector2d position1 = position.add(MapDirection.NORTH.toUnitVector());
+        Vector2d position2 = position.add(MapDirection.EAST.toUnitVector());
+        Vector2d position3 = position.add(MapDirection.SOUTH.toUnitVector());
+        Vector2d position4 = position.add(MapDirection.WEST.toUnitVector());
+        if(position1.precedes(boundary.rightTop()) && position1.follows(boundary.leftBottom())){
+            preferedFields[position1.getX()][position1.getY()] = Math.max(0,preferedFields[position1.getX()][position1.getY()]-1);
+        }
+        if(position2.precedes(boundary.rightTop()) && position2.follows(boundary.leftBottom())){
+            preferedFields[position2.getX()][position2.getY()] = Math.max(0,preferedFields[position2.getX()][position2.getY()]-1);
+        }
+        if(position3.precedes(boundary.rightTop()) && position3.follows(boundary.leftBottom())){
+            preferedFields[position3.getX()][position3.getY()] = Math.max(0,preferedFields[position3.getX()][position3.getY()]-1);
+        }
+        if(position4.precedes(boundary.rightTop()) && position4.follows(boundary.leftBottom())){
+            preferedFields[position4.getX()][position4.getY()] = Math.max(0,preferedFields[position4.getX()][position4.getY()]-1);
+        }
+        
+    }
+    
+    /*public List<List<Animal>> getAnimals(){
         return ((List<List<Animal>>) animals.values());
     }
     public List<Plant> getPlants(){
