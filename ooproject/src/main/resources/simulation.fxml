@@ -40,6 +40,13 @@
                 <Label>Srednia liczba dzieci: </Label>
                 <Label fx:id="averageChildCountLabel"> 0</Label>
             </HBox>
+            <HBox>
+                <Label>Srednia liczba dzieci: </Label>
+                <Label fx:id="averageChildCountLabel"> 0</Label>
+            </HBox>
+            <HBox>
+                <Button fx:id="pauseSimulationButton">Pauza</Button>
+            </HBox>
         </VBox>
     </left>
     <right>

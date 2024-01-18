@@ -11,6 +11,9 @@ import presenter.ConfigurationsPresenter;
 import presenter.SimulationPresenter;
 
 import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class SimulationWindow {
 
@@ -23,7 +26,8 @@ public class SimulationWindow {
         BorderPane viewRoot = loader.load();
         Simulation simulation = configurations.configureSimulation(simulationPresenter);
         configureStage(viewRoot);
-
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+        executor.scheduleAtFixedRate(simulation, 2, 2, TimeUnit.SECONDS);
 
     }
 

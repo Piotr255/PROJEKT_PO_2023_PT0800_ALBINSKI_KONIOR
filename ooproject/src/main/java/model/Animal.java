@@ -1,6 +1,7 @@
 package model;
 
 import model.exceptions.TooLittleEnergyToReproduceException;
+import model.util.AnimalBehaviorVariant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,8 @@ public class Animal implements WorldElement, Comparable<Animal> {
     private int currentGenomPosition = 0;
     private int genomIterator = 1;
 
+    private AnimalBehaviorVariant animalBehaviorVariant;
+
     private int[] genom;
 
     private int ageInSimulationTurns = 0;
@@ -25,9 +28,12 @@ public class Animal implements WorldElement, Comparable<Animal> {
 
     private List<Animal> children = new ArrayList<>();
 
+    public void addChild(Animal animal){
+        children.add(animal);
+    }
 
     public int countAllDescendants(){
-
+        return 0; // do poprawy
     }
 
     public void eating(){
@@ -46,13 +52,8 @@ public class Animal implements WorldElement, Comparable<Animal> {
     }
 
     public void reproduce(int reproductionEnergyCost, int requiredReproductionEnergyCost){
-        if (energy<requiredReproductionEnergyCost){
-            throw new TooLittleEnergyToReproduceException();
-        }
-        else{
-            energy-=reproductionEnergyCost;
-            childrenCount+=1;
-        }
+        energy-=reproductionEnergyCost;
+        childrenCount+=1;
     }
 
     public int getAgeInSimulationTurns() {
@@ -81,6 +82,9 @@ public class Animal implements WorldElement, Comparable<Animal> {
         this.energy = energy;
     }
 
+    public void lowerEnergy(int amount){
+        energy-=amount;
+    }
     @Override
     public String toString() {
         return orientation.toString();
@@ -93,9 +97,19 @@ public class Animal implements WorldElement, Comparable<Animal> {
     public int getCurrentGenom(){
         return genom[currentGenomPosition];
     }
-    public void setGenomPosition(){
-        currentGenomPosition+=genomIterator;
-        currentGenomPosition%=genom.length;
+    public void setGenomPosition(AnimalBehaviorVariant animalBehaviorVariant){
+        currentGenomPosition += genomIterator;
+        if (animalBehaviorVariant == AnimalBehaviorVariant.FULL_PREDESTINATION) {
+            currentGenomPosition %= genom.length;
+        }
+        else{
+            if (currentGenomPosition == genom.length - 1){
+                genomIterator = -1;
+            }
+            else if (currentGenomPosition == 0){
+                genomIterator = 1;
+            }
+        }
     }
 
     public void turn(int direction){
@@ -103,7 +117,7 @@ public class Animal implements WorldElement, Comparable<Animal> {
             orientation = orientation.next();
         }
     }
-    public void move(MoveDirection direction, BaseWorldMap validator){
+    public void move(MoveDirection direction, EarthMap validator){
         Vector2d possiblePosition = position.add(orientation.toUnitVector());
         if (validator.canMoveTo(possiblePosition) == 0){
             position = possiblePosition;

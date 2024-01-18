@@ -3,27 +3,32 @@ package model;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class RandomPositionGenerator implements Iterable<Vector2d>{
     private long seed; //= 12345L;
     private Random rand;// = new Random(seed);
     private int grassCount;
     private Vector2d[] Vector2dTab;
-
+    private int comparator = 0;
     private int size;
-    public RandomPositionGenerator(boolean [][] preferedFields, int grassCount, boolean preferedMode, long seed) {
+    public RandomPositionGenerator(int [][] preferedFields, int grassCount, boolean preferedMode) {
         this.grassCount = grassCount;
         List<Vector2d> goodvectors = new ArrayList<>();
         int rows = preferedFields.length;
         int columns = preferedFields[0].length;
 
+        if (preferedMode) {
+            comparator = 1;
+        }
+
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++){
-                if (preferedMode == preferedFields[i][j]){
+                if (comparator == 0 &&  comparator == preferedFields[i][j]){
+                    goodvectors.add(new Vector2d(i,j));
+                }
+                else if(comparator <= preferedFields[i][j]){
                     goodvectors.add(new Vector2d(i,j));
                 }
             }
@@ -31,12 +36,9 @@ public class RandomPositionGenerator implements Iterable<Vector2d>{
 
         size = goodvectors.size();
         Vector2dTab = new Vector2d[size];
-        this.seed = seed;
-        rand = new Random(seed);
-        for (int i = 0; i < maxHeight; i++) {
-            for (int j = 0; j < maxWidth; j++){
-                Vector2dTab[i*maxWidth+j] = new Vector2d(i,j);
-            }
+        rand = new Random();
+        for (int i = 0; i < size; i++) {
+            Vector2dTab[i] = goodvectors.get(i);
         }
 
     }
@@ -52,7 +54,7 @@ public class RandomPositionGenerator implements Iterable<Vector2d>{
 
         @Override
         public boolean hasNext() {
-            return grassCount>0;
+            return grassCount>0 && size>0;
         }
 
         @Override
