@@ -33,7 +33,7 @@ public class Animal implements WorldElement, Comparable<Animal> {
     }
 
     public int countAllDescendants(){
-
+        return 0; // do poprawy
     }
 
     public void eating(){

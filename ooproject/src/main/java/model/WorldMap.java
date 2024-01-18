@@ -24,4 +24,6 @@ public interface WorldMap extends MoveValidator {
     void turn(Animal animal, int direction);
 
     void eatPlant(Vector2d position);
+
+    String getStrongestGenom();
 }

@@ -43,7 +43,14 @@ public class GenerateGenom {
         return reproductionGenome;
     }
 
-    public static int[] generateStartGenom(){
+    public static int[] generateStartGenom(int genomLength, long seed){
+        Random random = new Random(seed);
+        int [] genom = new int[genomLength];
+        int number = 8;
+        for(int i = 0; i<genomLength; i++){
+            genom[i] = random.nextInt(number);
+        }
+        return genom;
 
     }
 

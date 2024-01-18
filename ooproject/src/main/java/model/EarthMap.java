@@ -7,17 +7,32 @@ import java.util.*;
 public class EarthMap implements WorldMap {
     private final Boundary boundary;
     private boolean[][] preferedFields;
-    private int startingEnergyCount;
-    private int requiredReproductionEnergyCount;
-    private int reproductionEnergyCost;
-    private int minimumMutationCount;
-    private int maximumMutationCount;
-    private int energyFromSinglePlant;
+
+    Configurations configurations;
     protected Map<Vector2d, List<Animal>> animals = new HashMap<>();
     protected Map<Vector2d,Plant> plants = new HashMap<>();
     private List<MapChangeListener> observers = new ArrayList<>();
     protected Map<String, Integer > genomMap = new HashMap<>();
 
+
+    public EarthMap(Configurations configurations){
+        this.configurations = configurations;
+        boundary = new Boundary(new Vector2d(0,0),new Vector2d(configurations.getMapWidth()-1,configurations.getMapHeight()-1));
+        this.preferedFields = new boolean[boundary.rightTop().getY() + 1][boundary.rightTop().getX() + 1];
+    }
+
+    public void setPreferedFields(){
+        int rows = boundary.rightTop().getY() + 1;
+        int cols = boundary.rightTop().getX() + 1;
+        for(int i = 0; i<rows ; i++){
+            for(int j = 0; j<cols; j++){
+                if (i>0.375*rows && i<0.625*rows){
+                    preferedFields[i][j] = true;
+                }
+            }
+        }
+
+    }
 
     public List<List<Animal>> getAnimals(){
         return ((List<List<Animal>>) animals.values());
@@ -69,7 +84,8 @@ public class EarthMap implements WorldMap {
         if (animals.get(animal.getPosition()).contains(animal)){
             animals.get(animal.getPosition()).remove(animal);
             animal.move(direction,this);
-            animals.get(animal.getPosition()).add(animal);
+            //animals.get(animal.getPosition()).add(animal);
+            place(animal);
             mapChanged("Zwierze poruszylo sie na " + animal.getPosition());
         }
     }
@@ -79,9 +95,13 @@ public class EarthMap implements WorldMap {
     }
 
 
-    public void addPlant(Vector2d position, int energy){
-        Plant plant = new Plant(position, energy);
-        plants.put(position, plant);
+    public Vector2d addPlant(Vector2d position, int energy){
+        if (!isPlantAt(position)) {
+            Plant plant = new Plant(position, energy);
+            plants.put(position, plant);
+            return position;
+        }
+        return null;
     }
 
     public void eatPlant(Animal animal){
@@ -90,14 +110,7 @@ public class EarthMap implements WorldMap {
 
     }
 
-    public EarthMap(int width, int height, int startingEnergyCount, int requiredReproductionEnergyCount,
-                    int reproductionEnergyCost, int minimumMutationCount,
-                    int maximumMutationCount, int energyFromSinglePlant){
-        boundary = new Boundary(new Vector2d(0,0),new Vector2d(width-1,height-1));
-        this.startingEnergyCount = startingEnergyCount;
-        this.energyFromSinglePlant = energyFromSinglePlant;
 
-    }
 
     public void updateGenomMap(String genom, boolean add){
         if(add){
@@ -115,15 +128,26 @@ public class EarthMap implements WorldMap {
                 genomMap.put(genom, currentValue - 1);
             }
             else{
-                genomMap.remove(genom)
+                genomMap.remove(genom);
             }
 
         }
 
     }
 
-    public getStrongestGenom {
-        for
+    public String getStrongestGenom() {
+        String strongestKey = null;
+        Integer strongestValue = -1;
+        for (Map.Entry<String, Integer> entry : genomMap.entrySet()) {
+            String key = entry.getKey();
+            Integer value = entry.getValue();
+            if (value > strongestValue){
+                strongestKey = key;
+                strongestValue = value;
+
+            }
+        }
+        return strongestKey;
     }
 
 
@@ -131,19 +155,22 @@ public class EarthMap implements WorldMap {
         RandomPositionGenerator randomPositionGenerator = new RandomPositionGenerator(preferedFields, grassNumber, prefered,12345L);
         List<Plant> temporaryPlantList = new LinkedList<>();
         for (Vector2d grassPosition : randomPositionGenerator) {
-            Plant plant = new Plant(grassPosition,energyFromSinglePlant);
-            plants.put(grassPosition, plant);
-            temporaryPlantList.add(plant);
+            Plant plant = new Plant(grassPosition,configurations.getEnergyFromSinglePlant());
+            if (addPlant(plant.getPosition(),configurations.getEnergyFromSinglePlant()) != null) {
+                temporaryPlantList.add(plant);
+            }
         }
         return temporaryPlantList;
     }
 
-    public List<Animal> generateAnimals(int animalNumber, long seed){
-        AnimalGenerator animalGenerator = new AnimalGenerator();
+    public List<Animal> generateAnimals(long seed){
+        AnimalGenerator animalGenerator = new AnimalGenerator(configurations.getStartingAnimalCount(),seed,configurations.getMapHeight(),
+                configurations.getMapWidth(),configurations.getStartingEnergyCount(),configurations.getGenomeLength());
         List<Animal> temporaryAnimals = animalGenerator.generateAnimals();
         for (Animal animal : temporaryAnimals){
             place(animal);
         }
+        return temporaryAnimals;
     }
 
 
@@ -235,15 +262,16 @@ public class EarthMap implements WorldMap {
         while(iterator.hasNext()){
             Animal currentAnimal1 = iterator.next();
             Animal currentAnimal2 = iterator.next();
-            if (currentAnimal1.getEnergy()>requiredReproductionEnergyCount
-            && currentAnimal2.getEnergy()>requiredReproductionEnergyCount){
+            if (currentAnimal1.getEnergy()>configurations.getRequiredReproductionEnergyCount()
+            && currentAnimal2.getEnergy()>configurations.getRequiredReproductionEnergyCount()){
                 Animal childAnimal = new Animal(currentAnimal1.getPosition(),
                         GenerateGenom.generateReproductionGenome(currentAnimal1.getEnergy(),
                                 currentAnimal2.getEnergy(), currentAnimal1.getGenom(),
-                                currentAnimal2.getGenom(), minimumMutationCount, maximumMutationCount),2*reproductionEnergyCost);
+                                currentAnimal2.getGenom(), configurations.getMinimumMutationCount(), configurations.getMaximumMutationCount()),
+                        2*configurations.getReproductionEnergyCost());
                 place(childAnimal);
-                currentAnimal1.reproduce(reproductionEnergyCost, requiredReproductionEnergyCount);
-                currentAnimal2.reproduce(reproductionEnergyCost, requiredReproductionEnergyCount);
+                currentAnimal1.reproduce(configurations.getReproductionEnergyCost(), configurations.getRequiredReproductionEnergyCount());
+                currentAnimal2.reproduce(configurations.getReproductionEnergyCost(), configurations.getRequiredReproductionEnergyCount());
                 currentAnimal1.addChild(childAnimal);
                 currentAnimal2.addChild(childAnimal);
 

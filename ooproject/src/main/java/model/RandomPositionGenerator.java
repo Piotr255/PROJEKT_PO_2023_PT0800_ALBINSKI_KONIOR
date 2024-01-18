@@ -50,7 +50,7 @@ public class RandomPositionGenerator implements Iterable<Vector2d>{
 
         @Override
         public boolean hasNext() {
-            return grassCount>0;
+            return grassCount>0 && size>0;
         }
 
         @Override

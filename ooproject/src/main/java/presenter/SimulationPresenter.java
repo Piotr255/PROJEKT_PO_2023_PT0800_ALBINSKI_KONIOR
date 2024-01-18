@@ -65,7 +65,7 @@ public class SimulationPresenter {
                 }
                 else if (!earthMap.animalsAt(position).isEmpty()){
                     circle = new Circle(5);
-                    Color color = Color.hsb(120, )
+                    Color color = Color.hsb(120, 0.5, 0.75);
                     animalPresent=true;
                     //get z najw. priorytetem
                 }
