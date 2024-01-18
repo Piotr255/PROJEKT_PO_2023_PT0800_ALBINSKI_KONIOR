@@ -118,6 +118,7 @@ public class Simulation implements Runnable {
 
         while (iterator.hasNext()) {
             Animal animal = iterator.next();
+
             if (animal.getEnergy() <= 0) {
                 //System.out.println("dziala iterator przy usuwaniu zwierzat");
                 sumOfAgesDeadAnimals+=animal.getDays(); //zrobić zwiększanie liczby dni zwierzaków
@@ -165,13 +166,14 @@ public class Simulation implements Runnable {
 
     private void globalReproduction(){
         Set<Vector2d> positionsAfterReproduction = new HashSet<>();
+        List<Animal> animalsToAddToAnimalsList = new ArrayList<>();
         for (Animal animal : animals){
             if (!positionsAfterReproduction.contains(animal.getPosition())){
                 positionsAfterReproduction.add(animal.getPosition());
-                simulationMap.reproduce(simulationMap.animalsAt(animal.getPosition()));
+                animalsToAddToAnimalsList.addAll(simulationMap.reproduce(simulationMap.animalsAt(animal.getPosition())));
             }
-            System.out.println("dziala 1");
         }
+        animals.addAll(animalsToAddToAnimalsList);
     }
 
     public void pauseSimulation(){
@@ -191,7 +193,7 @@ public class Simulation implements Runnable {
             deleteDead();
             turnMove();
             plantsConsumption();
-            globalReproduction();
+            //globalReproduction();
             grassDivisionStart(configurations.getEverydayGrowingPlantsCount());
             simulationPresenter.drawMap(simulationMap, false);
             useEnergyPerDay();

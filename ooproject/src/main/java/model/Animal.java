@@ -52,13 +52,8 @@ public class Animal implements WorldElement, Comparable<Animal> {
     }
 
     public void reproduce(int reproductionEnergyCost, int requiredReproductionEnergyCost){
-        if (energy<requiredReproductionEnergyCost){
-            throw new TooLittleEnergyToReproduceException();
-        }
-        else{
-            energy-=reproductionEnergyCost;
-            childrenCount+=1;
-        }
+        energy-=reproductionEnergyCost;
+        childrenCount+=1;
     }
 
     public int getAgeInSimulationTurns() {

@@ -86,14 +86,14 @@ public class SimulationPresenter {
 
     }
 
-    private void addClickListenersAfterPause(){
+    /*private void addClickListenersAfterPause(){
         Map<Vector2d, List<Animal>> animals = simulation.getSimulationMap().getAnimals();
         Iterator<Vector2d> iterator = animals.keySet().iterator();
         while (iterator.hasNext()){
             Vector2d occupiedPosition = iterator.next();
-            mapGrid
+
         }
-    }
+    }*/
 
 
 
@@ -162,7 +162,7 @@ public class SimulationPresenter {
                         mapGrid.add(fiCircle,fj,fi);
                         if (isPaused && simulation.getSimulationPaused()){
                             fiCircle.setOnMouseClicked((event) -> {
-
+                                FollowedAnimal.setFollowedAnimal(earthMap.strongestAnimal(position));
                             });
                         }
                     }

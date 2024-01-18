@@ -2,13 +2,13 @@ package model;
 
 public class FollowedAnimal {
 
-    private Animal followedAnimal;
+    private static Animal followedAnimal;
 
-    public Animal getFollowedAnimal(){
+    public static Animal getFollowedAnimal(){
         return followedAnimal;
     }
 
-    public void setFollowedAnimal(Animal animal){
+    public static void setFollowedAnimal(Animal animal){
         followedAnimal = animal;
     }
 

@@ -312,27 +312,34 @@ public class EarthMap implements WorldMap {
 
     public List<Animal> reproduce(List<Animal> animalsOnTheField){
         Collections.sort(animalsOnTheField, Collections.reverseOrder());
-        Iterator<Animal> iterator = animalsOnTheField.iterator();
-        while(iterator.hasNext()){
-            Animal currentAnimal1 = iterator.next();
-            if (iterator.hasNext()) {
-                Animal currentAnimal2 = iterator.next();
-                if (currentAnimal1.getEnergy() > configurations.getRequiredReproductionEnergyCount()
-                        && currentAnimal2.getEnergy() > configurations.getRequiredReproductionEnergyCount()) {
-                    Animal childAnimal = new Animal(currentAnimal1.getPosition(),
-                            GenerateGenom.generateReproductionGenome(currentAnimal1.getEnergy(),
-                                    currentAnimal2.getEnergy(), currentAnimal1.getGenom(),
-                                    currentAnimal2.getGenom(), configurations.getMinimumMutationCount(), configurations.getMaximumMutationCount()),
-                            2 * configurations.getReproductionEnergyCost());
-                    place(childAnimal);
-                    currentAnimal1.reproduce(configurations.getReproductionEnergyCost(), configurations.getRequiredReproductionEnergyCount());
-                    currentAnimal2.reproduce(configurations.getReproductionEnergyCost(), configurations.getRequiredReproductionEnergyCount());
-                    currentAnimal1.addChild(childAnimal);
-                    currentAnimal2.addChild(childAnimal);
+        int iterator1 = 0;
+        int iterator2 = 1;
+        List<Animal> childrenToAdd = new ArrayList<>();
+        while(iterator1<animalsOnTheField.size() && iterator2<animalsOnTheField.size()){
+            Animal currentAnimal1 = animalsOnTheField.get(iterator1);
+            Animal currentAnimal2 = animalsOnTheField.get(iterator2);
+            if (currentAnimal1.getEnergy() > configurations.getRequiredReproductionEnergyCount()
+                    && currentAnimal2.getEnergy() > configurations.getRequiredReproductionEnergyCount()) {
+                Animal childAnimal = new Animal(currentAnimal1.getPosition(),
+                        GenerateGenom.generateReproductionGenome(currentAnimal1.getEnergy(),
+                                currentAnimal2.getEnergy(), currentAnimal1.getGenom(),
+                                currentAnimal2.getGenom(), configurations.getMinimumMutationCount(), configurations.getMaximumMutationCount()),
+                        2 * configurations.getReproductionEnergyCost());
+                childrenToAdd.add(childAnimal);
+                currentAnimal1.reproduce(configurations.getReproductionEnergyCost(), configurations.getRequiredReproductionEnergyCount());
+                currentAnimal2.reproduce(configurations.getReproductionEnergyCost(), configurations.getRequiredReproductionEnergyCount());
+                currentAnimal1.addChild(childAnimal);
+                currentAnimal2.addChild(childAnimal);
 
-                }
             }
+            iterator1+=2;
+            iterator2+=2;
+
         }
+        for (Animal child : childrenToAdd){
+            place(child);
+        }
+        return childrenToAdd;
     }
 
     @Override
