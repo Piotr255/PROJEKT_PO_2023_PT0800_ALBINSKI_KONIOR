@@ -24,11 +24,11 @@ public class EarthMap implements WorldMap {
         this.configurations = configurations;
         boundary = new Boundary(new Vector2d(0,0),new Vector2d(configurations.getMapWidth()-1,configurations.getMapHeight()-1));
         this.preferedFields = new int[boundary.rightTop().getY() + 1][boundary.rightTop().getX() + 1];
-        if (configurations.getPlantsGrowthVariant() != PlantsGrowthVariant.CREEPING_JUNGLE) {
+        if (configurations.getPlantsGrowthVariant() == PlantsGrowthVariant.FORESTED_EQUATORS) {
             setPreferedFields();
             }
         }
-    }
+
 
     public void setPreferedFields(){
         int rows = boundary.rightTop().getY() + 1;
@@ -152,6 +152,9 @@ public class EarthMap implements WorldMap {
             System.out.println("Dziala");
             Plant plant = new Plant(position, energy);
             plants.put(position, plant);
+            if (configurations.getPlantsGrowthVariant() == PlantsGrowthVariant.CREEPING_JUNGLE){
+                addPreferedFieldInJungle(plant);
+            }
             return position;
         }
         return null;
@@ -307,7 +310,7 @@ public class EarthMap implements WorldMap {
         return null;
     }*/
 
-    public void reproduce(List<Animal> animalsOnTheField){
+    public List<Animal> reproduce(List<Animal> animalsOnTheField){
         Collections.sort(animalsOnTheField, Collections.reverseOrder());
         Iterator<Animal> iterator = animalsOnTheField.iterator();
         while(iterator.hasNext()){

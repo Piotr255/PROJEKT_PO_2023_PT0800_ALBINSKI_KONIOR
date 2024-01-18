@@ -87,6 +87,9 @@ public class Animal implements WorldElement, Comparable<Animal> {
         this.energy = energy;
     }
 
+    public void lowerEnergy(int amount){
+        energy-=amount;
+    }
     @Override
     public String toString() {
         return orientation.toString();

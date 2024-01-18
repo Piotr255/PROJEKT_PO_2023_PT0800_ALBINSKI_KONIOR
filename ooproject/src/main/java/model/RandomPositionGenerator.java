@@ -10,7 +10,7 @@ public class RandomPositionGenerator implements Iterable<Vector2d>{
     private Random rand;// = new Random(seed);
     private int grassCount;
     private Vector2d[] Vector2dTab;
-    int comparator = 0;
+    private int comparator = 0;
     private int size;
     public RandomPositionGenerator(int [][] preferedFields, int grassCount, boolean preferedMode) {
         this.grassCount = grassCount;

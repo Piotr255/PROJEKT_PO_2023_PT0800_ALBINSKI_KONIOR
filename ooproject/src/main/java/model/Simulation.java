@@ -65,13 +65,13 @@ public class Simulation implements Runnable {
 
     }
 
-    private void setPreferedFieldForJungle(){
+    /*private void setPreferedFieldForJungle(){
         for (Plant plant: plants){
             simulationMap.addPreferedFieldInJungle(plant);
         }
 
 
-    }
+    }*/
 
 
     private void animalStart(){
@@ -119,11 +119,19 @@ public class Simulation implements Runnable {
         while (iterator.hasNext()) {
             Animal animal = iterator.next();
             if (animal.getEnergy() <= 0) {
-                sumOfAgesDeadAnimals+=animal.getDays();
+                //System.out.println("dziala iterator przy usuwaniu zwierzat");
+                sumOfAgesDeadAnimals+=animal.getDays(); //zrobić zwiększanie liczby dni zwierzaków
                 deadAnimalCount++;
-                iterator.remove();
                 simulationMap.removeAnimal(animal);
+                iterator.remove();
+
             }
+        }
+    }
+
+    private void useEnergyPerDay(){
+        for(Animal animal: animals){
+            animal.lowerEnergy(1);
         }
     }
 
@@ -148,11 +156,12 @@ public class Simulation implements Runnable {
                 if (configurations.getPlantsGrowthVariant() == PlantsGrowthVariant.CREEPING_JUNGLE){
                     simulationMap.deletePreferedFieldInJungle(plant);
                 }
-                }
                 iterator.remove();
             }
+
         }
     }
+
 
     private void globalReproduction(){
         Set<Vector2d> positionsAfterReproduction = new HashSet<>();
@@ -185,6 +194,7 @@ public class Simulation implements Runnable {
             globalReproduction();
             grassDivisionStart(configurations.getEverydayGrowingPlantsCount());
             simulationPresenter.drawMap(simulationMap, false);
+            useEnergyPerDay();
 
         }
     }
