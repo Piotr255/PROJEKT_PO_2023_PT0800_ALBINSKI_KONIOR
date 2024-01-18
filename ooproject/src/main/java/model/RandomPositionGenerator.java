@@ -3,10 +3,7 @@ package model;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class RandomPositionGenerator implements Iterable<Vector2d>{
     private long seed; //= 12345L;
@@ -36,6 +33,8 @@ public class RandomPositionGenerator implements Iterable<Vector2d>{
         for (int i = 0; i < size; i++) {
                 Vector2dTab[i] = goodvectors.get(i);
         }
+        System.out.println(Arrays.toString(Vector2dTab));
+
 
     }
 

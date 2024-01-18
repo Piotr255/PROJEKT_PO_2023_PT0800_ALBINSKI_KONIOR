@@ -19,6 +19,7 @@ public class EarthMap implements WorldMap {
         this.configurations = configurations;
         boundary = new Boundary(new Vector2d(0,0),new Vector2d(configurations.getMapWidth()-1,configurations.getMapHeight()-1));
         this.preferedFields = new boolean[boundary.rightTop().getY() + 1][boundary.rightTop().getX() + 1];
+        setPreferedFields();
     }
 
     public void setPreferedFields(){
