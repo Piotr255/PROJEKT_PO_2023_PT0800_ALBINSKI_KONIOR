@@ -286,4 +286,8 @@ public class EarthMap implements WorldMap {
     public Boundary getCurrentBounds() {
         return boundary;
     }
+
+    public Configurations getConfigurations() {
+        return configurations;
+    }
 }
