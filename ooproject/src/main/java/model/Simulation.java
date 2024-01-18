@@ -56,6 +56,10 @@ public class Simulation implements Runnable {
         onNotPreferedFieldsCountStart = start - onPreferedFieldsCountStart;
         temporaryList1 = simulationMap.startGrass(onPreferedFieldsCountStart,true);
         temporaryList2 = simulationMap.startGrass(onNotPreferedFieldsCountStart,false);
+        System.out.println("Lista nowych roslin 1");
+        System.out.println(temporaryList1);
+        System.out.println("Lista nowych roslin 2");
+        System.out.println(temporaryList2);
         plants.addAll(temporaryList1);
         plants.addAll(temporaryList2);
 

@@ -101,6 +101,7 @@ public class EarthMap implements WorldMap {
 
     public Vector2d addPlant(Vector2d position, int energy){
         if (!isPlantAt(position)) {
+            System.out.println("Dziala");
             Plant plant = new Plant(position, energy);
             plants.put(position, plant);
             return position;

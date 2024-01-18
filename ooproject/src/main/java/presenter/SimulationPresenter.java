@@ -9,7 +9,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.shape.Circle;
 import model.*;
 import javafx.scene.paint.Color;
-
+import javafx.scene.control.Button;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -33,6 +33,9 @@ public class SimulationPresenter {
     private Label lifeExpectancyLabel;
     @FXML
     private Label averageChildCountLabel;
+    @FXML
+    private Button pauseSimulation;
+
     private Simulation simulation = null;
 
     public void setSimulation(Simulation simulation){
@@ -53,12 +56,8 @@ public class SimulationPresenter {
         int rows = boundary.rightTop().getY() - boundary.leftBottom().getY() + 1;
         int cols = boundary.rightTop().getX() - boundary.leftBottom().getX() + 1;
         Platform.runLater(() -> {
-            for (int i = 0; i <= cols; i++) {
-                mapGrid.getColumnConstraints().add(new ColumnConstraints(15));
-            }
-            for (int i = 0; i <= rows; i++) {
-                mapGrid.getRowConstraints().add(new RowConstraints(15));
-            }
+            mapGrid.getColumnConstraints().add(new ColumnConstraints(15));
+            mapGrid.getRowConstraints().add(new RowConstraints(15));
         });
 
         /*cell.setStyle("-fx-border-color: black; -fx-alignment: center;");
@@ -74,7 +73,7 @@ public class SimulationPresenter {
             for (int j=0; j<=cols; j++){
                 boolean animalPresent=false;
                 Label label = new Label();
-
+                label.setStyle("-fx-border-color: black; -fx-alignment: center;");
                 final int fi = i;
                 final int fj = j;
                 Vector2d position = new Vector2d(xMin + j - 1, yMax - i + 1);
@@ -97,7 +96,6 @@ public class SimulationPresenter {
                 }
                 else if (earthMap.isPlantAt(position)){
                     label.setText("*");
-                    System.out.println("Trawa dodana");
                 }
                 else{
                     emptyFieldCount+=1;
@@ -137,6 +135,9 @@ public class SimulationPresenter {
 
     }
 
+    public void onPauseSimulationClicked(){
+
+    }
 
 
 
