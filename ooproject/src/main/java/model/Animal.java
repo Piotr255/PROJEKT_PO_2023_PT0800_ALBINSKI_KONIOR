@@ -15,14 +15,18 @@ public class Animal implements WorldElement, Comparable<Animal> {
     private int days = 0;
 
     private boolean hasMostPopularGenom = false;
+    private Integer deathDay = null;
 
-    private Boolean deathDay = null;
     private int currentGenomPosition = 0;
     private int genomIterator = 1;
 
     private AnimalBehaviorVariant animalBehaviorVariant;
 
     private int[] genom;
+
+
+
+    private int eatenPlantsCount = 0;
 
     private int ageInSimulationTurns = 0;
 
@@ -33,11 +37,20 @@ public class Animal implements WorldElement, Comparable<Animal> {
     }
 
     public int countAllDescendants(){
-        return 0; // do poprawy
+        int sum = 0;
+        if (getChildrenCount() == 0){
+            return 0;
+        }
+
+        for(Animal animal: children){
+            sum+= animal.countAllDescendants();
+        }
+        return sum + getChildrenCount();
     }
 
     public void eating(){
         energy+=energyBoost;
+        eatenPlantsCount++;
     }
 
     @Override
@@ -166,7 +179,7 @@ public class Animal implements WorldElement, Comparable<Animal> {
         return days;
     }
 
-    public Boolean getDeathDay(){
+    public Integer getDeathDay(){
         return deathDay;
     }
 
@@ -182,8 +195,16 @@ public class Animal implements WorldElement, Comparable<Animal> {
         return children.size();
     }
 
+    public int getEatenPlantsCount() {
+        return eatenPlantsCount;
+    }
+
     public void addDay(){
         days++;
+    }
+
+    public void setDeathDay(Integer deathDay) {
+        this.deathDay = deathDay;
     }
 }
 
