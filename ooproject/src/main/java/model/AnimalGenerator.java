@@ -17,13 +17,16 @@ public class AnimalGenerator {
     int startEnergy;
     int genomLength;
 
-    public AnimalGenerator(int animalNumber, long seed, int rows, int columns, int startEnergy, int genomLength) {
+    int energyBoost;
+
+    public AnimalGenerator(int animalNumber, long seed, int rows, int columns, int startEnergy, int genomLength, int energyBoost) {
         this.animalNumber = animalNumber;
         this.seed = seed;
         this.rows = rows;
         this.columns = columns;
         this.startEnergy = startEnergy;
         this.genomLength = genomLength;
+        this.energyBoost = energyBoost;
     }
 
     public List<Animal> generateAnimals() {
@@ -43,6 +46,6 @@ public class AnimalGenerator {
         x = random.nextInt(rows);
         y = random.nextInt(columns);
         vector2d = new Vector2d(x,y);
-        return new Animal(vector2d, GenerateGenom.generateStartGenom(genomLength), startEnergy);
+        return new Animal(vector2d, GenerateGenom.generateStartGenom(genomLength), startEnergy, energyBoost);
     }
 }

@@ -19,11 +19,12 @@ public class Simulation implements Runnable {
 
     private float deadAnimalCount;
 
-    private int daysSinceStart;
+    private int daysSinceStart = 0;
     private int onPreferedFieldsCountStart;
     private int onNotPreferedFieldsCountStart;
 
-    Timer timer = new Timer();
+
+
 
     private final SimulationPresenter simulationPresenter;
     public Simulation(Configurations configurations,
@@ -65,43 +66,81 @@ public class Simulation implements Runnable {
 
     }
 
-    /*private void setPreferedFieldForJungle(){
-        for (Plant plant: plants){
-            simulationMap.addPreferedFieldInJungle(plant);
-        }
-
-
-    }*/
-
-
     private void animalStart(){
         List<Animal> temporaryListAnimals;
         temporaryListAnimals = simulationMap.generateAnimals(11111);
         animals.addAll(temporaryListAnimals);
+    }
+
+    public String getMostPopularGenom() {
+        return simulationMap.getStrongestGenom();
+    }
+
+    private int[] convertGenomToInt(String genom){
+        int len = genom.length();
+        int[] temporaryGenom = new int[len];
+        for(int i = 0; i<len; i++){
+            temporaryGenom[i] = Character.getNumericValue(genom.charAt(i));
+        }
+        return temporaryGenom;
 
     }
 
-    public int[] getMostPopularGenom() {
-        String mostPopular = simulationMap.getStrongestGenom();
-        return null; //do poprawy
+    public void setMostPopularGenom(){
+        int[] tmpGenom = convertGenomToInt(getMostPopularGenom());
+        for(Animal animal: animals){
+            animal.setHasMostPopularGenom(Arrays.equals(tmpGenom, animal.getGenom()));
+        }
     }
 
+
+    public int freePositionsNumber(){
+        Boundary boundary = simulationMap.getCurrentBounds();
+        int start1 = boundary.leftBottom().getX();
+        int start2 = boundary.leftBottom().getY();
+        int endPlus1 = boundary.rightTop().getX() + 1;
+        int endPlus2 = boundary.rightTop().getY() + 1;
+        int freePositions = configurations.getMapWidth()*configurations.getMapHeight();
+        Map <Vector2d,List<Animal>> tmpAnimals = simulationMap.getAnimals();
+        Map <Vector2d, Plant> tmpPlants = simulationMap.getPlants();
+        for(int i = start1; i < endPlus1; i++){
+            for(int j = start2; j < endPlus2; j++){
+                if((tmpAnimals.get(new Vector2d(i,j)) !=null && !tmpAnimals.get(new Vector2d(i,j)).isEmpty())
+                        || tmpPlants.get(new Vector2d(i,j)) != null){
+                    freePositions--;
+                }
+            }
+        }
+        return freePositions;
+    }
 
     public float averageEnergyLevel() {
         float animalCount = animals.size();
+        if (animalCount == 0) {
+            return Float.NaN;
+        }
         float sumEnergy = 0;
         for(Animal animal : animals){
             sumEnergy += animal.getEnergy();
         }
         return sumEnergy/animalCount;
     }
-    public float averageAgeOfLive(){
-        return sumOfAgesDeadAnimals/deadAnimalCount;
-
+    public float averageAgeOfLive() {
+        if (deadAnimalCount == 0) {
+            return Float.NaN;
+        }
+        return sumOfAgesDeadAnimals / deadAnimalCount;
     }
 
-    public double averageChildrenCount(){
-        return 0; //do poprawy
+    public float averageChildrenCount(){
+        float childrenCount = 0;
+        if(animals.isEmpty()){
+            return Float.NaN;
+        }
+        for(Animal animal: animals){
+            childrenCount += animal.getChildrenCount();
+        }
+        return childrenCount/animals.size();
     }
 
     public int animalsCount(){
@@ -112,6 +151,7 @@ public class Simulation implements Runnable {
     public int plantsCount(){
         return plants.size();
     }
+
 
     private void deleteDead() {
         Iterator<Animal> iterator = animals.iterator();
@@ -130,9 +170,11 @@ public class Simulation implements Runnable {
         }
     }
 
-    private void useEnergyPerDay(){
+    private void everydayActivities(){
+        daysSinceStart++;
         for(Animal animal: animals){
             animal.lowerEnergy(1);
+            animal.addDay();
         }
     }
 
@@ -184,20 +226,17 @@ public class Simulation implements Runnable {
         simulationPaused = false;
     }
 
-    public void setTimer(){
 
-    }
 
     public void run(){
         if (!simulationPaused) {
             deleteDead();
             turnMove();
             plantsConsumption();
-            //globalReproduction();
+            globalReproduction();
             grassDivisionStart(configurations.getEverydayGrowingPlantsCount());
-            simulationPresenter.drawMap(simulationMap, false);
-            useEnergyPerDay();
-
+            simulationPresenter.drawMap(simulationMap, false, false);
+            everydayActivities();
         }
     }
 

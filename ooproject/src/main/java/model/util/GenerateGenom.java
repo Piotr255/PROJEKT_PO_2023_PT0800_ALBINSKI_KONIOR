@@ -16,6 +16,7 @@ public class GenerateGenom {
         int[] reproductionGenome = new int[genomeLength];
         int leftEnergy;
         int rightEnergy;
+
         if (leftPartOfGenomeFromGenome1){
             leftPartGenome = genome1;
             rightPartGenome = genome2;
@@ -28,17 +29,20 @@ public class GenerateGenom {
             leftEnergy = energy2;
             rightEnergy = energy1;
         }
-        int genomeBorder = (int)(((double) leftEnergy / (double) rightEnergy)*((double)genomeLength));
+        int genomeBorder = (int)(((double) leftEnergy / (double) (rightEnergy+leftEnergy))*((double)genomeLength));
         for (int i=0; i<genomeBorder; i++){
             reproductionGenome[i] = leftPartGenome[i];
+            System.out.println("test1");
         }
         for (int i=0; i<genomeLength-genomeBorder; i++){
             reproductionGenome[i+genomeBorder] = rightPartGenome[i];
+            System.out.println("test2");
         }
         int mutationCount = random.nextInt(maximumMutationCount-minimumMutationCount+1)+minimumMutationCount;
         for (int i=0; i<mutationCount; i++){
             int randomIndex = random.nextInt(genomeLength);
             reproductionGenome[randomIndex] = random.nextInt(8);
+            System.out.println("test3");
         }
         return reproductionGenome;
     }

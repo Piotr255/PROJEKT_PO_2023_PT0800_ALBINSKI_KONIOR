@@ -29,6 +29,9 @@ public class EarthMap implements WorldMap {
             }
         }
 
+    public int[][] getPreferedFields(){
+        return preferedFields;
+    }
 
     public void setPreferedFields(){
         int rows = boundary.rightTop().getY() + 1;
@@ -120,7 +123,6 @@ public class EarthMap implements WorldMap {
     }
 
     public void mapChanged(String message){
-        System.out.println(observers);
         for(MapChangeListener observer : observers){
             observer.mapChanged(this,message);
         }
@@ -129,6 +131,10 @@ public class EarthMap implements WorldMap {
     @Override
     public void removeAnimal(Animal animal){
         animals.get(animal.getPosition()).remove(animal);
+        updateGenomMap(convertGenom(animal.getGenom()),false);
+        if (animals.get(animal.getPosition()).isEmpty()){
+            animals.remove(animal.getPosition());
+        }
     }
 
     @Override
@@ -216,12 +222,21 @@ public class EarthMap implements WorldMap {
         return temporaryPlantList;
     }
 
+    private String convertGenom (int[] genom){
+        StringBuilder builder = new StringBuilder();
+        for (int value : genom) {
+            builder.append(value);
+        }
+        return builder.toString();
+    }
     public List<Animal> generateAnimals(long seed){
         AnimalGenerator animalGenerator = new AnimalGenerator(configurations.getStartingAnimalCount(),seed,configurations.getMapHeight(),
-                configurations.getMapWidth(),configurations.getStartingEnergyCount(),configurations.getGenomeLength());
+                configurations.getMapWidth(),
+                configurations.getStartingEnergyCount(),configurations.getGenomeLength(),configurations.getEnergyFromSinglePlant());
         List<Animal> temporaryAnimals = animalGenerator.generateAnimals();
         for (Animal animal : temporaryAnimals){
             place(animal);
+            updateGenomMap(convertGenom(animal.getGenom()),true);
         }
         return temporaryAnimals;
     }
@@ -324,10 +339,10 @@ public class EarthMap implements WorldMap {
                         GenerateGenom.generateReproductionGenome(currentAnimal1.getEnergy(),
                                 currentAnimal2.getEnergy(), currentAnimal1.getGenom(),
                                 currentAnimal2.getGenom(), configurations.getMinimumMutationCount(), configurations.getMaximumMutationCount()),
-                        2 * configurations.getReproductionEnergyCost());
+                        2 * configurations.getReproductionEnergyCost(), configurations.getEnergyFromSinglePlant());
                 childrenToAdd.add(childAnimal);
-                currentAnimal1.reproduce(configurations.getReproductionEnergyCost(), configurations.getRequiredReproductionEnergyCount());
-                currentAnimal2.reproduce(configurations.getReproductionEnergyCost(), configurations.getRequiredReproductionEnergyCount());
+                currentAnimal1.reproduce(configurations.getReproductionEnergyCost(), configurations.getRequiredReproductionEnergyCount(), childAnimal);
+                currentAnimal2.reproduce(configurations.getReproductionEnergyCost(), configurations.getRequiredReproductionEnergyCount(), childAnimal);
                 currentAnimal1.addChild(childAnimal);
                 currentAnimal2.addChild(childAnimal);
 
@@ -338,6 +353,7 @@ public class EarthMap implements WorldMap {
         }
         for (Animal child : childrenToAdd){
             place(child);
+            updateGenomMap(convertGenom(child.getGenom()),true);
         }
         return childrenToAdd;
     }
@@ -349,5 +365,9 @@ public class EarthMap implements WorldMap {
 
     public Configurations getConfigurations() {
         return configurations;
+    }
+
+    public Map<Vector2d, Plant> getPlants() {
+        return Collections.unmodifiableMap(plants);
     }
 }

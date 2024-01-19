@@ -5,19 +5,14 @@ import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Label;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import model.*;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Button;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class SimulationPresenter {
     @FXML
@@ -41,6 +36,35 @@ public class SimulationPresenter {
     @FXML
     private Button pauseSimulationButton;
 
+    //Labelki do statystyk sledzonego zwierzaka
+    @FXML
+    private Label singleStatsTitleLabel;
+    @FXML
+    private Label singleGenomeLabel;
+    @FXML
+    private Label singleActivatedGenomePartLabel;
+    @FXML
+    private Label singleEnergyLabel;
+    @FXML
+    private Label singleConsumedPlantsCountLabel;
+    @FXML
+    private Label singleChildrenCountLabel;
+    @FXML
+    private Label singleDescendantsCountLabel;
+    @FXML
+    private Label singleLifeLengthCountLabel;
+    @FXML
+    private Label singleDeathDayLabel;
+    @FXML
+    private VBox singleStatsContainer;
+    @FXML
+    private Button stopFollowAnimalButton;
+    @FXML
+    private Label emptyFieldCountLabel2;
+
+    private final int CELL_WIDTH=15;
+    private final int CELL_HEIGHT=15;
+
     private Simulation simulation = null;
 
     public void setSimulation(Simulation simulation){
@@ -52,6 +76,11 @@ public class SimulationPresenter {
     @FXML
     private void initialize(){
         initializePauseButton(true);
+        singleStatsContainer.setVisible(false);
+        stopFollowAnimalButton.setOnAction((event) -> {
+            singleStatsTitleLabel.setText("Kliknij na zwierzaka, aby sledzić jego statystyki:");
+            singleStatsContainer.setVisible(false);
+        });
     }
 
     private void initializePauseButton(boolean shouldPause){
@@ -97,16 +126,16 @@ public class SimulationPresenter {
 
 
 
-    public void drawMap(EarthMap earthMap, boolean isPaused){
+    public void drawMap(EarthMap earthMap, boolean isPaused, boolean showOnPausedInfo){
         clearGrid();
 
-        int emptyFieldCount = 0; //Do wyświetlania statystyk
+        int emptyFieldCount = 0;
         Boundary boundary = earthMap.getCurrentBounds();
         int rows = boundary.rightTop().getY() - boundary.leftBottom().getY() + 1;
         int cols = boundary.rightTop().getX() - boundary.leftBottom().getX() + 1;
         Platform.runLater(() -> {
-            mapGrid.getColumnConstraints().add(new ColumnConstraints(15));
-            mapGrid.getRowConstraints().add(new RowConstraints(15));
+            mapGrid.getColumnConstraints().add(new ColumnConstraints(CELL_WIDTH));
+            mapGrid.getRowConstraints().add(new RowConstraints(CELL_HEIGHT));
         });
 
         /*cell.setStyle("-fx-border-color: black; -fx-alignment: center;");
@@ -121,6 +150,8 @@ public class SimulationPresenter {
             for (int j=0; j<=cols; j++){
                 boolean animalPresent=false;
                 Label label = new Label();
+                Pane cell = new Pane();
+                cell.setPrefSize(CELL_WIDTH, CELL_HEIGHT);
                 final int fi = i;
                 final int fj = j;
                 Vector2d position = new Vector2d(xMin + j - 1, yMax - i + 1);
@@ -140,6 +171,12 @@ public class SimulationPresenter {
                     Color color = Color.hsb(120, 0.5, 0.75);
                     if (strongestAnimalEnergy>earthMap.getConfigurations().getRequiredReproductionEnergyCount()){
                         color = Color.hsb(30, 1, 1);
+                    }
+                    if (showOnPausedInfo && strongestAnimal.isHasMostPopularGenom()){
+                        color = Color.hsb(180, 1, 1);
+                    }
+                    if (showOnPausedInfo && simulation.getSimulationMap().getPreferedFields()[xMin + j - 1][yMax - i + 1]>0){
+                        cell.setStyle("-fx-background-color: yellow");
                     }
                     circle.setFill(color);
 
@@ -163,6 +200,8 @@ public class SimulationPresenter {
                         if (isPaused && simulation.getSimulationPaused()){
                             fiCircle.setOnMouseClicked((event) -> {
                                 FollowedAnimal.setFollowedAnimal(earthMap.strongestAnimal(position));
+                                System.out.println("Kliknieto w zwierzaka");
+                                followAnimalStats();
                             });
                         }
                     }
@@ -172,6 +211,30 @@ public class SimulationPresenter {
         }
         drawStats(earthMap, emptyFieldCount);
     }
+
+    private void followAnimalStats(){
+        singleStatsTitleLabel.setText("Statystyki wybranego zwierzaka: ");
+        singleStatsContainer.setVisible(true);
+        Animal followedAnimal = FollowedAnimal.getFollowedAnimal();
+        String genomAsString = Arrays.stream(followedAnimal.getGenom())
+                .mapToObj(String::valueOf)
+                .collect(Collectors.joining());
+        singleGenomeLabel.setText(genomAsString);
+        singleActivatedGenomePartLabel.setText(String.valueOf(followedAnimal.getCurrentGenom()));
+        singleEnergyLabel.setText(String.valueOf(followedAnimal.getEnergy()));
+        singleConsumedPlantsCountLabel.setText("");
+        singleChildrenCountLabel.setText(String.valueOf(followedAnimal.getChildrenCount()));
+        singleDescendantsCountLabel.setText("");
+        singleLifeLengthCountLabel.setText("");
+        if (followedAnimal.getDeathDay()!=null){
+            singleDeathDayLabel.setText("");
+        }
+        else{
+            singleDeathDayLabel.setText("");
+        }
+
+    }
+
     public void drawStats(EarthMap earthMap, int emptyFieldCount){ //Wywoływane w drawMap()
         int animalsCount = simulation.animalsCount();
         int plantsCount = simulation.plantsCount();
@@ -179,6 +242,11 @@ public class SimulationPresenter {
             animalCountLabel.setText(String.valueOf(animalsCount));
             plantCountLabel.setText(String.valueOf(plantsCount));
             emptyFieldCountLabel.setText(String.valueOf(emptyFieldCount));
+            emptyFieldCountLabel2.setText(String.valueOf(simulation.freePositionsNumber()));
+            mostPopularGenotypesLabel.setText(simulation.getMostPopularGenom());
+            averageEnergyLabel.setText(String.valueOf(simulation.averageEnergyLevel()));
+            lifeExpectancyLabel.setText(String.valueOf(simulation.averageAgeOfLive()));
+            averageChildCountLabel.setText(String.valueOf(simulation.averageChildrenCount()));
         });
 
     }

@@ -12,7 +12,9 @@ public class Animal implements WorldElement, Comparable<Animal> {
     private Vector2d position;
     private int energy;
     private int energyBoost;
-    private int days;
+    private int days = 0;
+
+    private boolean hasMostPopularGenom = false;
 
     private Boolean deathDay = null;
     private int currentGenomPosition = 0;
@@ -23,8 +25,6 @@ public class Animal implements WorldElement, Comparable<Animal> {
     private int[] genom;
 
     private int ageInSimulationTurns = 0;
-
-    private int childrenCount = 0;
 
     private List<Animal> children = new ArrayList<>();
 
@@ -48,21 +48,19 @@ public class Animal implements WorldElement, Comparable<Animal> {
         else if (this.ageInSimulationTurns != other.ageInSimulationTurns){
             return Integer.compare(this.ageInSimulationTurns,other.ageInSimulationTurns);
         }
-        return Integer.compare(this.childrenCount, other.childrenCount);
+        return Integer.compare(this.getChildrenCount(), other.getChildrenCount());
     }
 
-    public void reproduce(int reproductionEnergyCost, int requiredReproductionEnergyCost){
+    public void reproduce(int reproductionEnergyCost, int requiredReproductionEnergyCost, Animal reproducedAnimal){
         energy-=reproductionEnergyCost;
-        childrenCount+=1;
+        children.add(reproducedAnimal);
     }
 
     public int getAgeInSimulationTurns() {
         return ageInSimulationTurns;
     }
 
-    public int getChildrenCount() {
-        return childrenCount;
-    }
+
 /*
     public Animal(){
         orientation = MapDirection.NORTH;
@@ -75,11 +73,12 @@ public class Animal implements WorldElement, Comparable<Animal> {
         this.position = position;
     }*/
 
-    public Animal(Vector2d position, int[] genom, int energy) {
+    public Animal(Vector2d position, int[] genom, int energy, int energyBoost) {
         this.orientation = MapDirection.NORTH;
         this.position = position;
         this.genom = genom;
         this.energy = energy;
+        this.energyBoost = energyBoost;
     }
 
     public void lowerEnergy(int amount){
@@ -165,6 +164,26 @@ public class Animal implements WorldElement, Comparable<Animal> {
 
     public int getDays() {
         return days;
+    }
+
+    public Boolean getDeathDay(){
+        return deathDay;
+    }
+
+    public void setHasMostPopularGenom(boolean hasMostPopularGenom) {
+        this.hasMostPopularGenom = hasMostPopularGenom;
+    }
+
+    public boolean isHasMostPopularGenom() {
+        return hasMostPopularGenom;
+    }
+
+    public int getChildrenCount(){
+        return children.size();
+    }
+
+    public void addDay(){
+        days++;
     }
 }
 
