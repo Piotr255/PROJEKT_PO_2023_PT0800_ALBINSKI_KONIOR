@@ -12,7 +12,9 @@ public class Animal implements WorldElement, Comparable<Animal> {
     private Vector2d position;
     private int energy;
     private int energyBoost;
-    private int days;
+    private int days = 0;
+
+    private boolean hasMostPopularGenom = false;
 
     private Boolean deathDay = null;
     private int currentGenomPosition = 0;
@@ -76,11 +78,12 @@ public class Animal implements WorldElement, Comparable<Animal> {
         this.position = position;
     }*/
 
-    public Animal(Vector2d position, int[] genom, int energy) {
+    public Animal(Vector2d position, int[] genom, int energy, int energyBoost) {
         this.orientation = MapDirection.NORTH;
         this.position = position;
         this.genom = genom;
         this.energy = energy;
+        this.energyBoost = energyBoost;
     }
 
     public void lowerEnergy(int amount){
