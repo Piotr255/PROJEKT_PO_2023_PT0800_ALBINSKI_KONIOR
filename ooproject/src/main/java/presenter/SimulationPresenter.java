@@ -8,6 +8,7 @@ import javafx.geometry.VPos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.TextAlignment;
 import model.*;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Button;
@@ -62,11 +63,15 @@ public class SimulationPresenter {
     private Button stopFollowAnimalButton;
     @FXML
     private Label emptyFieldCountLabel2;
+    @FXML
+    private Button showOnPauseInfoButton;
 
-    private final int CELL_WIDTH=15;
-    private final int CELL_HEIGHT=15;
+    private final int CELL_WIDTH=40;
+    private final int CELL_HEIGHT=40;
 
     private Simulation simulation = null;
+
+    private boolean shouldFollowSingleAnimalStats = false;
 
     public void setSimulation(Simulation simulation){
         if (this.simulation==null){
@@ -81,6 +86,10 @@ public class SimulationPresenter {
         stopFollowAnimalButton.setOnAction((event) -> {
             singleStatsTitleLabel.setText("Kliknij na zwierzaka, aby sledzić jego statystyki:");
             singleStatsContainer.setVisible(false);
+            shouldFollowSingleAnimalStats = false;
+        });
+        showOnPauseInfoButton.setOnAction((event) -> {
+            drawMap(simulation.getSimulationMap(), true, true);
         });
     }
 
@@ -108,10 +117,12 @@ public class SimulationPresenter {
         if (pause){
             simulation.pauseSimulation();
             initializePauseButton(false);
+            drawMap(simulation.getSimulationMap(), true, false);
         }
         else{
             simulation.unpauseSimulation();
             initializePauseButton(true);
+            drawMap(simulation.getSimulationMap(),true,false);
         }
 
     }
@@ -147,10 +158,11 @@ public class SimulationPresenter {
             }
         });
 
+
         /*cell.setStyle("-fx-border-color: black; -fx-alignment: center;");
         mapGrid.add(cell, j, i);*/
-
-        Circle circle = new Circle(5);
+        //mapGrid.setAlignment(Pos.CENTER);
+        Circle circle = new Circle(10); //po prostu inicjalizacja
         int xMin = boundary.leftBottom().getX();
         int xMax = boundary.rightTop().getX();
         int yMax = boundary.rightTop().getY();
@@ -159,27 +171,43 @@ public class SimulationPresenter {
             for (int j=0; j<=cols; j++){
                 boolean animalPresent=false;
                 Label label = new Label();
-                Pane cell = new Pane();
-                cell.setPrefSize(CELL_WIDTH, CELL_HEIGHT);
+                label.setAlignment(Pos.CENTER);
+                label.setTextAlignment(TextAlignment.CENTER);
+                //label.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+                //cell.setMinSize(CELL_WIDTH, CELL_HEIGHT);
+                StackPane cell = new StackPane();
+                cell.setMinSize(CELL_WIDTH, CELL_HEIGHT);
+                cell.setAlignment(Pos.CENTER);
+                cell.setStyle("-fx-border-color: black; -fx-alignment: center;");
+                //cell.setPrefSize(CELL_WIDTH,CELL_HEIGHT);
+                //cell.getStyleClass().add("grid-cell");
+                //GridPane.setHalignment(label, HPos.CENTER);
+                //GridPane.setValignment(label, VPos.CENTER);
                 final int fi = i;
                 final int fj = j;
                 Vector2d position = new Vector2d(xMin + j - 1, yMax - i + 1);
                 if (i==0 && j==0){
-                    label.setText("y/x ");
+                    label.setText("y/x");
+                    cell.getChildren().add(label);
                 }
                 else if (j == 0) {
                     label.setText(String.valueOf(yMax - i + 1));
+                    cell.getChildren().add(label);
                 }
                 else if (i==0){
                     label.setText(String.valueOf(xMin + j - 1));
+                    cell.getChildren().add(label);
                 }
                 else if (earthMap.animalsAt(position) != null && !earthMap.animalsAt(position).isEmpty()){
                     Animal strongestAnimal = earthMap.strongestAnimal(position);
                     int strongestAnimalEnergy = strongestAnimal.getEnergy();
-                    circle = new Circle(5);
+                    circle = new Circle(10);
                     Color color = Color.hsb(120, 0.5, 0.75);
                     if (strongestAnimalEnergy>earthMap.getConfigurations().getRequiredReproductionEnergyCount()){
                         color = Color.hsb(30, 1, 1);
+                    }
+                    if (strongestAnimal.equals(FollowedAnimal.getFollowedAnimal())){
+                        color = Color.hsb(70,1,1);
                     }
                     if (showOnPausedInfo && strongestAnimal.isHasMostPopularGenom()){
                         color = Color.hsb(180, 1, 1);
@@ -188,12 +216,13 @@ public class SimulationPresenter {
                         cell.setStyle("-fx-background-color: yellow");
                     }
                     circle.setFill(color);
-
+                    cell.getChildren().add(circle);
                     animalPresent=true;
                     //get z najw. priorytetem
                 }
                 else if (earthMap.isPlantAt(position)){
                     label.setText("*");
+                    cell.getChildren().add(label);
                 }
                 else{
                     emptyFieldCount+=1;
@@ -202,15 +231,17 @@ public class SimulationPresenter {
                 final Circle fiCircle = circle;
                 Platform.runLater(() -> {
                     if (!fiAnimalPresent){
-                        mapGrid.add(label,fj,fi);
+                        mapGrid.add(cell,fj,fi);
                     }
                     else{
-                        mapGrid.add(fiCircle,fj,fi);
+                        mapGrid.add(cell,fj,fi);
                         if (isPaused && simulation.getSimulationPaused()){
+                            System.out.println("Ustawiono action dla kolka");
                             fiCircle.setOnMouseClicked((event) -> {
                                 FollowedAnimal.setFollowedAnimal(earthMap.strongestAnimal(position));
                                 System.out.println("Kliknieto w zwierzaka");
-                                followAnimalStats();
+                                shouldFollowSingleAnimalStats = true;
+                                drawMap(earthMap, true, false);
                             });
                         }
                     }
@@ -219,28 +250,34 @@ public class SimulationPresenter {
             }
         }
         drawStats(earthMap, emptyFieldCount);
+        if (shouldFollowSingleAnimalStats){
+            followAnimalStats();
+        }
     }
 
     private void followAnimalStats(){
-        singleStatsTitleLabel.setText("Statystyki wybranego zwierzaka: ");
-        singleStatsContainer.setVisible(true);
-        Animal followedAnimal = FollowedAnimal.getFollowedAnimal();
-        String genomAsString = Arrays.stream(followedAnimal.getGenom())
-                .mapToObj(String::valueOf)
-                .collect(Collectors.joining());
-        singleGenomeLabel.setText(genomAsString);
-        singleActivatedGenomePartLabel.setText(String.valueOf(followedAnimal.getCurrentGenom()));
-        singleEnergyLabel.setText(String.valueOf(followedAnimal.getEnergy()));
-        singleConsumedPlantsCountLabel.setText("");
-        singleChildrenCountLabel.setText(String.valueOf(followedAnimal.getChildrenCount()));
-        singleDescendantsCountLabel.setText("");
-        singleLifeLengthCountLabel.setText("");
-        if (followedAnimal.getDeathDay()!=null){
-            singleDeathDayLabel.setText("");
-        }
-        else{
-            singleDeathDayLabel.setText("");
-        }
+        Platform.runLater(() -> {
+            singleStatsTitleLabel.setText("Statystyki wybranego zwierzaka: ");
+            singleStatsContainer.setVisible(true);
+            Animal followedAnimal = FollowedAnimal.getFollowedAnimal();
+            String genomAsString = Arrays.stream(followedAnimal.getGenom())
+                    .mapToObj(String::valueOf)
+                    .collect(Collectors.joining());
+            singleGenomeLabel.setText(genomAsString);
+            singleActivatedGenomePartLabel.setText(String.valueOf(followedAnimal.getCurrentGenom()));
+            singleEnergyLabel.setText(String.valueOf(followedAnimal.getEnergy()));
+            singleConsumedPlantsCountLabel.setText(String.valueOf(followedAnimal.getEatenPlantsCount()));
+            singleChildrenCountLabel.setText(String.valueOf(followedAnimal.getChildrenCount()));
+            singleDescendantsCountLabel.setText(String.valueOf(followedAnimal.countAllDescendants()));
+            singleLifeLengthCountLabel.setText(String.valueOf(followedAnimal.getDays()));
+            if (followedAnimal.getDeathDay()!=null){
+                singleDeathDayLabel.setText(String.valueOf(followedAnimal.getDeathDay()));
+            }
+            else{
+                singleDeathDayLabel.setText("Zwierze zyje");
+            }
+        });
+
 
     }
 

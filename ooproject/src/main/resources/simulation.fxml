@@ -86,8 +86,11 @@
                     <Label fx:id="singleDeathDayLabel"> 0</Label>
                 </HBox>
                 <Button fx:id="stopFollowAnimalButton">Przestan sledzic</Button>
+                <Label>Kliknij ponizszy przycisk, aby pokazac preferowane pola i zwierzeta, ktore maja dominujacy genotyp</Label>
+                <Button fx:id="showOnPauseInfoButton">Pokaz</Button>
             </VBox>
         </VBox>
+
     </left>
     <center>
         <GridPane fx:id="mapGrid" alignment="CENTER" styleClass="map-grid-style-class">
