@@ -23,7 +23,8 @@ public class Simulation implements Runnable {
     private int onPreferedFieldsCountStart;
     private int onNotPreferedFieldsCountStart;
 
-    Timer timer = new Timer();
+
+
 
     private final SimulationPresenter simulationPresenter;
     public Simulation(Configurations configurations,
@@ -65,15 +66,6 @@ public class Simulation implements Runnable {
 
     }
 
-    /*private void setPreferedFieldForJungle(){
-        for (Plant plant: plants){
-            simulationMap.addPreferedFieldInJungle(plant);
-        }
-
-
-    }*/
-
-
     private void animalStart(){
         List<Animal> temporaryListAnimals;
         temporaryListAnimals = simulationMap.generateAnimals(11111);
@@ -112,6 +104,7 @@ public class Simulation implements Runnable {
     public int plantsCount(){
         return plants.size();
     }
+
 
     private void deleteDead() {
         Iterator<Animal> iterator = animals.iterator();
