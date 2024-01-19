@@ -235,8 +235,8 @@ public class Simulation implements Runnable {
             plantsConsumption();
             globalReproduction();
             grassDivisionStart(configurations.getEverydayGrowingPlantsCount());
-            simulationPresenter.drawMap(simulationMap, false);
-            useEnergyPerDay();
+            simulationPresenter.drawMap(simulationMap, false, false);
+            everydayActivities();
         }
     }
 

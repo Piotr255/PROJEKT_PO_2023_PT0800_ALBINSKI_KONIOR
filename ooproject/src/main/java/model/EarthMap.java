@@ -29,6 +29,9 @@ public class EarthMap implements WorldMap {
             }
         }
 
+    public int[][] getPreferedFields(){
+        return preferedFields;
+    }
 
     public void setPreferedFields(){
         int rows = boundary.rightTop().getY() + 1;

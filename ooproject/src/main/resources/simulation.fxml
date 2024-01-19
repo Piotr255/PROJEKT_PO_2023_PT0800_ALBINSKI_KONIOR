@@ -25,6 +25,10 @@
                 <Label fx:id="emptyFieldCountLabel"> 0</Label>
             </HBox>
             <HBox>
+                <Label>Liczba wolnych pol 2: </Label>
+                <Label fx:id="emptyFieldCountLabel2"> 0</Label>
+            </HBox>
+            <HBox>
                 <Label>Najpopularniejsze genotypy: </Label>
                 <Label fx:id="mostPopularGenotypesLabel"> 0</Label>
             </HBox>
@@ -46,9 +50,9 @@
                 <Button fx:id="pauseSimulationButton">Pauza</Button>
             </HBox>
             <HBox>
-                <Label fx:id="singleStatsTitleLabel">Kliknij na zwierzaka, aby śledzić jego statystyki: </Label>
+                <Label fx:id="singleStatsTitleLabel">Kliknij na zwierzaka, aby sledzić jego statystyki: </Label>
             </HBox>
-            <VBox>
+            <VBox fx:id="singleStatsContainer">
                 <HBox>
                     <Label>Genom: </Label>
                     <Label fx:id="singleGenomeLabel"> 0</Label>
@@ -70,23 +74,24 @@
                     <Label fx:id="singleChildrenCountLabel"> 0</Label>
                 </HBox>
                 <HBox>
-                    <Label>Liczba potomków: </Label>
+                    <Label>Liczba potomkow: </Label>
                     <Label fx:id="singleDescendantsCountLabel"> 0</Label>
                 </HBox>
                 <HBox>
-                    <Label>Długość życia: </Label>
+                    <Label>Długosc zycia: </Label>
                     <Label fx:id="singleLifeLengthCountLabel"> 0</Label>
                 </HBox>
                 <HBox>
-                    <Label>Dzień zgonu: </Label>
+                    <Label>Dzien zgonu: </Label>
                     <Label fx:id="singleDeathDayLabel"> 0</Label>
                 </HBox>
+                <Button fx:id="stopFollowAnimalButton">Przestan sledzic</Button>
             </VBox>
         </VBox>
     </left>
-    <right>
+    <center>
         <GridPane fx:id="mapGrid" alignment="CENTER_RIGHT" styleClass="map-grid-style-class">
 
         </GridPane>
-    </right>
+    </center>
 </BorderPane>

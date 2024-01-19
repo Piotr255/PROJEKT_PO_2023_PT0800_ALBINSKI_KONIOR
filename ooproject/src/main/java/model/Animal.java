@@ -26,8 +26,6 @@ public class Animal implements WorldElement, Comparable<Animal> {
 
     private int ageInSimulationTurns = 0;
 
-    private int childrenCount = 0;
-
     private List<Animal> children = new ArrayList<>();
 
     public void addChild(Animal animal){
@@ -50,12 +48,11 @@ public class Animal implements WorldElement, Comparable<Animal> {
         else if (this.ageInSimulationTurns != other.ageInSimulationTurns){
             return Integer.compare(this.ageInSimulationTurns,other.ageInSimulationTurns);
         }
-        return Integer.compare(this.childrenCount, other.childrenCount);
+        return Integer.compare(this.getChildrenCount(), other.getChildrenCount());
     }
 
     public void reproduce(int reproductionEnergyCost, int requiredReproductionEnergyCost, Animal reproducedAnimal){
         energy-=reproductionEnergyCost;
-        childrenCount+=1;
         children.add(reproducedAnimal);
     }
 
@@ -63,9 +60,7 @@ public class Animal implements WorldElement, Comparable<Animal> {
         return ageInSimulationTurns;
     }
 
-    public int getChildrenCount() {
-        return childrenCount;
-    }
+
 /*
     public Animal(){
         orientation = MapDirection.NORTH;
@@ -169,6 +164,26 @@ public class Animal implements WorldElement, Comparable<Animal> {
 
     public int getDays() {
         return days;
+    }
+
+    public Boolean getDeathDay(){
+        return deathDay;
+    }
+
+    public void setHasMostPopularGenom(boolean hasMostPopularGenom) {
+        this.hasMostPopularGenom = hasMostPopularGenom;
+    }
+
+    public boolean isHasMostPopularGenom() {
+        return hasMostPopularGenom;
+    }
+
+    public int getChildrenCount(){
+        return children.size();
+    }
+
+    public void addDay(){
+        days++;
     }
 }
 
