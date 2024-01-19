@@ -41,6 +41,26 @@ public class SimulationPresenter {
     @FXML
     private Button pauseSimulationButton;
 
+    //Labelki do statystyk sledzonego zwierzaka
+    @FXML
+    private Label singleStatsTitleLabel;
+    @FXML
+    private Label singleGenomeLabel;
+    @FXML
+    private Label singleActivatedGenomePartLabel;
+    @FXML
+    private Label singleEnergyLabel;
+    @FXML
+    private Label singleConsumedPlantsCountLabel;
+    @FXML
+    private Label singleChildrenCountLabel;
+    @FXML
+    private Label singleDescendantsCountLabel;
+    @FXML
+    private Label singleLifeLengthCountLabel;
+    @FXML
+    private Label singleDeathDayLabel;
+
     private Simulation simulation = null;
 
     public void setSimulation(Simulation simulation){
@@ -163,6 +183,7 @@ public class SimulationPresenter {
                         if (isPaused && simulation.getSimulationPaused()){
                             fiCircle.setOnMouseClicked((event) -> {
                                 FollowedAnimal.setFollowedAnimal(earthMap.strongestAnimal(position));
+                                followAnimalStats();
                             });
                         }
                     }
@@ -172,6 +193,12 @@ public class SimulationPresenter {
         }
         drawStats(earthMap, emptyFieldCount);
     }
+
+    private void followAnimalStats(){
+        singleStatsTitleLabel.setText("Statystyki wybranego zwierzaka: ");
+        singleGenomeLabel.setText(FollowedAnimal.getFollowedAnimal().getGenom().toString());
+    }
+
     public void drawStats(EarthMap earthMap, int emptyFieldCount){ //Wywoływane w drawMap()
         int animalsCount = simulation.animalsCount();
         int plantsCount = simulation.plantsCount();

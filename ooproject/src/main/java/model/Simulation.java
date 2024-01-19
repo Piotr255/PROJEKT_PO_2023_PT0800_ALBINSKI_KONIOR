@@ -177,9 +177,7 @@ public class Simulation implements Runnable {
         simulationPaused = false;
     }
 
-    public void setTimer(){
 
-    }
 
     public void run(){
         if (!simulationPaused) {

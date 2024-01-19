@@ -128,6 +128,9 @@ public class EarthMap implements WorldMap {
     @Override
     public void removeAnimal(Animal animal){
         animals.get(animal.getPosition()).remove(animal);
+        if (animals.get(animal.getPosition()).isEmpty()){
+            animals.remove(animal.getPosition());
+        }
     }
 
     @Override
@@ -325,8 +328,8 @@ public class EarthMap implements WorldMap {
                                 currentAnimal2.getGenom(), configurations.getMinimumMutationCount(), configurations.getMaximumMutationCount()),
                         2 * configurations.getReproductionEnergyCost());
                 childrenToAdd.add(childAnimal);
-                currentAnimal1.reproduce(configurations.getReproductionEnergyCost(), configurations.getRequiredReproductionEnergyCount());
-                currentAnimal2.reproduce(configurations.getReproductionEnergyCost(), configurations.getRequiredReproductionEnergyCount());
+                currentAnimal1.reproduce(configurations.getReproductionEnergyCost(), configurations.getRequiredReproductionEnergyCount(), childAnimal);
+                currentAnimal2.reproduce(configurations.getReproductionEnergyCost(), configurations.getRequiredReproductionEnergyCount(), childAnimal);
                 currentAnimal1.addChild(childAnimal);
                 currentAnimal2.addChild(childAnimal);
 

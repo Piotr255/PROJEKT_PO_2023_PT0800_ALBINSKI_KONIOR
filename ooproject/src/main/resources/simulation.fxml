@@ -40,13 +40,48 @@
                 <Label>Srednia liczba dzieci: </Label>
                 <Label fx:id="averageChildCountLabel"> 0</Label>
             </HBox>
-            <HBox>
-                <Label>Srednia liczba dzieci: </Label>
-                <Label fx:id="averageChildCountLabel"> 0</Label>
-            </HBox>
+
+
             <HBox>
                 <Button fx:id="pauseSimulationButton">Pauza</Button>
             </HBox>
+            <HBox>
+                <Label fx:id="singleStatsTitleLabel">Kliknij na zwierzaka, aby śledzić jego statystyki: </Label>
+            </HBox>
+            <VBox>
+                <HBox>
+                    <Label>Genom: </Label>
+                    <Label fx:id="singleGenomeLabel"> 0</Label>
+                </HBox>
+                <HBox>
+                    <Label>Aktywna czesc genomu: </Label>
+                    <Label fx:id="singleActivatedGenomePartLabel"> 0</Label>
+                </HBox>
+                <HBox>
+                    <Label>Energia: </Label>
+                    <Label fx:id="singleEnergyLabel"> 0</Label>
+                </HBox>
+                <HBox>
+                    <Label>Liczba zjedzonych roślin: </Label>
+                    <Label fx:id="singleConsumedPlantsCountLabel"> 0</Label>
+                </HBox>
+                <HBox>
+                    <Label>Liczba dzieci: </Label>
+                    <Label fx:id="singleChildrenCountLabel"> 0</Label>
+                </HBox>
+                <HBox>
+                    <Label>Liczba potomków: </Label>
+                    <Label fx:id="singleDescendantsCountLabel"> 0</Label>
+                </HBox>
+                <HBox>
+                    <Label>Długość życia: </Label>
+                    <Label fx:id="singleLifeLengthCountLabel"> 0</Label>
+                </HBox>
+                <HBox>
+                    <Label>Dzień zgonu: </Label>
+                    <Label fx:id="singleDeathDayLabel"> 0</Label>
+                </HBox>
+            </VBox>
         </VBox>
     </left>
     <right>

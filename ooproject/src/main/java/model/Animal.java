@@ -51,9 +51,10 @@ public class Animal implements WorldElement, Comparable<Animal> {
         return Integer.compare(this.childrenCount, other.childrenCount);
     }
 
-    public void reproduce(int reproductionEnergyCost, int requiredReproductionEnergyCost){
+    public void reproduce(int reproductionEnergyCost, int requiredReproductionEnergyCost, Animal reproducedAnimal){
         energy-=reproductionEnergyCost;
         childrenCount+=1;
+        children.add(reproducedAnimal);
     }
 
     public int getAgeInSimulationTurns() {
