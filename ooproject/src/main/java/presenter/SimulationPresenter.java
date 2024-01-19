@@ -3,6 +3,7 @@ package presenter;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
@@ -134,8 +135,16 @@ public class SimulationPresenter {
         int rows = boundary.rightTop().getY() - boundary.leftBottom().getY() + 1;
         int cols = boundary.rightTop().getX() - boundary.leftBottom().getX() + 1;
         Platform.runLater(() -> {
-            mapGrid.getColumnConstraints().add(new ColumnConstraints(CELL_WIDTH));
-            mapGrid.getRowConstraints().add(new RowConstraints(CELL_HEIGHT));
+            for (int i = -1; i < cols; i++) {
+                ColumnConstraints columnConstraints = new ColumnConstraints(CELL_WIDTH);
+                //columnConstraints.setHalignment(HPos.CENTER);
+                mapGrid.getColumnConstraints().add(columnConstraints);
+            }
+            for (int i = -1; i < rows; i++) {
+                RowConstraints rowConstraints = new RowConstraints(CELL_HEIGHT);
+                //rowConstraints.setValignment(VPos.CENTER);
+                mapGrid.getRowConstraints().add(rowConstraints);
+            }
         });
 
         /*cell.setStyle("-fx-border-color: black; -fx-alignment: center;");

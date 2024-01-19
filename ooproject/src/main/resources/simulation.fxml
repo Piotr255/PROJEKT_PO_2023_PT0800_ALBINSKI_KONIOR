@@ -90,7 +90,7 @@
         </VBox>
     </left>
     <center>
-        <GridPane fx:id="mapGrid" alignment="CENTER_RIGHT" styleClass="map-grid-style-class">
+        <GridPane fx:id="mapGrid" alignment="CENTER" styleClass="map-grid-style-class">
 
         </GridPane>
     </center>

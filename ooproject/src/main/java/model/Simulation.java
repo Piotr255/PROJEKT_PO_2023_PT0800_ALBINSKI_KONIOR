@@ -164,6 +164,7 @@ public class Simulation implements Runnable {
                 sumOfAgesDeadAnimals+=animal.getDays(); //zrobić zwiększanie liczby dni zwierzaków
                 deadAnimalCount++;
                 simulationMap.removeAnimal(animal);
+                animal.setDeathDay(daysSinceStart);
                 iterator.remove();
 
             }
