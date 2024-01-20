@@ -12,7 +12,7 @@ import javafx.scene.text.TextAlignment;
 import model.*;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Button;
-
+import javafx.scene.paint.Color;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -89,6 +89,7 @@ public class SimulationPresenter {
             shouldFollowSingleAnimalStats = false;
         });
         showOnPauseInfoButton.setOnAction((event) -> {
+            pauseSimulation(true);
             drawMap(simulation.getSimulationMap(), true, true);
         });
     }
@@ -199,22 +200,40 @@ public class SimulationPresenter {
                     cell.getChildren().add(label);
                 }
                 else if (earthMap.animalsAt(position) != null && !earthMap.animalsAt(position).isEmpty()){
+                    //najsilniejszy zwierzak na tej pozycji
                     Animal strongestAnimal = earthMap.strongestAnimal(position);
-                    int strongestAnimalEnergy = strongestAnimal.getEnergy();
+                    double strongestAnimalEnergy = strongestAnimal.getEnergy();
                     circle = new Circle(10);
-                    Color color = Color.hsb(120, 0.5, 0.75);
-                    if (strongestAnimalEnergy>earthMap.getConfigurations().getRequiredReproductionEnergyCount()){
-                        color = Color.hsb(30, 1, 1);
+                    Color color = new Color(0,0,0,0);
+                    //jeśli nie może się rozmnożyć
+                    int requiredReproductionEnergyCount = simulation.getConfigurations().getRequiredReproductionEnergyCount();
+                    if (strongestAnimalEnergy<requiredReproductionEnergyCount){
+                        // jeśli zostały 3 dni do zgonu, czerwony
+                        if (strongestAnimalEnergy<=3){
+                            color = Color.rgb(255,0,0, Math.min(1,Math.max(0.5,1/strongestAnimalEnergy)));
+                            //color = Color.hsb(0,1/strongestAnimalEnergy, 1/strongestAnimalEnergy);
+                        }
+                        //jeśli więcej niż 3 dni do zgonu, pomarańczowy
+                        else{
+                            color = Color.rgb(255,123,0, Math.max(0.5,strongestAnimalEnergy/requiredReproductionEnergyCount));
+                            //color = Color.hsb(35, strongestAnimalEnergy/requiredReproductionEnergyCount, strongestAnimalEnergy/requiredReproductionEnergyCount);
+                        }
                     }
+                    //jeśli może się rozmnożyć, zielony
+                    else{
+                        color = Color.rgb(0,255,0,Math.min(1,Math.max(0.5,strongestAnimalEnergy/3*requiredReproductionEnergyCount)));
+                        //color = Color.hsb(120, Math.min(1,strongestAnimalEnergy/3*requiredReproductionEnergyCount), Math.min(1,strongestAnimalEnergy/3*requiredReproductionEnergyCount));
+                    }
+                    //jeśli ten zwierzak jest śledzony
                     if (strongestAnimal.equals(FollowedAnimal.getFollowedAnimal())){
-                        color = Color.hsb(70,1,1);
+                        color = Color.hsb(280,1,1);
                     }
+                    //podczas pauzy, zaznacz zwierzę, jeśli ma najpopularniejszy genom
                     if (showOnPausedInfo && strongestAnimal.isHasMostPopularGenom()){
-                        color = Color.hsb(180, 1, 1);
+                        color = Color.hsb(210, 1, 1);
                     }
-                    if (showOnPausedInfo && simulation.getSimulationMap().getPreferedFields()[xMin + j - 1][yMax - i + 1]>0){
-                        cell.setStyle("-fx-background-color: yellow");
-                    }
+                    //zaznacz preferowane pole podczas pauzy
+
                     circle.setFill(color);
                     cell.getChildren().add(circle);
                     animalPresent=true;
@@ -229,6 +248,10 @@ public class SimulationPresenter {
                 }
                 final boolean fiAnimalPresent = animalPresent;
                 final Circle fiCircle = circle;
+                if (showOnPausedInfo && position.precedes(boundary.rightTop()) && position.follows(boundary.leftBottom())
+                        && simulation.getSimulationMap().getPreferedFields()[xMin + j - 1][yMax - i + 1]>0){
+                    cell.setStyle("-fx-background-color: pink");
+                }
                 Platform.runLater(() -> {
                     if (!fiAnimalPresent){
                         mapGrid.add(cell,fj,fi);

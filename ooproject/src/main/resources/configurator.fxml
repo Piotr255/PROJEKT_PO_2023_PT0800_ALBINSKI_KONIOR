@@ -14,7 +14,7 @@
 <?import model.util.PlantsGrowthVariant?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            minHeight="550.0" minWidth="850.0"
+            minHeight="600.0" minWidth="850.0"
             fx:controller="presenter.ConfigurationsPresenter"
             stylesheets="style.css">
     <center>

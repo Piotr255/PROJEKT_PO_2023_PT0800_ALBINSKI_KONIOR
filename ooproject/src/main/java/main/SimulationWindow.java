@@ -17,18 +17,16 @@ import java.util.concurrent.TimeUnit;
 
 public class SimulationWindow {
 
-    public void start(Configurations configurations) throws IOException {
+    public void start(Configurations configurations, SimulationEngine simulationEngine) throws IOException {
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("simulation.fxml"));
         SimulationPresenter simulationPresenter = new SimulationPresenter();
         loader.setController(simulationPresenter);
         BorderPane viewRoot = loader.load();
-        Simulation simulation = configurations.configureSimulation(simulationPresenter);
         configureStage(viewRoot);
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(simulation, 2, 2, TimeUnit.SECONDS);
-
+        Simulation simulation = configurations.configureSimulation(simulationPresenter);
+        simulationEngine.submitSimulation(simulation);
     }
 
     private void configureStage(BorderPane viewRoot){

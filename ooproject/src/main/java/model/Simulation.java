@@ -24,7 +24,9 @@ public class Simulation implements Runnable {
     private int onNotPreferedFieldsCountStart;
 
 
-
+    public Configurations getConfigurations(){
+        return configurations;
+    }
 
     private final SimulationPresenter simulationPresenter;
     public Simulation(Configurations configurations,

@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import main.SimulationEngine;
 import main.SimulationWindow;
 import model.Configurations;
 import model.exceptions.*;
@@ -61,6 +62,8 @@ public class ConfigurationsPresenter {
     @FXML
     private ComboBox<String> chooseConfigurationComboBox;
     Map<String, Configurations> myConfigurations = new HashMap<>();
+    
+    private SimulationEngine simulationEngine = new SimulationEngine();
     public void InitializeConfigurations(){
         Set<Node> allTextFields = configurationsRoot.lookupAll(".text-field");
         Set<Node> textFields = new HashSet<>(allTextFields);
@@ -209,7 +212,7 @@ public class ConfigurationsPresenter {
                     animalBehaviorVariantComboBox.getValue());
             SimulationWindow simulationWindow = new SimulationWindow();
             try{
-                simulationWindow.start(configurations);
+                simulationWindow.start(configurations, simulationEngine);
             }catch(IOException e){
                 throw new SimulationWindowCreationException();
             }
