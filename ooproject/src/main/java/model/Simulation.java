@@ -241,10 +241,13 @@ public class Simulation implements Runnable {
             setMostPopularGenom();
             simulationPresenter.drawMap(simulationMap, false, false);
             everydayActivities();
-            if(configurations.geDataToCsv.setStats(animalsCount(),plantsCount(),
-                    freePositionsNumber(),getMostPopularGenom(),
-                    averageEnergyLevel(),averageAgeOfLive(),averageChildrenCount());
-            DataToCsv.writeStatsToCsv(id.toString() + ".csv");
+            if(configurations.isShouldSaveStatsToCsv()){
+                DataToCsv.setStats(animalsCount(),plantsCount(),
+                        freePositionsNumber(),getMostPopularGenom(),
+                        averageEnergyLevel(),averageAgeOfLive(),averageChildrenCount());
+                DataToCsv.writeStatsToCsv(id.toString() + ".csv");
+            }
+
         }
     }
 

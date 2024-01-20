@@ -23,7 +23,7 @@ public class EarthMap implements WorldMap {
     public EarthMap(Configurations configurations){
         this.configurations = configurations;
         boundary = new Boundary(new Vector2d(0,0),new Vector2d(configurations.getMapWidth()-1,configurations.getMapHeight()-1));
-        this.preferedFields = new int[boundary.rightTop().getY() + 1][boundary.rightTop().getX() + 1];
+        this.preferedFields = new int[boundary.rightTop().getX() + 1][boundary.rightTop().getY() + 1];
         if (configurations.getPlantsGrowthVariant() == PlantsGrowthVariant.FORESTED_EQUATORS) {
             setPreferedFields();
             }
@@ -38,7 +38,7 @@ public class EarthMap implements WorldMap {
         int cols = boundary.rightTop().getX() + 1;
         for(int i = 0; i<rows ; i++){
             for(int j = 0; j<cols; j++){
-                if (i>0.375*rows && i<0.625*rows){
+                if (i>=0.4*rows && i<=0.6*rows){
                     preferedFields[j][i] = 1;
                 }
             }
@@ -326,6 +326,7 @@ public class EarthMap implements WorldMap {
     }*/
 
     public List<Animal> reproduce(List<Animal> animalsOnTheField){
+        Random random = new Random();
         Collections.sort(animalsOnTheField, Collections.reverseOrder());
         int iterator1 = 0;
         int iterator2 = 1;
@@ -335,11 +336,15 @@ public class EarthMap implements WorldMap {
             Animal currentAnimal2 = animalsOnTheField.get(iterator2);
             if (currentAnimal1.getEnergy() > configurations.getRequiredReproductionEnergyCount()
                     && currentAnimal2.getEnergy() > configurations.getRequiredReproductionEnergyCount()) {
+                int currentGenom = random.nextInt(configurations.getGenomeLength());
+                int randomDirection = random.nextInt(MapDirection.values().length);
+                MapDirection mapDirection = MapDirection.randomMapDirection(randomDirection);
                 Animal childAnimal = new Animal(currentAnimal1.getPosition(),
                         GenerateGenom.generateReproductionGenome(currentAnimal1.getEnergy(),
                                 currentAnimal2.getEnergy(), currentAnimal1.getGenom(),
                                 currentAnimal2.getGenom(), configurations.getMinimumMutationCount(), configurations.getMaximumMutationCount()),
-                        2 * configurations.getReproductionEnergyCost(), configurations.getEnergyFromSinglePlant());
+                        2 * configurations.getReproductionEnergyCost(), configurations.getEnergyFromSinglePlant()
+                        ,currentGenom,mapDirection);
                 childrenToAdd.add(childAnimal);
                 currentAnimal1.reproduce(configurations.getReproductionEnergyCost(), configurations.getRequiredReproductionEnergyCount(), childAnimal);
                 currentAnimal2.reproduce(configurations.getReproductionEnergyCost(), configurations.getRequiredReproductionEnergyCount(), childAnimal);

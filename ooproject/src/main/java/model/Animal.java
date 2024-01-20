@@ -95,12 +95,13 @@ public class Animal implements WorldElement, Comparable<Animal> {
         this.position = position;
     }*/
 
-    public Animal(Vector2d position, int[] genom, int energy, int energyBoost) {
-        this.orientation = MapDirection.NORTH;
+    public Animal(Vector2d position, int[] genom, int energy, int energyBoost, int currentGenomPosition, MapDirection orientation) {
+        this.orientation = orientation;
         this.position = position;
         this.genom = genom;
         this.energy = energy;
         this.energyBoost = energyBoost;
+        this.currentGenomPosition = currentGenomPosition;
     }
 
     public void lowerEnergy(int amount){

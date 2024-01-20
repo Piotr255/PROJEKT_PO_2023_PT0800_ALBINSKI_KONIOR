@@ -4,6 +4,7 @@ import model.util.GenerateGenom;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class AnimalGenerator {
@@ -18,6 +19,10 @@ public class AnimalGenerator {
     int genomLength;
 
     int energyBoost;
+    int currentGenom;
+
+    MapDirection mapDirection;
+    int randomDirection;
 
     public AnimalGenerator(int animalNumber, long seed, int rows, int columns, int startEnergy, int genomLength, int energyBoost) {
         this.animalNumber = animalNumber;
@@ -46,6 +51,9 @@ public class AnimalGenerator {
         x = random.nextInt(rows);
         y = random.nextInt(columns);
         vector2d = new Vector2d(x,y);
-        return new Animal(vector2d, GenerateGenom.generateStartGenom(genomLength), startEnergy, energyBoost);
+        currentGenom = random.nextInt(genomLength);
+        randomDirection = random.nextInt(MapDirection.values().length);
+        mapDirection = MapDirection.randomMapDirection(randomDirection);
+        return new Animal(vector2d, GenerateGenom.generateStartGenom(genomLength), startEnergy, energyBoost, currentGenom,mapDirection);
     }
 }

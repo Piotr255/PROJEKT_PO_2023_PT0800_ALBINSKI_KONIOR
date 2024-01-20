@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Map;
+
 public enum MapDirection {
     NORTH,
     NORTH_EAST,
@@ -58,7 +60,22 @@ public enum MapDirection {
             case WEST -> new Vector2d(-1,0);
             case NORTH_WEST -> new Vector2d(-1,1);
         };
+
     }
+    public static MapDirection randomMapDirection(int number){
+        return switch(number) {
+            case 1 -> NORTH_EAST;
+            case 2 -> EAST;
+            case 3 -> SOUTH_EAST;
+            case 4 -> SOUTH;
+            case 5 -> SOUTH_WEST;
+            case 6 -> WEST;
+            case 7 -> NORTH_WEST;
+            default -> NORTH;
+        };
+
+    }
+
 
 }
 
