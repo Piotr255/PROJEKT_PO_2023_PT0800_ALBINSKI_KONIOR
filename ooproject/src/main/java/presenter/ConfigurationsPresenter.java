@@ -77,8 +77,8 @@ public class ConfigurationsPresenter {
     private void loadConfigurationNames(){
         String fileName = "src/main/resources/save.txt";
         chooseConfigurationComboBox.getItems().clear();
-        try{
-            BufferedReader reader = new BufferedReader(new FileReader(fileName));
+        try(BufferedReader reader = new BufferedReader(new FileReader(fileName))){
+
             String line;
 
             Configurations configuration = new Configurations();
@@ -143,7 +143,6 @@ public class ConfigurationsPresenter {
                         }
                         break;
                     case 17:
-                        System.out.println("Konfiguracja powinna byc wczytana");
                         myConfigurations.put(configuration.getConfigurationName(), configuration);
                         chooseConfigurationComboBox.getItems().add(configuration.getConfigurationName());
                         break;
@@ -178,7 +177,9 @@ public class ConfigurationsPresenter {
 
     private void onChooseConfigurationComboBoxAction(ActionEvent e) {
         String selectedItem = chooseConfigurationComboBox.getValue();
-        loadConfiguration(selectedItem);
+        if (myConfigurations.get(selectedItem)!=null){
+            loadConfiguration(selectedItem);
+        }
     }
 
     public void printException(String message){

@@ -90,8 +90,6 @@ public class SimulationPresenter {
         showOnPauseInfoButton.setOnAction((event) -> {
             pauseSimulation(true);
             drawMap(simulation.getSimulationMap(), true, true);
-            showOnPauseInfoButton.setText("Ukryj");
-            //initializeShowOnPauseInfoButton();
         });
     }
 
