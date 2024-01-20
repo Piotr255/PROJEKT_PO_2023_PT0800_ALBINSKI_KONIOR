@@ -1,10 +1,12 @@
 package main;
 
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.*;
 import model.exceptions.SimulationWindowCreationException;
 import presenter.ConfigurationsPresenter;
@@ -25,19 +27,24 @@ public class SimulationWindow {
         loader.setController(simulationPresenter);
         BorderPane viewRoot = loader.load();
         Simulation simulation = configurations.configureSimulation(simulationPresenter);
-        configureStage(viewRoot);
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(simulation, 2, 2, TimeUnit.SECONDS);
-
+        configureStage(viewRoot, simulation);
+        SimulationEngine.submitSimulation(simulation);
     }
 
-    private void configureStage(BorderPane viewRoot){
+    private void configureStage(BorderPane viewRoot, Simulation simulation){
         Stage stage = new Stage();
         Scene scene = new Scene(viewRoot);
         stage.setScene(scene);
         stage.setTitle("Simulation Window");
         stage.minWidthProperty().bind(viewRoot.minWidthProperty());
         stage.minHeightProperty().bind(viewRoot.minHeightProperty());
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                SimulationEngine.deleteSimulation(simulation);
+            }
+        });
+
         stage.show();
     }
 

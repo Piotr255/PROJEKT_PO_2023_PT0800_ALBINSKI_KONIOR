@@ -6,33 +6,6 @@ import presenter.SimulationPresenter;
 
 public class Configurations {
 
-
-    public Configurations(int mapHeight, int mapWidth, int startingPlantsCount, int energyFromSinglePlant,
-                          int everydayGrowingPlantsCount, int startingAnimalCount, int startingEnergyCount,
-                          int requiredReproductionEnergyCount, int reproductionEnergyCost,
-                          int minimumMutationCount,
-                          int maximumMutationCount, int genomeLength,
-                          PlantsGrowthVariant plantsGrowthVariant,
-                          AnimalBehaviorVariant animalBehaviorVariant) {
-        this.mapHeight = mapHeight;
-        this.mapWidth = mapWidth;
-        this.startingPlantsCount = startingPlantsCount;
-        this.energyFromSinglePlant = energyFromSinglePlant;
-        this.everydayGrowingPlantsCount = everydayGrowingPlantsCount;
-        this.startingAnimalCount = startingAnimalCount;
-        this.startingEnergyCount = startingEnergyCount;
-        this.requiredReproductionEnergyCount = requiredReproductionEnergyCount;
-        this.reproductionEnergyCost = reproductionEnergyCost;
-        this.minimumMutationCount = minimumMutationCount;
-        this.maximumMutationCount = maximumMutationCount;
-        this.genomeLength = genomeLength;
-        this.plantsGrowthVariant = plantsGrowthVariant;
-        this.animalBehaviorVariant = animalBehaviorVariant;
-    }
-    public Configurations(){
-
-    }
-
     private String configurationName;
     private int mapHeight;
     private int mapWidth;
@@ -48,6 +21,43 @@ public class Configurations {
     private int genomeLength;
     private PlantsGrowthVariant plantsGrowthVariant;
     private AnimalBehaviorVariant animalBehaviorVariant;
+    private boolean shouldSaveStatsToCsv;
+
+    public Configurations(int mapHeight, int mapWidth, int startingPlantsCount, int energyFromSinglePlant,
+                          int everydayGrowingPlantsCount, int startingAnimalCount, int startingEnergyCount,
+                          int requiredReproductionEnergyCount, int reproductionEnergyCost,
+                          int minimumMutationCount,
+                          int maximumMutationCount, int genomeLength,
+                          PlantsGrowthVariant plantsGrowthVariant,
+                          AnimalBehaviorVariant animalBehaviorVariant,
+                          boolean shouldSaveStatsToCsv) {
+        this.mapHeight = mapHeight;
+        this.mapWidth = mapWidth;
+        this.startingPlantsCount = startingPlantsCount;
+        this.energyFromSinglePlant = energyFromSinglePlant;
+        this.everydayGrowingPlantsCount = everydayGrowingPlantsCount;
+        this.startingAnimalCount = startingAnimalCount;
+        this.startingEnergyCount = startingEnergyCount;
+        this.requiredReproductionEnergyCount = requiredReproductionEnergyCount;
+        this.reproductionEnergyCost = reproductionEnergyCost;
+        this.minimumMutationCount = minimumMutationCount;
+        this.maximumMutationCount = maximumMutationCount;
+        this.genomeLength = genomeLength;
+        this.plantsGrowthVariant = plantsGrowthVariant;
+        this.animalBehaviorVariant = animalBehaviorVariant;
+        this.shouldSaveStatsToCsv = shouldSaveStatsToCsv;
+    }
+    public Configurations(){
+
+    }
+
+    public Simulation configureSimulation(SimulationPresenter simulationPresenter){
+        EarthMap earthMap = new EarthMap(this);
+        return new Simulation(this,
+                earthMap, simulationPresenter);
+    }
+
+
 
     public void setMapHeight(int mapHeight) {
         this.mapHeight = mapHeight;
@@ -169,9 +179,11 @@ public class Configurations {
         this.reproductionEnergyCost = reproductionEnergyCost;
     }
 
-    public Simulation configureSimulation(SimulationPresenter simulationPresenter){
-        EarthMap earthMap = new EarthMap(this);
-        return new Simulation(this,
-                earthMap, simulationPresenter);
+    public boolean isShouldSaveStatsToCsv() {
+        return shouldSaveStatsToCsv;
+    }
+
+    public void setShouldSaveStatsToCsv(boolean shouldSaveStatsToCsv) {
+        this.shouldSaveStatsToCsv = shouldSaveStatsToCsv;
     }
 }

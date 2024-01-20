@@ -12,7 +12,7 @@ import javafx.scene.text.TextAlignment;
 import model.*;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Button;
-
+import javafx.scene.paint.Color;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -68,7 +68,6 @@ public class SimulationPresenter {
 
     private final int CELL_WIDTH=40;
     private final int CELL_HEIGHT=40;
-
     private Simulation simulation = null;
 
     private boolean shouldFollowSingleAnimalStats = false;
@@ -89,9 +88,11 @@ public class SimulationPresenter {
             shouldFollowSingleAnimalStats = false;
         });
         showOnPauseInfoButton.setOnAction((event) -> {
+            pauseSimulation(true);
             drawMap(simulation.getSimulationMap(), true, true);
         });
     }
+
 
     private void initializePauseButton(boolean shouldPause){
         if (shouldPause){
@@ -127,17 +128,6 @@ public class SimulationPresenter {
 
     }
 
-    /*private void addClickListenersAfterPause(){
-        Map<Vector2d, List<Animal>> animals = simulation.getSimulationMap().getAnimals();
-        Iterator<Vector2d> iterator = animals.keySet().iterator();
-        while (iterator.hasNext()){
-            Vector2d occupiedPosition = iterator.next();
-
-        }
-    }*/
-
-
-
     public void drawMap(EarthMap earthMap, boolean isPaused, boolean showOnPausedInfo){
         clearGrid();
 
@@ -148,21 +138,15 @@ public class SimulationPresenter {
         Platform.runLater(() -> {
             for (int i = -1; i < cols; i++) {
                 ColumnConstraints columnConstraints = new ColumnConstraints(CELL_WIDTH);
-                //columnConstraints.setHalignment(HPos.CENTER);
                 mapGrid.getColumnConstraints().add(columnConstraints);
             }
             for (int i = -1; i < rows; i++) {
                 RowConstraints rowConstraints = new RowConstraints(CELL_HEIGHT);
-                //rowConstraints.setValignment(VPos.CENTER);
                 mapGrid.getRowConstraints().add(rowConstraints);
             }
         });
 
-
-        /*cell.setStyle("-fx-border-color: black; -fx-alignment: center;");
-        mapGrid.add(cell, j, i);*/
-        //mapGrid.setAlignment(Pos.CENTER);
-        Circle circle = new Circle(10); //po prostu inicjalizacja
+        Circle circle = new Circle(10);
         int xMin = boundary.leftBottom().getX();
         int xMax = boundary.rightTop().getX();
         int yMax = boundary.rightTop().getY();
@@ -173,16 +157,10 @@ public class SimulationPresenter {
                 Label label = new Label();
                 label.setAlignment(Pos.CENTER);
                 label.setTextAlignment(TextAlignment.CENTER);
-                //label.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-                //cell.setMinSize(CELL_WIDTH, CELL_HEIGHT);
                 StackPane cell = new StackPane();
                 cell.setMinSize(CELL_WIDTH, CELL_HEIGHT);
                 cell.setAlignment(Pos.CENTER);
                 cell.setStyle("-fx-border-color: black; -fx-alignment: center;");
-                //cell.setPrefSize(CELL_WIDTH,CELL_HEIGHT);
-                //cell.getStyleClass().add("grid-cell");
-                //GridPane.setHalignment(label, HPos.CENTER);
-                //GridPane.setValignment(label, VPos.CENTER);
                 final int fi = i;
                 final int fj = j;
                 Vector2d position = new Vector2d(xMin + j - 1, yMax - i + 1);
@@ -199,22 +177,37 @@ public class SimulationPresenter {
                     cell.getChildren().add(label);
                 }
                 else if (earthMap.animalsAt(position) != null && !earthMap.animalsAt(position).isEmpty()){
+                    //najsilniejszy zwierzak na tej pozycji
                     Animal strongestAnimal = earthMap.strongestAnimal(position);
-                    int strongestAnimalEnergy = strongestAnimal.getEnergy();
+                    double strongestAnimalEnergy = strongestAnimal.getEnergy();
                     circle = new Circle(10);
-                    Color color = Color.hsb(120, 0.5, 0.75);
-                    if (strongestAnimalEnergy>earthMap.getConfigurations().getRequiredReproductionEnergyCount()){
-                        color = Color.hsb(30, 1, 1);
+                    Color color = new Color(0,0,0,0);
+                    //jeśli nie może się rozmnożyć
+                    int requiredReproductionEnergyCount = simulation.getConfigurations().getRequiredReproductionEnergyCount();
+                    if (strongestAnimalEnergy<requiredReproductionEnergyCount){
+                        // jeśli zostały 3 dni do zgonu, czerwony
+                        if (strongestAnimalEnergy<=3){
+                            color = Color.rgb(255,0,0, Math.min(1,Math.max(0.5,1/strongestAnimalEnergy)));
+                        }
+                        //jeśli więcej niż 3 dni do zgonu, pomarańczowy
+                        else{
+                            color = Color.rgb(255,123,0, Math.max(0.5,strongestAnimalEnergy/requiredReproductionEnergyCount));
+                        }
                     }
-                    if (strongestAnimal.equals(FollowedAnimal.getFollowedAnimal())){
-                        color = Color.hsb(70,1,1);
+                    //jeśli może się rozmnożyć, zielony
+                    else{
+                        color = Color.rgb(0,255,0,Math.min(1,Math.max(0.5,strongestAnimalEnergy/3*requiredReproductionEnergyCount)));
                     }
+                    //jeśli ten zwierzak jest śledzony
+                    if (shouldFollowSingleAnimalStats && strongestAnimal.equals(FollowedAnimal.getFollowedAnimal())){
+                        color = Color.hsb(280,1,1);
+                    }
+                    //podczas pauzy, zaznacz zwierzę, jeśli ma najpopularniejszy genom
                     if (showOnPausedInfo && strongestAnimal.isHasMostPopularGenom()){
-                        color = Color.hsb(180, 1, 1);
+                        color = Color.rgb(220, 10, 192);
                     }
-                    if (showOnPausedInfo && simulation.getSimulationMap().getPreferedFields()[xMin + j - 1][yMax - i + 1]>0){
-                        cell.setStyle("-fx-background-color: yellow");
-                    }
+                    //zaznacz preferowane pole podczas pauzy
+
                     circle.setFill(color);
                     cell.getChildren().add(circle);
                     animalPresent=true;
@@ -222,6 +215,7 @@ public class SimulationPresenter {
                 }
                 else if (earthMap.isPlantAt(position)){
                     label.setText("*");
+                    label.setStyle("-fx-font-size: 25px");
                     cell.getChildren().add(label);
                 }
                 else{
@@ -229,6 +223,10 @@ public class SimulationPresenter {
                 }
                 final boolean fiAnimalPresent = animalPresent;
                 final Circle fiCircle = circle;
+                if (showOnPausedInfo && position.precedes(boundary.rightTop()) && position.follows(boundary.leftBottom())
+                        && simulation.getSimulationMap().getPreferedFields()[position.getX()][position.getY()]>0){
+                    cell.setStyle("-fx-background-color: pink");
+                }
                 Platform.runLater(() -> {
                     if (!fiAnimalPresent){
                         mapGrid.add(cell,fj,fi);
@@ -241,7 +239,7 @@ public class SimulationPresenter {
                                 FollowedAnimal.setFollowedAnimal(earthMap.strongestAnimal(position));
                                 System.out.println("Kliknieto w zwierzaka");
                                 shouldFollowSingleAnimalStats = true;
-                                drawMap(earthMap, true, false);
+                                drawMap(earthMap, true, showOnPausedInfo);
                             });
                         }
                     }
@@ -306,11 +304,6 @@ public class SimulationPresenter {
 
     }
 
-
-
-    public void mapChanged(){
-
-    }
 }
 
 

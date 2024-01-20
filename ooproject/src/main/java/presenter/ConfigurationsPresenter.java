@@ -4,10 +4,7 @@ import java.io.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import main.SimulationWindow;
@@ -16,7 +13,6 @@ import model.exceptions.*;
 import model.util.AnimalBehaviorVariant;
 import model.util.PlantsGrowthVariant;
 
-import javax.swing.*;
 import java.util.*;
 
 public class ConfigurationsPresenter {
@@ -55,12 +51,11 @@ public class ConfigurationsPresenter {
     @FXML
     private VBox exceptionsVBox;
     @FXML
-    private Button startSimulationButton;
-    @FXML
-    private Button saveConfigurationButton;
-    @FXML
     private ComboBox<String> chooseConfigurationComboBox;
+    @FXML
+    private CheckBox shouldSaveStatsToCsvCheckBox;
     Map<String, Configurations> myConfigurations = new HashMap<>();
+
     public void InitializeConfigurations(){
         Set<Node> allTextFields = configurationsRoot.lookupAll(".text-field");
         Set<Node> textFields = new HashSet<>(allTextFields);
@@ -82,8 +77,8 @@ public class ConfigurationsPresenter {
     private void loadConfigurationNames(){
         String fileName = "src/main/resources/save.txt";
         chooseConfigurationComboBox.getItems().clear();
-        try{
-            BufferedReader reader = new BufferedReader(new FileReader(fileName));
+        try(BufferedReader reader = new BufferedReader(new FileReader(fileName))){
+
             String line;
 
             Configurations configuration = new Configurations();
@@ -140,6 +135,14 @@ public class ConfigurationsPresenter {
                         configuration.setAnimalBehaviorVariant(AnimalBehaviorVariant.valueOf(line));
                         break;
                     case 16:
+                        if (line.equals("true")){
+                            configuration.setShouldSaveStatsToCsv(true);
+                        }
+                        else{
+                            configuration.setShouldSaveStatsToCsv(false);
+                        }
+                        break;
+                    case 17:
                         myConfigurations.put(configuration.getConfigurationName(), configuration);
                         chooseConfigurationComboBox.getItems().add(configuration.getConfigurationName());
                         break;
@@ -169,11 +172,14 @@ public class ConfigurationsPresenter {
         genomeLengthTextField.setText(String.valueOf(configuration.getGenomeLength()));
         plantsGrowthVariantComboxBox.setValue(configuration.getPlantsGrowthVariant());
         animalBehaviorVariantComboBox.setValue(configuration.getAnimalBehaviorVariant());
+        shouldSaveStatsToCsvCheckBox.setSelected(configuration.isShouldSaveStatsToCsv());
     }
 
     private void onChooseConfigurationComboBoxAction(ActionEvent e) {
         String selectedItem = chooseConfigurationComboBox.getValue();
-        loadConfiguration(selectedItem);
+        if (myConfigurations.get(selectedItem)!=null){
+            loadConfiguration(selectedItem);
+        }
     }
 
     public void printException(String message){
@@ -206,7 +212,8 @@ public class ConfigurationsPresenter {
                     Integer.parseInt(maximumMutationCountTextField.getText()),
                     Integer.parseInt(genomeLengthTextField.getText()),
                     plantsGrowthVariantComboxBox.getValue(),
-                    animalBehaviorVariantComboBox.getValue());
+                    animalBehaviorVariantComboBox.getValue(),
+                    shouldSaveStatsToCsvCheckBox.isSelected());
             SimulationWindow simulationWindow = new SimulationWindow();
             try{
                 simulationWindow.start(configurations);
@@ -307,6 +314,14 @@ public class ConfigurationsPresenter {
                     writer.append(plantsGrowthVariantComboxBox.getValue().toString());
                     writer.append("\n");
                     writer.append(animalBehaviorVariantComboBox.getValue().toString());
+                    writer.append("\n");
+                    if (shouldSaveStatsToCsvCheckBox.isSelected()){
+                        writer.append("true");
+                    }
+                    else{
+                        writer.append("false");
+                    }
+                    writer.append("\n");
                     writer.append("\n");
                     writer.append("\n");
                 }catch(Exception e){

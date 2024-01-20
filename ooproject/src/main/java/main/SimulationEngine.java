@@ -4,43 +4,23 @@ import model.Simulation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class SimulationEngine {
-    private List<Simulation> simulations;
-    private List<Thread> threads = new ArrayList<>();
+    private static ConcurrentMap<Simulation, ScheduledFuture<?>> simulationTasks = new ConcurrentHashMap<>();
+    private static ScheduledExecutorService executorService = Executors.newScheduledThreadPool(4);
 
-    private ExecutorService executorService = Executors.newFixedThreadPool(4);
-    public SimulationEngine(List<Simulation> simulations) {
-        this.simulations = simulations;
+    public static void submitSimulation(Simulation simulation){
+        ScheduledFuture<?> future = executorService.scheduleAtFixedRate(simulation, 0, 75, TimeUnit.MILLISECONDS);
+        simulationTasks.put(simulation, future);
+    }
+    public static void deleteSimulation(Simulation simulation){
+        ScheduledFuture<?> future = simulationTasks.get(simulation);
+        if (future != null) {
+            future.cancel(true);
+            simulationTasks.remove(simulation);
+        }
     }
 
-    public void runSync() {
-        for (Simulation simulation : simulations) {
-            simulation.run();
-        }
-    }
-    public void runAsync() throws InterruptedException {
-        for(Simulation simulation : simulations){
-            Thread thread = new Thread(simulation);
-            threads.add(thread);
-            thread.start();
-        }
-        //awaitSimulationsEnd();
-    }
-    public void awaitSimulationsEnd() throws InterruptedException {
-        for (Thread thread : threads) {
-            thread.join();
-        }
-        executorService.shutdown();
-        executorService.awaitTermination(10, TimeUnit.SECONDS);
-    }
-    public void runAsyncInThreadPool(){
-        for(Simulation simulation : simulations){
-            executorService.submit(simulation);
-        }
-    }
 
 }
