@@ -267,8 +267,8 @@ public class EarthMap implements WorldMap {
                         2 * configurations.getReproductionEnergyCost(), configurations.getEnergyFromSinglePlant()
                         ,currentGenom,mapDirection);
                 childrenToAdd.add(childAnimal);
-                currentAnimal1.reproduce(configurations.getReproductionEnergyCost(), configurations.getRequiredReproductionEnergyCount(), childAnimal);
-                currentAnimal2.reproduce(configurations.getReproductionEnergyCost(), configurations.getRequiredReproductionEnergyCount(), childAnimal);
+                currentAnimal1.reproduce(configurations.getReproductionEnergyCost(), childAnimal);
+                currentAnimal2.reproduce(configurations.getReproductionEnergyCost(), childAnimal);
                 currentAnimal1.addChild(childAnimal);
                 currentAnimal2.addChild(childAnimal);
 

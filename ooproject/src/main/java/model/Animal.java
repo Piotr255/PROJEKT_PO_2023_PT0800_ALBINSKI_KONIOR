@@ -75,7 +75,7 @@ public class Animal implements WorldElement, Comparable<Animal> {
         eatenPlantsCount++;
     }
 
-    public void reproduce(int reproductionEnergyCost, int requiredReproductionEnergyCost, Animal reproducedAnimal) {
+    public void reproduce(int reproductionEnergyCost, Animal reproducedAnimal) {
         energy -= reproductionEnergyCost;
         children.add(reproducedAnimal);
     }
@@ -94,8 +94,9 @@ public class Animal implements WorldElement, Comparable<Animal> {
     }
 
     public void setGenomPosition(AnimalBehaviorVariant animalBehaviorVariant) {
-        currentGenomPosition += genomIterator;
+
         if (animalBehaviorVariant == AnimalBehaviorVariant.FULL_PREDESTINATION) {
+            currentGenomPosition += genomIterator;
             currentGenomPosition %= genom.length;
         } else {
             if (currentGenomPosition == genom.length - 1) {
@@ -103,7 +104,10 @@ public class Animal implements WorldElement, Comparable<Animal> {
             } else if (currentGenomPosition == 0) {
                 genomIterator = 1;
             }
+            currentGenomPosition += genomIterator;
         }
+
+
     }
 
     public void turn(int direction) {
