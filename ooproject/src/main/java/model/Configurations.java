@@ -21,7 +21,8 @@ public class Configurations {
                           int minimumMutationCount,
                           int maximumMutationCount, int genomeLength,
                           PlantsGrowthVariant plantsGrowthVariant,
-                          AnimalBehaviorVariant animalBehaviorVariant) {
+                          AnimalBehaviorVariant animalBehaviorVariant,
+                          boolean shouldSaveStatsToCsv) {
         this.mapHeight = mapHeight;
         this.mapWidth = mapWidth;
         this.startingPlantsCount = startingPlantsCount;
@@ -36,6 +37,7 @@ public class Configurations {
         this.genomeLength = genomeLength;
         this.plantsGrowthVariant = plantsGrowthVariant;
         this.animalBehaviorVariant = animalBehaviorVariant;
+        this.shouldSaveStatsToCsv = shouldSaveStatsToCsv;
     }
     public Configurations(){
 
@@ -56,6 +58,7 @@ public class Configurations {
     private int genomeLength;
     private PlantsGrowthVariant plantsGrowthVariant;
     private AnimalBehaviorVariant animalBehaviorVariant;
+    private boolean shouldSaveStatsToCsv;
 
     public void setMapHeight(int mapHeight) {
         this.mapHeight = mapHeight;

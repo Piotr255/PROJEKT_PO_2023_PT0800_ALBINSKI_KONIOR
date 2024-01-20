@@ -4,10 +4,7 @@ import java.io.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import main.SimulationWindow;
@@ -59,6 +56,8 @@ public class ConfigurationsPresenter {
     private Button saveConfigurationButton;
     @FXML
     private ComboBox<String> chooseConfigurationComboBox;
+    @FXML
+    private CheckBox shouldSaveStatsToCsvCheckBox;
     Map<String, Configurations> myConfigurations = new HashMap<>();
 
     public void InitializeConfigurations(){
@@ -206,7 +205,8 @@ public class ConfigurationsPresenter {
                     Integer.parseInt(maximumMutationCountTextField.getText()),
                     Integer.parseInt(genomeLengthTextField.getText()),
                     plantsGrowthVariantComboxBox.getValue(),
-                    animalBehaviorVariantComboBox.getValue());
+                    animalBehaviorVariantComboBox.getValue(),
+                    shouldSaveStatsToCsvCheckBox.isSelected());
             SimulationWindow simulationWindow = new SimulationWindow();
             try{
                 simulationWindow.start(configurations);
@@ -308,6 +308,7 @@ public class ConfigurationsPresenter {
                     writer.append("\n");
                     writer.append(animalBehaviorVariantComboBox.getValue().toString());
                     writer.append("\n");
+                    writer.append(shouldSaveStatsToCsvCheckBox.isSelected());
                     writer.append("\n");
                 }catch(Exception e){
                     System.out.println("nie udalo sie zrobic FileWritera");

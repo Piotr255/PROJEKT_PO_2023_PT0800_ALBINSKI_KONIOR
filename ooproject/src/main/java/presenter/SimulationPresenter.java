@@ -233,7 +233,7 @@ public class SimulationPresenter {
                     }
                     //podczas pauzy, zaznacz zwierzę, jeśli ma najpopularniejszy genom
                     if (showOnPausedInfo && strongestAnimal.isHasMostPopularGenom()){
-                        color = Color.hsb(210, 1, 1);
+                        color = Color.rgb(220, 10, 192);
                     }
                     //zaznacz preferowane pole podczas pauzy
 

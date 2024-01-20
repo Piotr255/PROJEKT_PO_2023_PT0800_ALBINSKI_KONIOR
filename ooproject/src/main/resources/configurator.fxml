@@ -12,6 +12,7 @@
 <?import java.lang.String?>
 <?import javafx.scene.control.Button?>
 <?import model.util.PlantsGrowthVariant?>
+<?import javafx.scene.control.CheckBox?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             minHeight="600.0" minWidth="850.0"
@@ -83,6 +84,10 @@
                 <HBox styleClass="centered-box">
                     <Label styleClass="little-padding">Długość genomu zwierzaków: </Label>
                     <TextField fx:id="genomeLengthTextField">9</TextField>
+                </HBox>
+                <HBox styleClass="centered-box">
+                    <Label styleClass="little-padding">Czy zapisywać statystyki do pliku CSV: </Label>
+                    <CheckBox fx:id="shouldSaveStatsToCsvCheckBox"></CheckBox>
                 </HBox>
                 <HBox styleClass="centered-box">
                     <Label styleClass="little-padding">Wariant zachowania zwierzaków:</Label>
