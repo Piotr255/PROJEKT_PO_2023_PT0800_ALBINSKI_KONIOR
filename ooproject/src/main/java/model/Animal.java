@@ -24,7 +24,8 @@ public class Animal implements WorldElement, Comparable<Animal> {
 
     private int[] genom;
 
-
+    private final int ResourcesMax = 10000000;
+    private boolean ResourcesExceeded = false;
 
     private int eatenPlantsCount = 0;
 
@@ -37,6 +38,9 @@ public class Animal implements WorldElement, Comparable<Animal> {
     }
 
     public int countAllDescendants(){
+        if (ResourcesExceeded){
+            return -1;
+        }
         int sum = 0;
         if (getChildrenCount() == 0){
             return 0;
@@ -44,6 +48,11 @@ public class Animal implements WorldElement, Comparable<Animal> {
 
         for(Animal animal: children){
             sum+= animal.countAllDescendants();
+        }
+        if (sum + getChildrenCount() >= ResourcesMax){
+            ResourcesExceeded = true;
+
+
         }
         return sum + getChildrenCount();
     }

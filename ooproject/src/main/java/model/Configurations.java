@@ -7,6 +7,14 @@ import presenter.SimulationPresenter;
 public class Configurations {
 
 
+    public boolean isShouldSaveStatsToCsv() {
+        return shouldSaveStatsToCsv;
+    }
+
+    public void setShouldSaveStatsToCsv(boolean shouldSaveStatsToCsv) {
+        this.shouldSaveStatsToCsv = shouldSaveStatsToCsv;
+    }
+
     public Configurations(int mapHeight, int mapWidth, int startingPlantsCount, int energyFromSinglePlant,
                           int everydayGrowingPlantsCount, int startingAnimalCount, int startingEnergyCount,
                           int requiredReproductionEnergyCount, int reproductionEnergyCost,

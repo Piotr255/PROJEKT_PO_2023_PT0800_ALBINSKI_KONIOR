@@ -10,14 +10,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import main.SimulationEngine;
 import main.SimulationWindow;
 import model.Configurations;
 import model.exceptions.*;
 import model.util.AnimalBehaviorVariant;
 import model.util.PlantsGrowthVariant;
 
-import javax.swing.*;
 import java.util.*;
 
 public class ConfigurationsPresenter {

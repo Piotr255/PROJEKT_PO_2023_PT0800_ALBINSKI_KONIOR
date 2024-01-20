@@ -88,7 +88,7 @@ public class Simulation implements Runnable {
 
     }
 
-    public void setMostPopularGenom(){
+    private void setMostPopularGenom(){
         int[] tmpGenom = convertGenomToInt(getMostPopularGenom());
         for(Animal animal: animals){
             animal.setHasMostPopularGenom(Arrays.equals(tmpGenom, animal.getGenom()));
@@ -238,8 +238,13 @@ public class Simulation implements Runnable {
             plantsConsumption();
             globalReproduction();
             grassDivisionStart(configurations.getEverydayGrowingPlantsCount());
+            setMostPopularGenom();
             simulationPresenter.drawMap(simulationMap, false, false);
             everydayActivities();
+            if(configurations.geDataToCsv.setStats(animalsCount(),plantsCount(),
+                    freePositionsNumber(),getMostPopularGenom(),
+                    averageEnergyLevel(),averageAgeOfLive(),averageChildrenCount());
+            DataToCsv.writeStatsToCsv(id.toString() + ".csv");
         }
     }
 
