@@ -51,10 +51,6 @@ public class ConfigurationsPresenter {
     @FXML
     private VBox exceptionsVBox;
     @FXML
-    private Button startSimulationButton;
-    @FXML
-    private Button saveConfigurationButton;
-    @FXML
     private ComboBox<String> chooseConfigurationComboBox;
     @FXML
     private CheckBox shouldSaveStatsToCsvCheckBox;

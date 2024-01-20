@@ -6,14 +6,22 @@ import presenter.SimulationPresenter;
 
 public class Configurations {
 
-
-    public boolean isShouldSaveStatsToCsv() {
-        return shouldSaveStatsToCsv;
-    }
-
-    public void setShouldSaveStatsToCsv(boolean shouldSaveStatsToCsv) {
-        this.shouldSaveStatsToCsv = shouldSaveStatsToCsv;
-    }
+    private String configurationName;
+    private int mapHeight;
+    private int mapWidth;
+    private int startingPlantsCount;
+    private int energyFromSinglePlant;
+    private int everydayGrowingPlantsCount;
+    private int startingAnimalCount;
+    private int startingEnergyCount;
+    private int requiredReproductionEnergyCount;
+    private int reproductionEnergyCost;
+    private int minimumMutationCount;
+    private int maximumMutationCount;
+    private int genomeLength;
+    private PlantsGrowthVariant plantsGrowthVariant;
+    private AnimalBehaviorVariant animalBehaviorVariant;
+    private boolean shouldSaveStatsToCsv;
 
     public Configurations(int mapHeight, int mapWidth, int startingPlantsCount, int energyFromSinglePlant,
                           int everydayGrowingPlantsCount, int startingAnimalCount, int startingEnergyCount,
@@ -43,22 +51,13 @@ public class Configurations {
 
     }
 
-    private String configurationName;
-    private int mapHeight;
-    private int mapWidth;
-    private int startingPlantsCount;
-    private int energyFromSinglePlant;
-    private int everydayGrowingPlantsCount;
-    private int startingAnimalCount;
-    private int startingEnergyCount;
-    private int requiredReproductionEnergyCount;
-    private int reproductionEnergyCost;
-    private int minimumMutationCount;
-    private int maximumMutationCount;
-    private int genomeLength;
-    private PlantsGrowthVariant plantsGrowthVariant;
-    private AnimalBehaviorVariant animalBehaviorVariant;
-    private boolean shouldSaveStatsToCsv;
+    public Simulation configureSimulation(SimulationPresenter simulationPresenter){
+        EarthMap earthMap = new EarthMap(this);
+        return new Simulation(this,
+                earthMap, simulationPresenter);
+    }
+
+
 
     public void setMapHeight(int mapHeight) {
         this.mapHeight = mapHeight;
@@ -180,9 +179,11 @@ public class Configurations {
         this.reproductionEnergyCost = reproductionEnergyCost;
     }
 
-    public Simulation configureSimulation(SimulationPresenter simulationPresenter){
-        EarthMap earthMap = new EarthMap(this);
-        return new Simulation(this,
-                earthMap, simulationPresenter);
+    public boolean isShouldSaveStatsToCsv() {
+        return shouldSaveStatsToCsv;
+    }
+
+    public void setShouldSaveStatsToCsv(boolean shouldSaveStatsToCsv) {
+        this.shouldSaveStatsToCsv = shouldSaveStatsToCsv;
     }
 }

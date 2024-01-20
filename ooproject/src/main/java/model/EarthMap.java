@@ -12,12 +12,7 @@ public class EarthMap implements WorldMap {
     private final Configurations configurations;
     protected Map<Vector2d, List<Animal>> animals = new HashMap<>();
     protected Map<Vector2d,Plant> plants = new HashMap<>();
-    private List<MapChangeListener> observers = new ArrayList<>();
     protected Map<String, Integer > genomMap = new HashMap<>();
-
-    public Map<Vector2d, List<Animal>> getAnimals(){
-        return Collections.unmodifiableMap(animals);
-    }
 
 
     public EarthMap(Configurations configurations){
@@ -28,23 +23,6 @@ public class EarthMap implements WorldMap {
             setPreferedFields();
             }
         }
-
-    public int[][] getPreferedFields(){
-        return preferedFields;
-    }
-
-    public void setPreferedFields(){
-        int rows = boundary.rightTop().getY() + 1;
-        int cols = boundary.rightTop().getX() + 1;
-        for(int i = 0; i<rows ; i++){
-            for(int j = 0; j<cols; j++){
-                if (i>=0.4*rows && i<=0.6*rows){
-                    preferedFields[j][i] = 1;
-                }
-            }
-        }
-
-    }
 
     public void addPreferedFieldInJungle(Plant plant){
         Vector2d position = plant.getPosition();
@@ -85,20 +63,12 @@ public class EarthMap implements WorldMap {
         }
         
     }
-    
-    /*public List<List<Animal>> getAnimals(){
-        return ((List<List<Animal>>) animals.values());
-    }
-    public List<Plant> getPlants(){
-        return ((List<Plant>) plants.values());
-    }*/
 
     public void place(Animal animal) {
         if (animals.get(animal.getPosition())==null) {
             animals.put(animal.getPosition(), new ArrayList<Animal>());
         }
         animals.get(animal.getPosition()).add(animal);
-        mapChanged("Zwierze zostalo postawione na" + animal.getPosition());
     }
 
     public void turn(Animal animal, int direction){
@@ -106,27 +76,10 @@ public class EarthMap implements WorldMap {
     }
 
     @Override
-    public boolean isOccupied(Vector2d position) {
-        return !animals.get(position).isEmpty();
-    }
-
-    @Override
     public List<Animal> animalsAt(Vector2d position) {
         return animals.get(position);
     }
 
-    public void addObserver(MapChangeListener observer){
-        observers.add(observer);
-    }
-    public void removeObserver(MapChangeListener observer){
-        observers.remove(observer);
-    }
-
-    public void mapChanged(String message){
-        for(MapChangeListener observer : observers){
-            observer.mapChanged(this,message);
-        }
-    }
 
     @Override
     public void removeAnimal(Animal animal){
@@ -142,9 +95,7 @@ public class EarthMap implements WorldMap {
         if (animals.get(animal.getPosition()).contains(animal)){
             animals.get(animal.getPosition()).remove(animal);
             animal.move(direction,this);
-            //animals.get(animal.getPosition()).add(animal);
             place(animal);
-            mapChanged("Zwierze poruszylo sie na " + animal.getPosition());
         }
     }
 
@@ -155,8 +106,7 @@ public class EarthMap implements WorldMap {
 
     public Vector2d addPlant(Vector2d position, int energy){
         if (!isPlantAt(position)) {
-            System.out.println("Dziala");
-            Plant plant = new Plant(position, energy);
+            Plant plant = new Plant(position);
             plants.put(position, plant);
             if (configurations.getPlantsGrowthVariant() == PlantsGrowthVariant.CREEPING_JUNGLE){
                 addPreferedFieldInJungle(plant);
@@ -208,13 +158,11 @@ public class EarthMap implements WorldMap {
     }
 
 
-    public List<Plant> startGrass (int grassNumber, boolean prefered){ // do edycji do nowych zmiennych
+    public List<Plant> startGrass (int grassNumber, boolean prefered){
         RandomPositionGenerator randomPositionGenerator = new RandomPositionGenerator(preferedFields, grassNumber, prefered);
         List<Plant> temporaryPlantList = new LinkedList<>();
         for (Vector2d grassPosition : randomPositionGenerator) {
-            System.out.println("pozycja wylosowana");
-            System.out.println(grassPosition);
-            Plant plant = new Plant(grassPosition,configurations.getEnergyFromSinglePlant());
+            Plant plant = new Plant(grassPosition);
             if (addPlant(plant.getPosition(),configurations.getEnergyFromSinglePlant()) != null) {
                 temporaryPlantList.add(plant);
             }
@@ -298,33 +246,6 @@ public class EarthMap implements WorldMap {
     }
 
 
-
-
-    public void simulationNextTurn(){
-
-    }
-    /*
-    public List<Animal> getDominantAnimals(List<Animal> animalsOnTheField){
-        List<Animal> result = new ArrayList<>();
-        Collections.sort(animalsOnTheField);
-        Iterator<Animal> iterator = animalsOnTheField.iterator();
-        Animal previous = null;
-        Animal animal = null;
-        while (iterator.hasNext()){
-            previous = animal;
-            animal = iterator.next();
-            if (previous!=null && previous.getEnergy()==animal.getEnergy()
-                    && previous.getChildrenCount()==animal.getChildrenCount()
-                    && previous.getAgeInSimulationTurns()==animal.getAgeInSimulationTurns()){
-            }
-            if (previous!=null){
-                result.add(previous);
-            }
-
-        }
-        return null;
-    }*/
-
     public List<Animal> reproduce(List<Animal> animalsOnTheField){
         Random random = new Random();
         Collections.sort(animalsOnTheField, Collections.reverseOrder());
@@ -374,5 +295,26 @@ public class EarthMap implements WorldMap {
 
     public Map<Vector2d, Plant> getPlants() {
         return Collections.unmodifiableMap(plants);
+    }
+
+    public Map<Vector2d, List<Animal>> getAnimals(){
+        return Collections.unmodifiableMap(animals);
+    }
+
+    public int[][] getPreferedFields(){
+        return preferedFields;
+    }
+
+    public void setPreferedFields(){
+        int rows = boundary.rightTop().getY() + 1;
+        int cols = boundary.rightTop().getX() + 1;
+        for(int i = 0; i<rows ; i++){
+            for(int j = 0; j<cols; j++){
+                if (i>=0.4*rows && i<=0.6*rows){
+                    preferedFields[j][i] = 1;
+                }
+            }
+        }
+
     }
 }

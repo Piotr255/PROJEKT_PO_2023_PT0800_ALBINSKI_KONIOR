@@ -13,7 +13,7 @@ public class Simulation implements Runnable {
     private List<Animal> animals = new ArrayList<>();
     private List<Plant> plants = new ArrayList<>();
     private final UUID id = UUID.randomUUID();
-    private final Configurations configurations; //W tym są wszystkie konfiguracje symulacji
+    private final Configurations configurations;
     private boolean simulationPaused = false;
     private float sumOfAgesDeadAnimals;
 
@@ -22,21 +22,13 @@ public class Simulation implements Runnable {
     private int daysSinceStart = 0;
     private int onPreferedFieldsCountStart;
     private int onNotPreferedFieldsCountStart;
-
-
-    public Configurations getConfigurations(){
-        return configurations;
-    }
-
     private final SimulationPresenter simulationPresenter;
     public Simulation(Configurations configurations,
                       EarthMap simulationMap, SimulationPresenter simulationPresenter) {
-        //this.animals = animals;
         this.simulationPresenter = simulationPresenter;
         this.simulationMap = simulationMap;
         this.configurations = configurations;
         animalStart();
-        // simulationMap.generateAnimals(configurations.getStartingAnimalCount(), 11111);
         grassDivisionStart(configurations.getStartingPlantsCount());
         simulationPresenter.setSimulation(this);
         for(Animal animal : animals){
@@ -45,14 +37,25 @@ public class Simulation implements Runnable {
 
 
     }
-  /*  public Simulation(List<Animal> animals, WorldMap simulationMap){
-        this.animals = animals;
-        this.simulationMap = simulationMap;
 
-    }*/
+    public void run(){
+        if (!simulationPaused) {
+            deleteDead();
+            turnMove();
+            plantsConsumption();
+            globalReproduction();
+            grassDivisionStart(configurations.getEverydayGrowingPlantsCount());
+            setMostPopularGenom();
+            simulationPresenter.drawMap(simulationMap, false, false);
+            everydayActivities();
+            if(configurations.isShouldSaveStatsToCsv()){
+                DataToCsv.setStats(animalsCount(),plantsCount(),
+                        freePositionsNumber(),getMostPopularGenom(),
+                        averageEnergyLevel(),averageAgeOfLive(),averageChildrenCount());
+                DataToCsv.writeStatsToCsv(id.toString() + ".csv");
+            }
 
-    public boolean getSimulationPaused() {
-        return simulationPaused;
+        }
     }
 
     private void grassDivisionStart(int start){
@@ -87,14 +90,6 @@ public class Simulation implements Runnable {
         return temporaryGenom;
 
     }
-
-    private void setMostPopularGenom(){
-        int[] tmpGenom = convertGenomToInt(getMostPopularGenom());
-        for(Animal animal: animals){
-            animal.setHasMostPopularGenom(Arrays.equals(tmpGenom, animal.getGenom()));
-        }
-    }
-
 
     public int freePositionsNumber(){
         Boundary boundary = simulationMap.getCurrentBounds();
@@ -162,8 +157,7 @@ public class Simulation implements Runnable {
             Animal animal = iterator.next();
 
             if (animal.getEnergy() <= 0) {
-                //System.out.println("dziala iterator przy usuwaniu zwierzat");
-                sumOfAgesDeadAnimals+=animal.getDays(); //zrobić zwiększanie liczby dni zwierzaków
+                sumOfAgesDeadAnimals+=animal.getDays();
                 deadAnimalCount++;
                 simulationMap.removeAnimal(animal);
                 animal.setDeathDay(daysSinceStart);
@@ -186,10 +180,6 @@ public class Simulation implements Runnable {
             simulationMap.turn(animal, animal.getCurrentGenom());
             simulationMap.move(animal,MoveDirection.FORWARD);
             animal.setGenomPosition(configurations.getAnimalBehaviorVariant());
-          /*
-            animal.turn();
-            animal.setGenomPosition();
-            animal.move(MoveDirection.FORWARD, simulationMap);*/
         }
     }
 
@@ -231,36 +221,21 @@ public class Simulation implements Runnable {
 
 
 
-    public void run(){
-        if (!simulationPaused) {
-            deleteDead();
-            turnMove();
-            plantsConsumption();
-            globalReproduction();
-            grassDivisionStart(configurations.getEverydayGrowingPlantsCount());
-            setMostPopularGenom();
-            simulationPresenter.drawMap(simulationMap, false, false);
-            everydayActivities();
-            if(configurations.isShouldSaveStatsToCsv()){
-                DataToCsv.setStats(animalsCount(),plantsCount(),
-                        freePositionsNumber(),getMostPopularGenom(),
-                        averageEnergyLevel(),averageAgeOfLive(),averageChildrenCount());
-                DataToCsv.writeStatsToCsv(id.toString() + ".csv");
-            }
-
-        }
-    }
-
-    List<Animal> getAnimals() {
-        return Collections.unmodifiableList(animals);
-    }
 
     public EarthMap getSimulationMap() { //do testów
         return simulationMap;
     }
-
-    public UUID getId() {
-        return id;
+    public Configurations getConfigurations(){
+        return configurations;
+    }
+    public boolean getSimulationPaused() {
+        return simulationPaused;
+    }
+    private void setMostPopularGenom(){
+        int[] tmpGenom = convertGenomToInt(getMostPopularGenom());
+        for(Animal animal: animals){
+            animal.setHasMostPopularGenom(Arrays.equals(tmpGenom, animal.getGenom()));
+        }
     }
 }
 
