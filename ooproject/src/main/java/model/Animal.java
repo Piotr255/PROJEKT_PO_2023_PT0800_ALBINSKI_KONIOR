@@ -94,7 +94,9 @@ public class Animal implements WorldElement, Comparable<Animal> {
     }
 
     public void setGenomPosition(AnimalBehaviorVariant animalBehaviorVariant) {
+
         if (animalBehaviorVariant == AnimalBehaviorVariant.FULL_PREDESTINATION) {
+            currentGenomPosition += genomIterator;
             currentGenomPosition %= genom.length;
         } else {
             if (currentGenomPosition == genom.length - 1) {
@@ -102,8 +104,10 @@ public class Animal implements WorldElement, Comparable<Animal> {
             } else if (currentGenomPosition == 0) {
                 genomIterator = 1;
             }
+            currentGenomPosition += genomIterator;
         }
-        currentGenomPosition += genomIterator;
+
+
     }
 
     public void turn(int direction) {
