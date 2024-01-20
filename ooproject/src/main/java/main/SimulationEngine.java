@@ -6,15 +6,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class SimulationEngine {
     private List<Simulation> simulations;
     private List<Thread> threads = new ArrayList<>();
 
-    private ExecutorService executorService = Executors.newFixedThreadPool(4);
-    public SimulationEngine(List<Simulation> simulations) {
-        this.simulations = simulations;
+    private ScheduledExecutorService executorService = Executors.newScheduledThreadPool(4);
+    public SimulationEngine() {
+
+    }
+
+    public void submitSimulation(Simulation simulation){
+        //simulations.add(simulation);
+        runAsyncInThreadPool(simulation);
+    }
+    public void deleteSimulation(Simulation simulation){
+        simulations.remove(simulation);
     }
 
     public void runSync() {
@@ -37,10 +46,8 @@ public class SimulationEngine {
         executorService.shutdown();
         executorService.awaitTermination(10, TimeUnit.SECONDS);
     }
-    public void runAsyncInThreadPool(){
-        for(Simulation simulation : simulations){
-            executorService.submit(simulation);
-        }
+    public void runAsyncInThreadPool(Simulation simulation){
+        executorService.scheduleAtFixedRate(simulation, 0, 50, TimeUnit.MILLISECONDS);
     }
 
 }
