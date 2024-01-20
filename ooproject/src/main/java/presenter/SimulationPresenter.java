@@ -190,6 +190,7 @@ public class SimulationPresenter {
                 final int fi = i;
                 final int fj = j;
                 Vector2d position = new Vector2d(xMin + j - 1, yMax - i + 1);
+                Vector2d positionOnActualMap = new Vector2d(i,j);
                 if (i==0 && j==0){
                     label.setText("y/x");
                     cell.getChildren().add(label);
@@ -253,7 +254,7 @@ public class SimulationPresenter {
                 final boolean fiAnimalPresent = animalPresent;
                 final Circle fiCircle = circle;
                 if (showOnPausedInfo && position.precedes(boundary.rightTop()) && position.follows(boundary.leftBottom())
-                        && simulation.getSimulationMap().getPreferedFields()[xMin + j - 1][yMax - i + 1]>0){
+                        && simulation.getSimulationMap().getPreferedFields()[position.getX()][position.getY()]>0){
                     cell.setStyle("-fx-background-color: pink");
                 }
                 Platform.runLater(() -> {

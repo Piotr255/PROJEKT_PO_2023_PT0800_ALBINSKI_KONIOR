@@ -7,7 +7,8 @@ public class GenerateGenom {
 
     public static int[] generateReproductionGenome(int energy1, int energy2, int[] genome1, int[] genome2,
                                                    int minimumMutationCount, int maximumMutationCount){
-
+        //energy1, genome1 to zawsze atrybuty silniejszego zwierzaka, to wynika z kolejnosci przekazania
+        //argumentow do tej funkcji w reproduce() w EarthMap
         Random random = new Random();
         int genomeLength = genome1.length;
         boolean leftPartOfGenomeFromGenome1 = random.nextBoolean();

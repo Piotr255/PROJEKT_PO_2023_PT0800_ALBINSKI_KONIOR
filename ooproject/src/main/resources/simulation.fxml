@@ -10,6 +10,15 @@
             xmlns:fx="http://javafx.com/fxml"
             minHeight="800.0" minWidth="800.0"
             stylesheets="style.css">
+    <top>
+        <VBox>
+            <Label>* - trawa</Label>
+            <HBox>
+                
+            </HBox>
+        </VBox>
+
+    </top>
     <left>
         <VBox alignment="CENTER_RIGHT" styleClass="VBox-all-stats">
             <HBox>

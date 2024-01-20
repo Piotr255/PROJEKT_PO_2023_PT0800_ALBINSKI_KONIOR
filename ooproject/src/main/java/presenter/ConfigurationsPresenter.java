@@ -139,6 +139,15 @@ public class ConfigurationsPresenter {
                         configuration.setAnimalBehaviorVariant(AnimalBehaviorVariant.valueOf(line));
                         break;
                     case 16:
+                        if (line.equals("true")){
+                            configuration.setShouldSaveStatsToCsv(true);
+                        }
+                        else{
+                            configuration.setShouldSaveStatsToCsv(false);
+                        }
+                        break;
+                    case 17:
+                        System.out.println("Konfiguracja powinna byc wczytana");
                         myConfigurations.put(configuration.getConfigurationName(), configuration);
                         chooseConfigurationComboBox.getItems().add(configuration.getConfigurationName());
                         break;
@@ -168,6 +177,7 @@ public class ConfigurationsPresenter {
         genomeLengthTextField.setText(String.valueOf(configuration.getGenomeLength()));
         plantsGrowthVariantComboxBox.setValue(configuration.getPlantsGrowthVariant());
         animalBehaviorVariantComboBox.setValue(configuration.getAnimalBehaviorVariant());
+        shouldSaveStatsToCsvCheckBox.setSelected(configuration.isShouldSaveStatsToCsv());
     }
 
     private void onChooseConfigurationComboBoxAction(ActionEvent e) {
@@ -308,7 +318,14 @@ public class ConfigurationsPresenter {
                     writer.append("\n");
                     writer.append(animalBehaviorVariantComboBox.getValue().toString());
                     writer.append("\n");
-                    writer.append(shouldSaveStatsToCsvCheckBox.isSelected());
+                    if (shouldSaveStatsToCsvCheckBox.isSelected()){
+                        writer.append("true");
+                    }
+                    else{
+                        writer.append("false");
+                    }
+                    writer.append("\n");
+                    writer.append("\n");
                     writer.append("\n");
                 }catch(Exception e){
                     System.out.println("nie udalo sie zrobic FileWritera");
