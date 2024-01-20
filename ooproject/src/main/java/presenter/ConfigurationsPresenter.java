@@ -62,8 +62,7 @@ public class ConfigurationsPresenter {
     @FXML
     private ComboBox<String> chooseConfigurationComboBox;
     Map<String, Configurations> myConfigurations = new HashMap<>();
-    
-    private SimulationEngine simulationEngine = new SimulationEngine();
+
     public void InitializeConfigurations(){
         Set<Node> allTextFields = configurationsRoot.lookupAll(".text-field");
         Set<Node> textFields = new HashSet<>(allTextFields);
@@ -212,7 +211,7 @@ public class ConfigurationsPresenter {
                     animalBehaviorVariantComboBox.getValue());
             SimulationWindow simulationWindow = new SimulationWindow();
             try{
-                simulationWindow.start(configurations, simulationEngine);
+                simulationWindow.start(configurations);
             }catch(IOException e){
                 throw new SimulationWindowCreationException();
             }

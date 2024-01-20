@@ -19,25 +19,32 @@ import java.util.concurrent.TimeUnit;
 
 public class SimulationWindow {
 
-    public void start(Configurations configurations, SimulationEngine simulationEngine) throws IOException {
+    public void start(Configurations configurations) throws IOException {
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("simulation.fxml"));
         SimulationPresenter simulationPresenter = new SimulationPresenter();
         loader.setController(simulationPresenter);
         BorderPane viewRoot = loader.load();
-        configureStage(viewRoot);
         Simulation simulation = configurations.configureSimulation(simulationPresenter);
-        simulationEngine.submitSimulation(simulation);
+        configureStage(viewRoot, simulation);
+        SimulationEngine.submitSimulation(simulation);
     }
 
-    private void configureStage(BorderPane viewRoot){
+    private void configureStage(BorderPane viewRoot, Simulation simulation){
         Stage stage = new Stage();
         Scene scene = new Scene(viewRoot);
         stage.setScene(scene);
         stage.setTitle("Simulation Window");
         stage.minWidthProperty().bind(viewRoot.minWidthProperty());
         stage.minHeightProperty().bind(viewRoot.minHeightProperty());
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                SimulationEngine.deleteSimulation(simulation);
+            }
+        });
+
         stage.show();
     }
 

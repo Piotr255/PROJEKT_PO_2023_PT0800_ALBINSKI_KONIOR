@@ -91,8 +91,11 @@ public class SimulationPresenter {
         showOnPauseInfoButton.setOnAction((event) -> {
             pauseSimulation(true);
             drawMap(simulation.getSimulationMap(), true, true);
+            showOnPauseInfoButton.setText("Ukryj");
+            //initializeShowOnPauseInfoButton();
         });
     }
+
 
     private void initializePauseButton(boolean shouldPause){
         if (shouldPause){
@@ -225,7 +228,7 @@ public class SimulationPresenter {
                         //color = Color.hsb(120, Math.min(1,strongestAnimalEnergy/3*requiredReproductionEnergyCount), Math.min(1,strongestAnimalEnergy/3*requiredReproductionEnergyCount));
                     }
                     //jeśli ten zwierzak jest śledzony
-                    if (strongestAnimal.equals(FollowedAnimal.getFollowedAnimal())){
+                    if (shouldFollowSingleAnimalStats && strongestAnimal.equals(FollowedAnimal.getFollowedAnimal())){
                         color = Color.hsb(280,1,1);
                     }
                     //podczas pauzy, zaznacz zwierzę, jeśli ma najpopularniejszy genom
@@ -241,6 +244,7 @@ public class SimulationPresenter {
                 }
                 else if (earthMap.isPlantAt(position)){
                     label.setText("*");
+                    label.setStyle("-fx-font-size: 25px");
                     cell.getChildren().add(label);
                 }
                 else{
@@ -264,7 +268,7 @@ public class SimulationPresenter {
                                 FollowedAnimal.setFollowedAnimal(earthMap.strongestAnimal(position));
                                 System.out.println("Kliknieto w zwierzaka");
                                 shouldFollowSingleAnimalStats = true;
-                                drawMap(earthMap, true, false);
+                                drawMap(earthMap, true, showOnPausedInfo);
                             });
                         }
                     }

@@ -8,10 +8,10 @@
 <?import javafx.scene.layout.HBox?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            minHeight="550.0" minWidth="850.0"
+            minHeight="800.0" minWidth="800.0"
             stylesheets="style.css">
     <left>
-        <VBox alignment="CENTER">
+        <VBox alignment="CENTER_RIGHT" styleClass="VBox-all-stats">
             <HBox>
                 <Label>Liczba wszystkich zwierzakow: </Label>
                 <Label fx:id="animalCountLabel"> 0</Label>
@@ -86,7 +86,9 @@
                     <Label fx:id="singleDeathDayLabel"> 0</Label>
                 </HBox>
                 <Button fx:id="stopFollowAnimalButton">Przestan sledzic</Button>
-                <Label>Kliknij ponizszy przycisk, aby pokazac preferowane pola i zwierzeta, ktore maja dominujacy genotyp</Label>
+            </VBox>
+            <VBox>
+                <Label>Pauza oraz dodatkowe opcje</Label>
                 <Button fx:id="showOnPauseInfoButton">Pokaz</Button>
             </VBox>
         </VBox>
