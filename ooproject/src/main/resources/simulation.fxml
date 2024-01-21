@@ -25,10 +25,6 @@
                 <Label fx:id="emptyFieldCountLabel"> 0</Label>
             </HBox>
             <HBox>
-                <Label>Liczba wolnych pol 2: </Label>
-                <Label fx:id="emptyFieldCountLabel2"> 0</Label>
-            </HBox>
-            <HBox>
                 <Label>Najpopularniejsze genotypy: </Label>
                 <Label fx:id="mostPopularGenotypesLabel"> 0</Label>
             </HBox>
@@ -50,7 +46,7 @@
                 <Button fx:id="pauseSimulationButton">Pauza</Button>
             </HBox>
             <HBox>
-                <Label fx:id="singleStatsTitleLabel">Kliknij na zwierzaka, aby sledzić jego statystyki: </Label>
+                <Label fx:id="singleStatsTitleLabel">Kliknij na zwierzaka, aby sledzic jego statystyki: </Label>
             </HBox>
             <VBox fx:id="singleStatsContainer">
                 <HBox>

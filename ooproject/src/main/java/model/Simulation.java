@@ -31,9 +31,7 @@ public class Simulation implements Runnable {
         animalStart();
         grassDivisionStart(configurations.getStartingPlantsCount());
         simulationPresenter.setSimulation(this);
-        for(Animal animal : animals){
-            System.out.println(animal.getPosition());
-        }
+
 
 
     }
