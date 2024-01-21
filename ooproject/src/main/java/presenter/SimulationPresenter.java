@@ -2,9 +2,7 @@ package presenter;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.geometry.HPos;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
@@ -12,7 +10,7 @@ import javafx.scene.text.TextAlignment;
 import model.*;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Button;
-import javafx.scene.paint.Color;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -62,8 +60,6 @@ public class SimulationPresenter {
     @FXML
     private Button stopFollowAnimalButton;
     @FXML
-    private Label emptyFieldCountLabel2;
-    @FXML
     private Button showOnPauseInfoButton;
 
     private final int CELL_WIDTH=40;
@@ -83,7 +79,7 @@ public class SimulationPresenter {
         initializePauseButton(true);
         singleStatsContainer.setVisible(false);
         stopFollowAnimalButton.setOnAction((event) -> {
-            singleStatsTitleLabel.setText("Kliknij na zwierzaka, aby sledzić jego statystyki:");
+            singleStatsTitleLabel.setText("Kliknij na zwierzaka, aby sledzic jego statystyki:");
             singleStatsContainer.setVisible(false);
             shouldFollowSingleAnimalStats = false;
         });
@@ -130,8 +126,6 @@ public class SimulationPresenter {
 
     public void drawMap(EarthMap earthMap, boolean isPaused, boolean showOnPausedInfo){
         clearGrid();
-
-        int emptyFieldCount = 0;
         Boundary boundary = earthMap.getCurrentBounds();
         int rows = boundary.rightTop().getY() - boundary.leftBottom().getY() + 1;
         int cols = boundary.rightTop().getX() - boundary.leftBottom().getX() + 1;
@@ -218,9 +212,6 @@ public class SimulationPresenter {
                     label.setStyle("-fx-font-size: 25px");
                     cell.getChildren().add(label);
                 }
-                else{
-                    emptyFieldCount+=1;
-                }
                 final boolean fiAnimalPresent = animalPresent;
                 final Circle fiCircle = circle;
                 if (showOnPausedInfo && position.precedes(boundary.rightTop()) && position.follows(boundary.leftBottom())
@@ -234,10 +225,8 @@ public class SimulationPresenter {
                     else{
                         mapGrid.add(cell,fj,fi);
                         if (isPaused && simulation.getSimulationPaused()){
-                            System.out.println("Ustawiono action dla kolka");
                             fiCircle.setOnMouseClicked((event) -> {
                                 FollowedAnimal.setFollowedAnimal(earthMap.strongestAnimal(position));
-                                System.out.println("Kliknieto w zwierzaka");
                                 shouldFollowSingleAnimalStats = true;
                                 drawMap(earthMap, true, showOnPausedInfo);
                             });
@@ -247,7 +236,7 @@ public class SimulationPresenter {
 
             }
         }
-        drawStats(earthMap, emptyFieldCount);
+        drawStats();
         if (shouldFollowSingleAnimalStats){
             followAnimalStats();
         }
@@ -279,14 +268,13 @@ public class SimulationPresenter {
 
     }
 
-    public void drawStats(EarthMap earthMap, int emptyFieldCount){ //Wywoływane w drawMap()
+    public void drawStats(){ //Wywoływane w drawMap()
         int animalsCount = simulation.animalsCount();
         int plantsCount = simulation.plantsCount();
         Platform.runLater(() -> {
             animalCountLabel.setText(String.valueOf(animalsCount));
             plantCountLabel.setText(String.valueOf(plantsCount));
-            emptyFieldCountLabel.setText(String.valueOf(emptyFieldCount));
-            emptyFieldCountLabel2.setText(String.valueOf(simulation.freePositionsNumber()));
+            emptyFieldCountLabel.setText(String.valueOf(simulation.freePositionsNumber()));
             mostPopularGenotypesLabel.setText(simulation.getMostPopularGenom());
             averageEnergyLabel.setText(String.valueOf(simulation.averageEnergyLevel()));
             lifeExpectancyLabel.setText(String.valueOf(simulation.averageAgeOfLive()));
