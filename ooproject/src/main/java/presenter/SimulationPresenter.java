@@ -62,20 +62,20 @@ public class SimulationPresenter {
     @FXML
     private Button showOnPauseInfoButton;
 
-    private final int CELL_WIDTH=40;
-    private final int CELL_HEIGHT=40;
+    private final int CELL_WIDTH = 40;
+    private final int CELL_HEIGHT = 40;
     private Simulation simulation = null;
 
     private boolean shouldFollowSingleAnimalStats = false;
 
-    public void setSimulation(Simulation simulation){
-        if (this.simulation==null){
+    public void setSimulation(Simulation simulation) {
+        if (this.simulation == null) {
             this.simulation = simulation;
         }
     }
 
     @FXML
-    private void initialize(){
+    private void initialize() {
         initializePauseButton(true);
         singleStatsContainer.setVisible(false);
         stopFollowAnimalButton.setOnAction((event) -> {
@@ -90,16 +90,15 @@ public class SimulationPresenter {
     }
 
 
-    private void initializePauseButton(boolean shouldPause){
-        if (shouldPause){
+    private void initializePauseButton(boolean shouldPause) {
+        if (shouldPause) {
             Platform.runLater(() -> {
                 pauseSimulationButton.setOnAction((event) -> {
                     pauseSimulation(true);
                 });
             });
             pauseSimulationButton.setText("Pauza");
-        }
-        else{
+        } else {
             Platform.runLater(() -> {
                 pauseSimulationButton.setOnAction((event) -> {
                     pauseSimulation(false);
@@ -110,21 +109,20 @@ public class SimulationPresenter {
 
     }
 
-    private void pauseSimulation(boolean pause){
-        if (pause){
+    private void pauseSimulation(boolean pause) {
+        if (pause) {
             simulation.pauseSimulation();
             initializePauseButton(false);
             drawMap(simulation.getSimulationMap(), true, false);
-        }
-        else{
+        } else {
             simulation.unpauseSimulation();
             initializePauseButton(true);
-            drawMap(simulation.getSimulationMap(),true,false);
+            drawMap(simulation.getSimulationMap(), true, false);
         }
 
     }
 
-    public void drawMap(EarthMap earthMap, boolean isPaused, boolean showOnPausedInfo){
+    public void drawMap(EarthMap earthMap, boolean isPaused, boolean showOnPausedInfo) {
         clearGrid();
         Boundary boundary = earthMap.getCurrentBounds();
         int rows = boundary.rightTop().getY() - boundary.leftBottom().getY() + 1;
@@ -142,12 +140,12 @@ public class SimulationPresenter {
 
         Circle circle = new Circle(10);
         int xMin = boundary.leftBottom().getX();
-        int xMax = boundary.rightTop().getX();
+        int xMax = boundary.rightTop().getX(); // nieużywane
         int yMax = boundary.rightTop().getY();
         int yMin = boundary.leftBottom().getY();
-        for (int i=0; i<=rows; i++){
-            for (int j=0; j<=cols; j++){
-                boolean animalPresent=false;
+        for (int i = 0; i <= rows; i++) {
+            for (int j = 0; j <= cols; j++) {
+                boolean animalPresent = false;
                 Label label = new Label();
                 label.setAlignment(Pos.CENTER);
                 label.setTextAlignment(TextAlignment.CENTER);
@@ -158,73 +156,68 @@ public class SimulationPresenter {
                 final int fi = i;
                 final int fj = j;
                 Vector2d position = new Vector2d(xMin + j - 1, yMax - i + 1);
-                if (i==0 && j==0){
+                if (i == 0 && j == 0) {
                     label.setText("y/x");
                     cell.getChildren().add(label);
-                }
-                else if (j == 0) {
+                } else if (j == 0) {
                     label.setText(String.valueOf(yMax - i + 1));
                     cell.getChildren().add(label);
-                }
-                else if (i==0){
+                } else if (i == 0) {
                     label.setText(String.valueOf(xMin + j - 1));
                     cell.getChildren().add(label);
-                }
-                else if (earthMap.animalsAt(position) != null && !earthMap.animalsAt(position).isEmpty()){
+                } else if (earthMap.animalsAt(position) != null && !earthMap.animalsAt(position).isEmpty()) {
                     //najsilniejszy zwierzak na tej pozycji
                     Animal strongestAnimal = earthMap.strongestAnimal(position);
                     double strongestAnimalEnergy = strongestAnimal.getEnergy();
                     circle = new Circle(10);
-                    Color color = new Color(0,0,0,0);
+                    Color color = new Color(0, 0, 0, 0);
                     //jeśli nie może się rozmnożyć
                     int requiredReproductionEnergyCount = simulation.getConfigurations().getRequiredReproductionEnergyCount();
-                    if (strongestAnimalEnergy<requiredReproductionEnergyCount){
+                    if (strongestAnimalEnergy < requiredReproductionEnergyCount) {
                         // jeśli zostały 3 dni do zgonu, czerwony
-                        if (strongestAnimalEnergy<=3){
-                            color = Color.rgb(255,0,0, Math.min(1,Math.max(0.5,1/strongestAnimalEnergy)));
+                        if (strongestAnimalEnergy <= 3) {
+                            color = Color.rgb(255, 0, 0, Math.min(1, Math.max(0.5, 1 / strongestAnimalEnergy)));
                         }
                         //jeśli więcej niż 3 dni do zgonu, pomarańczowy
-                        else{
-                            color = Color.rgb(255,123,0, Math.max(0.5,strongestAnimalEnergy/requiredReproductionEnergyCount));
+                        else {
+                            color = Color.rgb(255, 123, 0, Math.max(0.5, strongestAnimalEnergy / requiredReproductionEnergyCount));
                         }
                     }
                     //jeśli może się rozmnożyć, zielony
-                    else{
-                        color = Color.rgb(0,255,0,Math.min(1,Math.max(0.5,strongestAnimalEnergy/3*requiredReproductionEnergyCount)));
+                    else {
+                        color = Color.rgb(0, 255, 0, Math.min(1, Math.max(0.5, strongestAnimalEnergy / 3 * requiredReproductionEnergyCount)));
                     }
                     //jeśli ten zwierzak jest śledzony
-                    if (shouldFollowSingleAnimalStats && strongestAnimal.equals(FollowedAnimal.getFollowedAnimal())){
-                        color = Color.hsb(280,1,1);
+                    if (shouldFollowSingleAnimalStats && strongestAnimal.equals(FollowedAnimal.getFollowedAnimal())) {
+                        color = Color.hsb(280, 1, 1);
                     }
                     //podczas pauzy, zaznacz zwierzę, jeśli ma najpopularniejszy genom
-                    if (showOnPausedInfo && strongestAnimal.isHasMostPopularGenom()){
+                    if (showOnPausedInfo && strongestAnimal.isHasMostPopularGenom()) {
                         color = Color.rgb(220, 10, 192);
                     }
                     //zaznacz preferowane pole podczas pauzy
 
                     circle.setFill(color);
                     cell.getChildren().add(circle);
-                    animalPresent=true;
+                    animalPresent = true;
                     //get z najw. priorytetem
-                }
-                else if (earthMap.isPlantAt(position)){
+                } else if (earthMap.isPlantAt(position)) {
                     label.setText("*");
                     label.setStyle("-fx-font-size: 25px");
                     cell.getChildren().add(label);
                 }
-                final boolean fiAnimalPresent = animalPresent;
+                final boolean fiAnimalPresent = animalPresent; // czemu fi?
                 final Circle fiCircle = circle;
                 if (showOnPausedInfo && position.precedes(boundary.rightTop()) && position.follows(boundary.leftBottom())
-                        && simulation.getSimulationMap().getPreferedFields()[position.getX()][position.getY()]>0){
+                        && simulation.getSimulationMap().getPreferedFields()[position.getX()][position.getY()] > 0) {
                     cell.setStyle("-fx-background-color: pink");
                 }
                 Platform.runLater(() -> {
-                    if (!fiAnimalPresent){
-                        mapGrid.add(cell,fj,fi);
-                    }
-                    else{
-                        mapGrid.add(cell,fj,fi);
-                        if (isPaused && simulation.getSimulationPaused()){
+                    if (!fiAnimalPresent) {
+                        mapGrid.add(cell, fj, fi);
+                    } else {
+                        mapGrid.add(cell, fj, fi);
+                        if (isPaused && simulation.getSimulationPaused()) {
                             fiCircle.setOnMouseClicked((event) -> {
                                 FollowedAnimal.setFollowedAnimal(earthMap.strongestAnimal(position));
                                 shouldFollowSingleAnimalStats = true;
@@ -237,12 +230,12 @@ public class SimulationPresenter {
             }
         }
         drawStats();
-        if (shouldFollowSingleAnimalStats){
+        if (shouldFollowSingleAnimalStats) {
             followAnimalStats();
         }
-    }
+    } // duża ta metoda
 
-    private void followAnimalStats(){
+    private void followAnimalStats() {
         Platform.runLater(() -> {
             singleStatsTitleLabel.setText("Statystyki wybranego zwierzaka: ");
             singleStatsContainer.setVisible(true);
@@ -257,10 +250,9 @@ public class SimulationPresenter {
             singleChildrenCountLabel.setText(String.valueOf(followedAnimal.getChildrenCount()));
             singleDescendantsCountLabel.setText(String.valueOf(followedAnimal.countAllDescendants()));
             singleLifeLengthCountLabel.setText(String.valueOf(followedAnimal.getDays()));
-            if (followedAnimal.getDeathDay()!=null){
+            if (followedAnimal.getDeathDay() != null) {
                 singleDeathDayLabel.setText(String.valueOf(followedAnimal.getDeathDay()));
-            }
-            else{
+            } else {
                 singleDeathDayLabel.setText("Zwierze zyje");
             }
         });
@@ -268,7 +260,7 @@ public class SimulationPresenter {
 
     }
 
-    public void drawStats(){ //Wywoływane w drawMap()
+    public void drawStats() { //Wywoływane w drawMap()
         int animalsCount = simulation.animalsCount();
         int plantsCount = simulation.plantsCount();
         Platform.runLater(() -> {
@@ -283,15 +275,15 @@ public class SimulationPresenter {
 
     }
 
-    private void clearGrid(){
-         Platform.runLater(() -> {
+    private void clearGrid() {
+        Platform.runLater(() -> {
             mapGrid.getChildren().clear();
             mapGrid.getColumnConstraints().clear();
             mapGrid.getRowConstraints().clear();
-         });
+        });
 
     }
 
-}
+} // duża ta klasa
 
 

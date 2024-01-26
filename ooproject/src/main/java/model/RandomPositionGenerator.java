@@ -6,9 +6,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public class RandomPositionGenerator implements Iterable<Vector2d>{
-    private Random rand;
+    private static Random rand;
     private int grassCount;
-    private Vector2d[] Vector2dTab;
+    private Vector2d[] Vector2dTab; // mało mówiąca nazwa
     private int comparator = 0;
     private int size;
     public RandomPositionGenerator(int [][] preferedFields, int grassCount, boolean preferedMode) {

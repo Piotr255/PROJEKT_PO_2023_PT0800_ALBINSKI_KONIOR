@@ -1,4 +1,4 @@
-package main;
+package main; // klasa główna raczej w pakiecie nadrzędnym
 
 import javafx.application.Application;
 

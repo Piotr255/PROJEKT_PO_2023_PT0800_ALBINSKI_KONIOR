@@ -165,7 +165,7 @@ public class Simulation implements Runnable {
         }
     }
 
-    private void everydayActivities(){
+    private void everydayActivities(){ // myląca nazwa
         daysSinceStart++;
         for(Animal animal: animals){
             animal.lowerEnergy(1);
@@ -230,7 +230,7 @@ public class Simulation implements Runnable {
         return simulationPaused;
     }
     private void setMostPopularGenom(){
-        int[] tmpGenom = convertGenomToInt(getMostPopularGenom());
+        int[] tmpGenom = convertGenomToInt(getMostPopularGenom()); // czemu tmp, a nie mostPopular?
         for(Animal animal: animals){
             animal.setHasMostPopularGenom(Arrays.equals(tmpGenom, animal.getGenom()));
         }

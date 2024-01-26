@@ -89,7 +89,7 @@ public class ConfigurationsPresenter {
                     i=0;
                 }
                 switch(i){
-                    case 1:
+                    case 1: // co to jest 1?
                         configuration.setConfigurationName(line);
                         break;
                     case 2:
@@ -335,4 +335,4 @@ public class ConfigurationsPresenter {
 
     }
 
-}
+} // duża ta klasa

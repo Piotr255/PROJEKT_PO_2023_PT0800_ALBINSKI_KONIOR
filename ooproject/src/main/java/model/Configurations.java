@@ -4,7 +4,7 @@ import model.util.AnimalBehaviorVariant;
 import model.util.PlantsGrowthVariant;
 import presenter.SimulationPresenter;
 
-public class Configurations {
+public class Configurations { // raczej liczba pojedyncza
 
     private String configurationName;
     private int mapHeight;

@@ -1,4 +1,4 @@
-package main;
+package main; // 3 niepowiązane ze sobą pakiety?
 
 import javafx.application.Application;
 import javafx.application.Platform;

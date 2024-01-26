@@ -3,13 +3,13 @@ package model.util;
 import java.util.Arrays;
 import java.util.Random;
 
-public class GenerateGenom {
+public class GenerateGenom { // brzmi jak nazwa metody
 
     public static int[] generateReproductionGenome(int energy1, int energy2, int[] genome1, int[] genome2,
                                                    int minimumMutationCount, int maximumMutationCount){
         //energy1, genome1 to zawsze atrybuty silniejszego zwierzaka, to wynika z kolejnosci przekazania
         //argumentow do tej funkcji w reproduce() w EarthMap
-        Random random = new Random();
+        Random random = new Random(); // co wywołanie?
         int genomeLength = genome1.length;
         boolean leftPartOfGenomeFromGenome1 = random.nextBoolean();
         int[] leftPartGenome;

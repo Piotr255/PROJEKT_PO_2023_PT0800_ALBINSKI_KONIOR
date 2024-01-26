@@ -17,7 +17,7 @@ public class Animal implements WorldElement, Comparable<Animal> {
     private boolean hasMostPopularGenom = false;
     private Integer deathDay = null;
     private int currentGenomPosition = 0;
-    private int genomIterator = 1;
+    private int genomIterator = 1; // co to jest?
     private int[] genom;
     private boolean ResourcesExceeded = false;
 
@@ -63,7 +63,7 @@ public class Animal implements WorldElement, Comparable<Animal> {
             sum += animal.countAllDescendants();
         }
         if (sum + getChildrenCount() >= ResourcesMax) {
-            ResourcesExceeded = true;
+            ResourcesExceeded = true; // polecam wyjątek
 
 
         }
@@ -93,7 +93,7 @@ public class Animal implements WorldElement, Comparable<Animal> {
         return genom[currentGenomPosition];
     }
 
-    public void setGenomPosition(AnimalBehaviorVariant animalBehaviorVariant) {
+    public void setGenomPosition(AnimalBehaviorVariant animalBehaviorVariant) { // zwierzę może zmieniać swoje zachowanie w trakcie życia?
 
         if (animalBehaviorVariant == AnimalBehaviorVariant.FULL_PREDESTINATION) {
             currentGenomPosition += genomIterator;
@@ -147,7 +147,7 @@ public class Animal implements WorldElement, Comparable<Animal> {
     }
 
     public int[] getGenom() {
-        return genom;
+        return genom; // dehermetyzacja
     }
 
     public int getDays() {
